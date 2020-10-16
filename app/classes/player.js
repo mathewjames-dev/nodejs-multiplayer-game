@@ -1,3 +1,9 @@
+/***
+ *
+ * Backend Player Class
+ *
+ ***/
+
 // Set up the players object
 const players = {};
 
@@ -9,6 +15,11 @@ module.exports.addPlayer = function(socketId)
         x: 300,
         y: 300
     };
+}
+
+// Function that we can globally access and use to remove a player from the game.
+module.exports.removePlayer = function (socketId) {
+    delete players[socketId];
 }
 
 // Another export function that we will be able to call to move the player from other classes.

@@ -1,0 +1,28 @@
+{
+  "name": "nodejsgame",
+  "version": "1.0.0",
+  "description": "Node js game created by mathewjames.dev",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm app.js"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "game",
+    "mmorpg",
+    "online",
+    "game",
+    "javascript"
+  ],
+  "author": "mathewjames.dev",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  }
+}

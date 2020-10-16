@@ -20,6 +20,7 @@ const io = require('socket.io')(server);
  * CLASSES
  */
 const socket = require('./app/classes/socket');
+const game = require('./app/classes/game');
 const player = require('./app/classes/player');
 
 

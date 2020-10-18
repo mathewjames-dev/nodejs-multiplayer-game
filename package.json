@@ -18,10 +18,15 @@
   "author": "mathewjames.dev",
   "license": "MIT",
   "dependencies": {
+    "babel-plugin-syntax-class-properties": "^6.13.0",
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   }

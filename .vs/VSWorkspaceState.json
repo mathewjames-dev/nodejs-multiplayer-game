@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\classes",
+    "\\public",
+    "\\public\\images",
+    "\\public\\images\\characters",
+    "\\public\\scripts",
+    "\\public\\scripts\\components",
+    "\\public\\scripts\\components\\player"
+  ],
+  "SelectedNode": "\\public\\scripts\\components\\player\\player.js",
+  "PreviewInSolutionExplorer": false
+}

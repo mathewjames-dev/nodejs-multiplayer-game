@@ -45,8 +45,8 @@ module.exports.listen = function(io) {
         // Upon disconnection from the socket server, remove the socket id from the socket list.
         socket.on('disconnect', function () {
             console.log('SERVER: DISCONNECTED USER!');
-            delete SOCKET_LIST[socket.id];
-            player.removePlayer(socket.id);
+            delete SOCKET_LIST[socketId];
+            player.removePlayer(socketId);
         });
     });
 

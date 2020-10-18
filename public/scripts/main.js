@@ -1,3 +1,9 @@
+/***
+ *
+ * Front-end Main Class
+ *
+ ***/
+
 // Setting the socket to global as opposed to variables. This is to combat socket not being defined within other scripts / files.
 global.socket = io();
 

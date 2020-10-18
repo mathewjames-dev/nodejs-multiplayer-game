@@ -1,3 +1,9 @@
+/***
+ *
+ * Front-end Game Class
+ *
+ ***/
+
 // Setting up the variables.
 const canvas = document.getElementById('gameContainer');
 canvas.width = 950;

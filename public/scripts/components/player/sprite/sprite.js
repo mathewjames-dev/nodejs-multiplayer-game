@@ -1,3 +1,15 @@
+/***
+ *
+ * Front-end Sprite Class
+ *
+ ***/
+
+// Setting the sprite variable.
+var sprite;
+
+var spriteWidth;
+var spriteHeight;
+
 // Set the width and height of the sprite sheet.
 var spriteSheetWidth = 96;
 var spriteSheetHeight = 128;
@@ -10,10 +22,6 @@ var spriteSheetCols = 3;
 var trackingLeftRow = 1;
 var trackingRightRow = 2;
 
-// Set the sprite width and height by doing simple calculation on the sprite sheet.
-var spriteWidth = spriteSheetWidth / spriteSheetCols;
-var spriteHeight = spriteSheetHeight / spriteSheetRows;
-
 var currentFrame = 0;
 var totalFrames = 3;
 
@@ -25,8 +33,23 @@ var right = false;
 
 var speed = 12;
 
-var character = new Image();
-character.src = './public/images/characters/male-01-1.png';
+// Function that we will utilize to load the image for the player.
+module.exports.loadSpriteSheet = function () {
+    if (!sprite) {
+        // If the sprite image isn't already setup.
+        sprite = new Image();
+
+        sprite.onload = function () {
+            // Once the sprite has loaded we will then set the frameWidth and frameHeight.
+            // Set the sprite width and height by doing simple calculation on the sprite sheet.
+            spriteWidth = spriteSheetWidth / spriteSheetCols;
+            spriteHeight = spriteSheetHeight / spriteSheetRows;
+        }
+
+        // Load the image.
+        sprite.src = './public/images/characters/male-01-1.png';
+    }
+}
 
 // Function to draw the player.
 module.exports.drawPlayer = function(context, player) {
@@ -34,7 +57,7 @@ module.exports.drawPlayer = function(context, player) {
     module.exports.updateSpriteFrame(context, player);
 
     //Drawing the image 
-    context.drawImage(character, srcX, srcY, spriteWidth, spriteHeight, player.x, player.y, spriteWidth, spriteHeight);
+    context.drawImage(sprite, srcX, srcY, spriteWidth, spriteHeight, player.x, player.y, spriteWidth, spriteHeight);
     context.fill();
 }
 

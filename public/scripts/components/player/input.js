@@ -1,3 +1,9 @@
+/***
+ *
+ * Front-end Input Class
+ *
+ ***/
+
 // Setting up the players movement object.
 const movement = {
     up: false,

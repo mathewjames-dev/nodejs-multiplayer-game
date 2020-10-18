@@ -1,3 +1,9 @@
+/***
+ *
+ * Front-end Chat Class
+ *
+ ***/
+
 var chatText = document.getElementById('chat-text');
 var chatInput = document.getElementById('chat-input');
 var chatForm = document.getElementById('chat-form');

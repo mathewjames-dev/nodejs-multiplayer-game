@@ -4,7 +4,11 @@
  *
  ***/
 
+// Setup the relevant requirements for the file.
 const sprite = require('./sprite/sprite');
+const input = require('./input');
+
+// Load the sprite sheet.
 sprite.loadSpriteSheet();
 
 module.exports.updatePlayersState = function (context, players) {

@@ -1,6 +1,6 @@
 /***
  *
- * Backend Player Class
+ * Back-end Player Class
  *
  ***/
 
@@ -11,7 +11,17 @@ const players = {};
 module.exports.addPlayer = function(socketId)
 {
     players[socketId] = {
-        // Each player has their own respective object. This is going to be the defaults for a new player.
+        // Each player has their own respective object. This is going to be the defaults for a new player
+
+        // Movement object so we know on the front-end if the player is moving
+        movement: {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+        },
+
+        // Setting the default x and y co ordinates
         x: 300,
         y: 300
     };
@@ -42,8 +52,17 @@ module.exports.movePlayer = function(socketId, data)
     if(data.down){
         player.y += 5;
     }
+
+    updateMovement(socketId, data)
 }
 
+
+// Function to get the player object.
 module.exports.getPlayers = function(){
     return players;
+}
+
+// Function to update the players movement object.
+updateMovement = function (socketId, data) {
+    players[socketId].movement = data;
 }

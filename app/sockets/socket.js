@@ -1,10 +1,10 @@
 /***
  *
- * Backend Socket Class
+ * Back-end Socket Component File
  *
  ***/
 // Import the classes required.
-const player = require('./player');
+const player = require('../game/player');
 
 // Setting up an empty object for the socket list.
 const SOCKET_LIST = {};

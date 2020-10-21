@@ -1,6 +1,6 @@
 /***
  *
- * Back-end Player Class
+ * Back-end Player Component File
  *
  ***/
 

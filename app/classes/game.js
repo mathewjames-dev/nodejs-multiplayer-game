@@ -1,5 +1,0 @@
-/***
- *
- * Backend Game Class
- *
- ***/

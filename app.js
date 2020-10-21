@@ -3,7 +3,6 @@
  * Main Game / App File.
  *  
  ***/
-
 // Including express and storing it against a variable.
 const express = require('express');
 
@@ -17,23 +16,18 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 /*
- * CLASSES
+ * Component Files
  */
-const socket = require('./app/classes/socket');
-const game = require('./app/classes/game');
-const player = require('./app/classes/player');
+// Will be used for all socket.io communications
+const socket = require('./app/sockets/socket');
 
+// File utilized for routing.
+const routes = require('./app/routes/routes')(app, express, __dirname);
 
-/*
- * Application Routing (This can go into it's own file eventually!!!!!)
- */
-// Main route for homepage.
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/views/index.html');
-});
+// Player component.
+const player = require('./app/game/player');
 
-// Telling the server what folder to use for the client front end / static files.
-app.use('/public', express.static(__dirname + '/public'));
+//const game = require('./app/classes/game');
 
 
 // Start the server and make it listen on selected port.

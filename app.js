@@ -25,9 +25,7 @@ const socket = require('./app/sockets/socket');
 const routes = require('./app/routes/routes')(app, express, __dirname);
 
 // Player component.
-const player = require('./app/game/player');
-
-//const game = require('./app/classes/game');
+const player = require('./app/game/player/player');
 
 
 // Start the server and make it listen on selected port.

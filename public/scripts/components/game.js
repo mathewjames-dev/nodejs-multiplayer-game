@@ -6,8 +6,8 @@
 
 // Setting up the variables.
 const canvas = document.getElementById('gameContainer');
-canvas.width = 950;
-canvas.height = 750;
+canvas.width = 800;
+canvas.height = 800;
 const context = canvas.getContext("2d");
 
 // Setting up the classes.

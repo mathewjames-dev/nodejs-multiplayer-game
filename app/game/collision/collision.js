@@ -3,23 +3,32 @@
  * Back-end Collision Component File
  *
  ***/
-const gameWidth = 950;
-const gameHeight = 750;
+const gameWidth = 800;
+const gameHeight = 800;
+const spriteRadius = 8;
 
-module.exports.checkEdgeCollision = function (value, direction) {
-    switch (direction) {
-        case 'left':
-            return (value <= 0 ? true : false);
-            break;
-        case 'right':
-            return (value >= gameWidth - 30 ? true : false)
-            break;
-        case 'up':
-            return (value <= 0 ? true : false)
-            break;
-        case 'down':
-            return (value >= gameHeight - 30 ? true : false)
-            break;
+module.exports.checkEdgeCollision = function (player) {
+    // Checking the left and right edges first.
+    if (player.x < 0) {
+        player.x = 0;
+        player.isColliding = true;
+    } else if (player.x > gameWidth - (spriteRadius * 4)) {
+        player.x = gameWidth - (spriteRadius * 4);
+        player.isColliding = true;
+    } else {
+        player.isColliding = false;
     }
-    return;
+
+    // Check for bottom and top
+    if (player.y < 0) {
+        player.y = 0;
+        player.isColliding = true;
+    } else if (player.y > gameHeight - (spriteRadius * 4)) {
+        player.y = gameHeight - (spriteRadius * 4);
+        player.isColliding = true;
+    } else {
+        player.isColliding = false;
+    }
+
+    return player;
 }

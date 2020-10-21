@@ -23,6 +23,9 @@ module.exports.addPlayer = function(socketId)
             right: false
         },
 
+        // Colliding flag against the player
+        isColliding: false,
+
         // Setting the default x and y co ordinates
         x: 300,
         y: 300
@@ -38,21 +41,26 @@ module.exports.removePlayer = function (socketId) {
 module.exports.movePlayer = function(socketId, data)
 {
     let player = players[socketId];
-    if (data.left && !collision.checkEdgeCollision(player.x, 'left')) {
-        player.x -= 5;
-    }
 
-    if (data.up && !collision.checkEdgeCollision(player.y, 'up')){
-        player.y -= 5;
-    }
+    collision.checkEdgeCollision(player);
 
-    if (data.right && !collision.checkEdgeCollision(player.x, 'right')){
-        player.x += 5;
-    }
+    if (!player.isColliding) {
+        if (data.left) {
+            player.x -= 5;
+        }
 
-    if (data.down && !collision.checkEdgeCollision(player.y, 'down')){
-        player.y += 5;
-    }
+        if (data.up) {
+            player.y -= 5;
+        }
+
+        if (data.right) {
+            player.x += 5;
+        }
+
+        if (data.down) {
+            player.y += 5;
+        }
+    } 
 
     updateMovement(socketId, data)
 }

@@ -1,6 +1,6 @@
 /***
  *
- * Front-end Main Class
+ * Front-end Main Component
  *
  ***/
 

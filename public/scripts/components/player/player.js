@@ -1,6 +1,6 @@
 /***
  *
- * Front-end Player Class
+ * Front-end Player Component
  *
  ***/
 
@@ -12,7 +12,7 @@ const input = require('./input');
 sprite.loadSpriteSheet();
 
 module.exports.updatePlayersState = function (context, players) {
-    context.clearRect(0, 0, 800, 800);
+    context.clearRect(0, 0, 800, 608);
     context.fillStyle = 'green';
     for (var id in players) {
         var player = players[id];

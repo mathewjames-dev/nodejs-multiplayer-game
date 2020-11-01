@@ -2,16 +2,33 @@ body {
     background: #EAEAEA;
 }
 
-.gameContainer{
+.gameContainer {
     background: white;
-    width: 950px;
-    height: 750px;
     border-radius: 6px;
-    float:right;
+    float: right;
     margin: 5% 3% 1% 1%;
-    text-align: center;
     box-shadow: 5px 5px 10px #888888;
     position: relative;
+    width: 800px;
+    height: 608px;
+}
+
+.mapContainer {
+    position: absolute;
+    width: 800px;
+    height: 608px;
+}
+
+.playerContainer {
+    position: absolute;
+    width: 800px;
+    height: 608px;
+}
+
+.uiContainer {
+    position: absolute;
+    width: 800px;
+    height: 608px;
 }
 
 

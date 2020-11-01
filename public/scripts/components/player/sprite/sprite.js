@@ -1,6 +1,6 @@
 /***
  *
- * Front-end Sprite Class
+ * Front-end Sprite Component
  *
  ***/
 
@@ -53,7 +53,6 @@ module.exports.drawPlayer = function(context, player) {
 
     //Drawing the image 
     context.drawImage(sprite, srcX, srcY, spriteWidth, spriteHeight, player.x, player.y, spriteWidth, spriteHeight);
-    context.fill();
 }
 
 // Function to update the sprite frame.

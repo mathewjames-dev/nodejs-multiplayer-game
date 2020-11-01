@@ -2,14 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\classes",
+    "\\app\\routes",
     "\\public",
-    "\\public\\images",
-    "\\public\\images\\characters",
+    "\\public\\maps",
     "\\public\\scripts",
     "\\public\\scripts\\components",
-    "\\public\\scripts\\components\\player"
+    "\\public\\scripts\\components\\map",
+    "\\public\\scripts\\components\\player",
+    "\\public\\scripts\\components\\player\\sprite",
+    "\\public\\styles"
   ],
-  "SelectedNode": "\\public\\scripts\\components\\player\\player.js",
+  "SelectedNode": "\\public\\scripts\\components\\map\\render.js",
   "PreviewInSolutionExplorer": false
 }

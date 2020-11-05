@@ -4,7 +4,7 @@
  *
  ***/
 const gameWidth = 800;
-const gameHeight = 800;
+const gameHeight = 608;
 const spriteRadius = 8;
 
 module.exports.checkEdgeCollision = function (player) {

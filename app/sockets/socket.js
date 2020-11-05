@@ -4,7 +4,7 @@
  *
  ***/
 // Import the components required.
-const player = require('../game/player/player');
+const player = require('../game/entities/player/player');
 
 // Setting up an empty object for the socket list.
 const SOCKET_LIST = {};

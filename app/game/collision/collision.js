@@ -54,8 +54,8 @@ module.exports.checkNonCollidableMapObjects = function (entity, x, y) {
         var mapData = globalMapData;
     }
 
-    let entityX = Math.round(x / spriteWidth),
-        entityY = Math.round(y / spriteWidth);
+    let entityX = Math.floor(x / spriteWidth),
+        entityY = Math.floor(y / spriteWidth);
 
     if (globalNonCollidableObjects.length === 0) {
         // Non collidable objects haven't been pushed for this map.
@@ -66,8 +66,7 @@ module.exports.checkNonCollidableMapObjects = function (entity, x, y) {
             if (!layer) return;
 
             let rows = mapData.height,
-                columns = mapData.width,
-                size = mapData.tilewidth;
+                columns = mapData.width;
 
 
             if (layer.hasOwnProperty('properties')) {
@@ -92,7 +91,8 @@ module.exports.checkNonCollidableMapObjects = function (entity, x, y) {
             }
         }
     }
-    console.log(entityY);
+
+   
 
     for (nonCollidingObject in globalNonCollidableObjects) {
         if (globalNonCollidableObjects[nonCollidingObject][0] === entityX && globalNonCollidableObjects[nonCollidingObject][1] === entityY) {

@@ -5,37 +5,12 @@
  ***/
 // Import the components required.
 const entity = require('../entity');
-const collision = require('../../collision/collision');
 
 // Set up the players object
 const players = {};
 
 exports.Player = function (param) {
     let self = entity.Entity(param);
-
-    // Function to update the players movement object.
-    self.updateMovement = function (data) {
-        collision.checkEdgeCollision(self);
-
-        if (!self.isColliding) {
-            if (data.left) {
-                self.x -= 5;
-            }
-
-            if (data.up) {
-                self.y -= 5;
-            }
-
-            if (data.right) {
-                self.x += 5;
-            }
-
-            if (data.down) {
-                self.y += 5;
-            }
-        }
-        players[self.id].movement = data;
-    }
 
     return self;
 };
@@ -59,7 +34,8 @@ module.exports.removePlayer = function (socketId) {
 module.exports.movePlayer = function(socketId, data)
 {
     let player = players[socketId];
-    player.updateMovement(data);
+    player.movement = data;
+    player.updatePosition(data);
 }
 
 // Function to get the player object.

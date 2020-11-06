@@ -26,8 +26,6 @@ var totalFrames = 3;
 var srcX = 0;
 var srcY = 0;
 
-var speed = 12;
-
 // Function that we will utilize to load the image for the player.
 module.exports.loadSpriteSheet = function () {
     if (!sprite) {

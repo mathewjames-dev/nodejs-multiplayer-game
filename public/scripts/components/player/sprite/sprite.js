@@ -50,7 +50,7 @@ module.exports.drawPlayer = function(context, player) {
     module.exports.updateSpriteFrame(context, player);
 
     //Drawing the image 
-    context.drawImage(sprite, srcX, srcY, spriteWidth, spriteHeight, player.x, player.y, spriteWidth, spriteHeight);
+    context.drawImage(sprite, srcX, srcY, spriteWidth, spriteHeight, player.x - spriteWidth / 2, player.y - spriteHeight / 2, spriteWidth, spriteHeight);
 }
 
 // Function to update the sprite frame.

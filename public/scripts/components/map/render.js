@@ -27,15 +27,19 @@ module.exports.map = {
             for (let c = 0; c < columns; c++) {
                 for (let r = 0; r < rows; r++) {
                     let tile = layer.data[r * columns + c];
-
+                  
                     if (tile !== 0) { // 0 => empty tile
                         tile--;
 
-                        var tileRow = (tile / (this.mapData.tilesets[0].tilecount / size)) | 0; // Bitwise OR operation
-                        var tileCol = (tile % (this.mapData.tilesets[0].tilecount / size)) | 0;
-                        contextDuplication.drawImage(this.mapTileSet,
-                            (tileCol * size),
-                            (tileRow * size),
+                       // let tileCol = (tile % (this.mapData.tilesets[0].tilecount / size)) | 0; 
+                        //let tileRow = (tile / (this.mapData.tilesets[0].tilecount / size)) | 0; // Bitwise OR operation
+                        img_x = (tile % (this.mapData.tilesets[0].imagewidth / size)) * size;
+                        img_y = ~~(tile / (this.mapData.tilesets[0].imagewidth / size)) * size;
+
+                        contextDuplication.drawImage(
+                            this.mapTileSet,
+                            img_x,
+                            img_y,
                             size,
                             size,
                             (c * size),
@@ -64,8 +68,7 @@ module.exports.map = {
     },
 
     loadMapTileset: function (json) {
-        this.mapData = json;
-
+        this.mapData = json;    
         this.mapTileSet = new Image();
         this.mapTileSet.src = '/public/maps/tilesets/' + json.tilesets[0].image;
         this.mapTileSet.onload = function () {

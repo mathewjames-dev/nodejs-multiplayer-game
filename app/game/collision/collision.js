@@ -62,40 +62,32 @@ module.exports.checkNonCollidableMapObjects = function (entity, x, y) {
         for (let i = 0; i <= mapData.layers.length; i++) {
             let layer = mapData.layers[i];
 
+            if (!layer) continue;
+
             // If there isn't a layer to check return.
-            if (!layer) return;
-
-            let rows = mapData.height,
-                columns = mapData.width;
-
+            if (layer.type !== 'objectgroup') continue; 
 
             if (layer.hasOwnProperty('properties')) {
-                for (p = 0; p < layer['properties'].length; p++) {
+                for (p = 0; p <= layer['properties'].length; p++) {
                     let property = layer['properties'][p];
 
                     if (property.hasOwnProperty('name') && property['name'] === 'Colliding' && property['value'] === true) {
                         // Non-Colliding layer that we need to check for collision
-
-                        for (let c = 0; c < columns; c++) {
-                            for (let r = 0; r < rows; r++) {
-                                let tile = layer.data[r * columns + c];
-                               
-                                if (tile !== 0) { // 0 => empty tile
-                                   globalNonCollidableObjects.push([c, r]);
-                                }
-                            }
+                        for (let d = 0; d <= layer.objects.length; d++) {
+                            let object = layer.objects[d];
+                            if (!object) return;
+                            globalNonCollidableObjects.push([Math.floor(object.x / spriteWidth), Math.floor(object.y / spriteWidth)]);
                         }
-
                     }
                 }
             }
         }
     }
-
    
 
     for (nonCollidingObject in globalNonCollidableObjects) {
-        if (globalNonCollidableObjects[nonCollidingObject][0] === entityX && globalNonCollidableObjects[nonCollidingObject][1] === entityY) {
+        if (globalNonCollidableObjects[nonCollidingObject][0]
+            === entityX && globalNonCollidableObjects[nonCollidingObject][1] === entityY) {
             entity.isColliding = true;
             return entity;
         }

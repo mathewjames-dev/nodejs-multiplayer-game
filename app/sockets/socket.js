@@ -3,8 +3,6 @@
  * Back-end Socket Component File
  *
  ***/
-// Import the components required.
-const player = require('../game/entities/player/player');
 
 // Function to setup socket.io listening messaging.
 module.exports.listen = function(io, game) {
@@ -19,8 +17,8 @@ module.exports.listen = function(io, game) {
          * PLAYER EVENT LISTENERS.
          */
         socket.on('playerMovement', function (data) {
-            let _player = game.getPlayer(socketId); 
-            player.movePlayer(_player, data)
+            let player = game.getPlayer(socketId); 
+            player.movePlayer(data)
         });
 
 

@@ -6,28 +6,21 @@
 // Import the components required.
 const player = require('../game/entities/player/player');
 
-// Setting up an empty object for the socket list.
-const SOCKET_LIST = {};
-
 // Function to setup socket.io listening messaging.
-module.exports.listen = function(io) {
+module.exports.listen = function(io, game) {
     io.sockets.on('connection', function (socket) {
         console.log('SERVER: NEW CONNECTION!');
 
-        // Setting the user up with a socket id.
-        var socketId = Math.random();
+        var socketId = socket.id;
 
-        // Pushing that users socket id into the socket list.
-        SOCKET_LIST[socketId] = socket;
-
-        // Setup the new player through the player class.
-        player.addPlayer(socketId);
+        game.addPlayer(socket);
 
         /*
          * PLAYER EVENT LISTENERS.
          */
-        socket.on('playerMovement', function(data){
-            player.movePlayer(socketId, data)
+        socket.on('playerMovement', function (data) {
+            let _player = game.getPlayer(socketId); 
+            player.movePlayer(_player, data)
         });
 
 
@@ -37,16 +30,15 @@ module.exports.listen = function(io) {
         socket.on('sendMsgToServer', function (data) {
             console.log('SERVER: Someone sent a message!');
             // Loop all the connected socket connections and emit the add to chat signal.
-            for (var i in SOCKET_LIST) {
-                SOCKET_LIST[i].emit('addToChat', data);
+            for (var i in game.getSocketList()) {
+                game.getSocketList()[i].emit('addToChat', data);
             }
         });
 
         // Upon disconnection from the socket server, remove the socket id from the socket list.
         socket.on('disconnect', function () {
             console.log('SERVER: DISCONNECTED USER!');
-            delete SOCKET_LIST[socketId];
-            player.removePlayer(socketId);
+            game.removePlayer(socket);
         });
     });
 

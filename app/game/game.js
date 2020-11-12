@@ -5,7 +5,7 @@
  ***/
 
 // Import the components required.
-const player = require('../game/entities/player/player');
+const Player = require('../game/entities/player/player');
 
 class Game {
     constructor() {
@@ -18,11 +18,11 @@ class Game {
         this.sockets[socket.id] = socket;
 
         // Create a player with the socket id and the map they will be spawning in
-        let Player = player.Player({
+        let player = new Player({
             id: socket.id
         });
 
-        this.players[socket.id] = Player;
+        this.players[socket.id] = player;
     }
 
     // Function to remove the player from the game.

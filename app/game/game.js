@@ -25,19 +25,23 @@ class Game {
         this.players[socket.id] = Player;
     }
 
+    // Function to remove the player from the game.
     removePlayer(socket) {
         delete this.sockets[socket.id];
         delete this.players[socket.id];
     }
 
+    // Function to get a player by socket id.
     getPlayer(socketId) {
         return this.players[socketId];
     }
 
+    // Function to get all players.
     getPlayers() {
         return this.players;
     }
 
+    // Function to get all sockets.
     getSocketList() {
         return this.sockets;
     }

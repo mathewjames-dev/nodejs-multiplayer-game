@@ -4,11 +4,11 @@
  *
  ***/
 // Import the components required.
-const entity = require('../entity');
+const Entity = require('../entity');
 
 
 exports.Player = function (param) {
-    let self = entity.Entity(param);
+    let self = new Entity(param);
 
     return self;
 };

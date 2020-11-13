@@ -4,10 +4,11 @@
  *
  ***/
 // Import the components required.
-const collision = require('../collision/collision');
+const Collision = require('../collision/collision');
 
-class Entity {
+class Entity extends Collision {
     constructor(param) {
+        super();
         this.x = 320;
         this.y = 320;
         this.movement = {
@@ -16,7 +17,7 @@ class Entity {
             left: false,
             right: false
         };
-        this.movementSpeed = 5;
+        this.movementSpeed = 1;
         this.isColliding = false;
 
         // If we don't want our object to be based off of the defaults above, 
@@ -52,16 +53,15 @@ class Entity {
             var entityY = this.y;
         }
 
-        collision.checkEdgeCollision(this, entityX, entityY);
+        this.checkEdgeCollision(entityX, entityY);
 
-        collision.checkNonCollidableMapObjects(this, entityX, entityY);
+        if (!this.isColliding) {
+            this.checkNonCollidableMapObjects(entityX, entityY);
+        }
 
         if (!this.isColliding) {
             this.x = entityX;
             this.y = entityY;
-        } else {
-            this.x = this.x;
-            this.y = this.y;
         }
 
         this.isColliding = false;

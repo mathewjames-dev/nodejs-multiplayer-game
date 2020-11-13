@@ -24,9 +24,9 @@ const socket = require('./app/sockets/socket');
 // File utilized for routing.
 const routes = require('./app/routes/routes')(app, express, __dirname);
 
-// Player component.
-const player = require('./app/game/entities/player/player');
-
+// Game Component
+const Game = require('./app/game/game');
+const game = new Game();
 
 // Start the server and make it listen on selected port.
 server.listen(8000, () => {
@@ -34,9 +34,9 @@ server.listen(8000, () => {
 
     console.log('*** SERVER: STARTING SOCKET SERVER ***');
 
-    socket.listen(io);
+    socket.listen(io, game);
 
     setInterval(function(){
-        io.sockets.emit('playersState', player.getPlayers());
+        io.sockets.emit('playersState', game.getPlayers());
     }, 1000 / 60); // 60 times per second.
 });

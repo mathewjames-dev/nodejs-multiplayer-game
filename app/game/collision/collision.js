@@ -6,96 +6,113 @@
 // Import the components required.
 const fs = require('fs');
 
-// Canvas related variables.
-const gameWidth = 800;
-const gameHeight = 608;
+class Collision {
+    constructor() {
+        this.gameWidth = 800;
+        this.gameHeight = 608;
 
-// Sprite related variables. !!! EVENTUALLY UPDATE TO BE ENTITY DYNAMIC VARIABLES
-const spriteRadius = 8;
-const spriteWidth = spriteRadius * 2;
+        this.spriteRadius = 8;
+        this.spriteWidth = this.spriteRadius * 2;
+        this.spriteHeight = this.spriteRadius * 2;
 
-// Map related variables.
-var globalMapName;
-var globalMapData;
-var globalNonCollidableObjects = [];
-
-module.exports.checkEdgeCollision = function (entity, x, y) {
-    // Checking the left and right edges first.
-    if (x < 0) {
-        entity.isColliding = true;
-    } else if (x > gameWidth - (spriteRadius * 4)) {
-        entity.isColliding = true;
-    } else {
-        entity.isColliding = false;
+        this.globalMapName;
+        this.globalMapData;
+        this.globalNonCollidableObjects = [];
     }
 
-    // Check for bottom and top edges.
-    if (y < 0) {
-        entity.isColliding = true;
-    } else if (y > gameHeight - (spriteRadius * 4)) {
-        entity.isColliding = true;
-    } else {
-        entity.isColliding = false;
+    // Checking the edges of the map with the entities new X and Y position.
+    checkEdgeCollision(newX, newY) {
+        // Checking the left and right edges first.
+        if (newX < 0) {
+            this.isColliding = true;
+        } else if (newX > this.gameWidth - (this.spriteRadius * 4)) {
+            this.isColliding = true;
+        } else {
+            this.isColliding = false;
+        }
+
+        // Check for bottom and top edges.
+        if (newY < 0) {
+            this.isColliding = true;
+        } else if (newY > this.gameHeight - (this.spriteRadius * 4)) {
+            this.isColliding = true;
+        } else {
+            this.isColliding = false;
+        }
+
+        return;
     }
 
-    return entity;
-}
+    checkNonCollidableMapObjects(newX, newY) {
+        // Future proofing for when we put in dynamic maps. We want to make sure we're not reading the file every time.
+        if (!this.globalMapName) this.globalMapName = 'map1.json';
+        if (!this.globalMapData) {
+            var mapData = JSON.parse(fs.readFileSync('./public/maps/' + this.globalMapName
+                //+ self.map
+                , 'utf8'));
+            this.globalMapData = mapData;
+        } else {
+            var mapData = this.globalMapData;
+        }
 
-module.exports.checkNonCollidableMapObjects = function (entity, x, y) {
-    // Future proofing for when we put in dynamic maps. We want to make sure we're not reading the file every time.
-    if (!globalMapName) globalMapName = 'map1.json';
+        if (this.globalNonCollidableObjects.length === 0) {
+            // Non collidable objects haven't been pushed for this map.
+            for (let i = 0; i <= mapData.layers.length; i++) {
+                let layer = mapData.layers[i];
 
-    if (!globalMapData) {
-        var mapData = JSON.parse(fs.readFileSync('./public/maps/' + globalMapName
-            //+ self.map
-            , 'utf8'));
-        globalMapData = mapData;
-    } else {
-        var mapData = globalMapData;
-    }
+                if (!layer) continue;
 
-    let entityX = Math.floor(x / spriteWidth),
-        entityY = Math.floor(y / spriteWidth);
+                // If there isn't a layer to check return.
+                if (layer.type !== 'objectgroup') continue;
 
-    if (globalNonCollidableObjects.length === 0) {
-        // Non collidable objects haven't been pushed for this map.
-        for (let i = 0; i <= mapData.layers.length; i++) {
-            let layer = mapData.layers[i];
+                if (layer.hasOwnProperty('properties')) {
+                    for (let p = 0; p <= layer['properties'].length; p++) {
+                        let property = layer['properties'][p];
 
-            if (!layer) continue;
+                        if (property.hasOwnProperty('name') && property['name'] === 'Colliding' && property['value'] === true) {
+                            // Non-Colliding layer that we need to check for collision
+                            for (let d = 0; d <= layer.objects.length; d++) {
+                                let object = layer.objects[d];
+                                if (!object) return;
 
-            // If there isn't a layer to check return.
-            if (layer.type !== 'objectgroup') continue; 
-
-            if (layer.hasOwnProperty('properties')) {
-                for (p = 0; p <= layer['properties'].length; p++) {
-                    let property = layer['properties'][p];
-
-                    if (property.hasOwnProperty('name') && property['name'] === 'Colliding' && property['value'] === true) {
-                        // Non-Colliding layer that we need to check for collision
-                        for (let d = 0; d <= layer.objects.length; d++) {
-                            let object = layer.objects[d];
-                            if (!object) return;
-                            globalNonCollidableObjects.push([Math.floor(object.x / spriteWidth), Math.floor(object.y / spriteWidth)]);
+                                this.globalNonCollidableObjects.push({
+                                    'x': object.x,
+                                    'y': object.y,
+                                    'w': object.width,
+                                    'h': object.height
+                                });
+                            }
                         }
                     }
                 }
             }
         }
-    }
-   
 
-    for (nonCollidingObject in globalNonCollidableObjects) {
-        if (globalNonCollidableObjects[nonCollidingObject][0]
-            === entityX && globalNonCollidableObjects[nonCollidingObject][1] === entityY) {
-            entity.isColliding = true;
-            return entity;
+
+        for (let nonCollidingObject in this.globalNonCollidableObjects) {
+            if (rectRect(newX, newY, this.spriteWidth, this.spriteHeight,
+                this.globalNonCollidableObjects[nonCollidingObject].x,
+                this.globalNonCollidableObjects[nonCollidingObject].y,
+                this.globalNonCollidableObjects[nonCollidingObject].w,
+                this.globalNonCollidableObjects[nonCollidingObject].h)) {
+
+                this.isColliding = true;
+                return;
+            }
         }
-    }
 
-    entity.isColliding = false;
-    return entity;
+        return;
+    }
 }
 
+module.exports = Collision;
 
-
+rectRect = function(rect1X, rect1Y, rect1W, rect1H, rect2X, rect2Y, rect2W, rect2H) {
+    if (rect1X + rect1W >= rect2X &&    // r1 right edge past r2 left
+        rect1X <= rect2X + rect2W &&    // r1 left edge past r2 right
+        rect1Y + rect1H >= rect2Y &&    // r1 top edge past r2 bottom
+        rect1Y <= rect2Y + rect2H) {    // r1 bottom edge past r2 top
+        return true;
+    }
+    return false;
+}

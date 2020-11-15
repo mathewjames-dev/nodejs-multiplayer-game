@@ -11,7 +11,7 @@ global.socket = io();
 const chat = require('./components/chat/chat');
 
 // Setting the input file to a constant variable -> We will use this for our users input on the front end.
-const input = require('./components/player/input');
+const input = require('./components/input');
 
 // Setting the game file / component to a variable so that we can utilise.
 const game = require('./components/game');

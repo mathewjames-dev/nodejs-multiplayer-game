@@ -27,8 +27,10 @@ class Collision {
         // Checking the left and right edges first.
         if (newX < 0) {
             this.isColliding = true;
+            return;
         } else if (newX > this.gameWidth - (this.spriteRadius * 4)) {
             this.isColliding = true;
+            return;
         } else {
             this.isColliding = false;
         }
@@ -36,8 +38,10 @@ class Collision {
         // Check for bottom and top edges.
         if (newY < 0) {
             this.isColliding = true;
+            return;
         } else if (newY > this.gameHeight - (this.spriteRadius * 4)) {
             this.isColliding = true;
+            return;
         } else {
             this.isColliding = false;
         }

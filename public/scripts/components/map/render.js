@@ -7,7 +7,6 @@ module.exports.map = {
     context: null,
     mapData: null,
     mapTileSet: null,
-
     mapLayers: [],
 
     renderMapLayer: function (layer) {
@@ -31,8 +30,6 @@ module.exports.map = {
                     if (tile !== 0) { // 0 => empty tile
                         tile--;
 
-                       // let tileCol = (tile % (this.mapData.tilesets[0].tilecount / size)) | 0; 
-                        //let tileRow = (tile / (this.mapData.tilesets[0].tilecount / size)) | 0; // Bitwise OR operation
                         img_x = (tile % (this.mapData.tilesets[0].imagewidth / size)) * size;
                         img_y = ~~(tile / (this.mapData.tilesets[0].imagewidth / size)) * size;
 

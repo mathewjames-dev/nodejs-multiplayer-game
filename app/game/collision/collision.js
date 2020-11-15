@@ -4,12 +4,14 @@
  *
  ***/
 // Import the components required.
+const Constants = require('../constants');
+const CollisionMathematics = require('./collisionMathematics');
 const fs = require('fs');
 
 class Collision {
     constructor() {
-        this.gameWidth = 800;
-        this.gameHeight = 608;
+        this.gameWidth = Constants.GAME_WIDTH;
+        this.gameHeight = Constants.Game_HEIGHT
 
         this.spriteRadius = 8;
         this.spriteWidth = this.spriteRadius * 2;
@@ -90,7 +92,7 @@ class Collision {
 
 
         for (let nonCollidingObject in this.globalNonCollidableObjects) {
-            if (rectRect(newX, newY, this.spriteWidth, this.spriteHeight,
+            if (CollisionMathematics.rectToRect(newX, newY, this.spriteWidth, this.spriteHeight,
                 this.globalNonCollidableObjects[nonCollidingObject].x,
                 this.globalNonCollidableObjects[nonCollidingObject].y,
                 this.globalNonCollidableObjects[nonCollidingObject].w,
@@ -107,12 +109,3 @@ class Collision {
 
 module.exports = Collision;
 
-rectRect = function(rect1X, rect1Y, rect1W, rect1H, rect2X, rect2Y, rect2W, rect2H) {
-    if (rect1X + rect1W >= rect2X &&    // r1 right edge past r2 left
-        rect1X <= rect2X + rect2W &&    // r1 left edge past r2 right
-        rect1Y + rect1H >= rect2Y &&    // r1 top edge past r2 bottom
-        rect1Y <= rect2Y + rect2H) {    // r1 bottom edge past r2 top
-        return true;
-    }
-    return false;
-}

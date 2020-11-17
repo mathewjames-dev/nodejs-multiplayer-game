@@ -3,11 +3,16 @@
  * Main Game / App File.
  *  
  ***/
-// Including express and storing it against a variable.
+// Including express and body parser.
 const express = require('express');
+const bodyParser = require('body-parser')
 
 // Setting up the instance of the app
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Setting up the database file.
+const databse = require('./app/database/database');
 
 // Setting up the server
 const server = require('http').createServer(app);

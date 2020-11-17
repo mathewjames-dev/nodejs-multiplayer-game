@@ -2,6 +2,7 @@ body {
     background: #EAEAEA;
 }
 
+/* Game Container Related CSS */
 .gameContainer {
     background: white;
     border-radius: 6px;
@@ -25,13 +26,7 @@ body {
     height: 608px;
 }
 
-.uiContainer {
-    position: absolute;
-    width: 800px;
-    height: 608px;
-}
-
-
+/* Chat Related CSS */
 .chatContainer {
     background: white;
     width: 25%;
@@ -62,13 +57,98 @@ body {
     margin: auto auto 1px auto;
 }
 
-.btn {
-    background: green;
-    height: 30px;
+/* Game UI Related CSS */
+.gameUI {
+    //display: none;
+    height: 100%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#main-menu {
+    height: 100%;
+    padding: 30px;
+    background-image: url('/public/images/ui/loading-background.jpg');
+    background-size: cover;
+}
+
+#main-menu > h1 {
     color: white;
-    border-radius: 4px;
+    text-align: center;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* Authentication UI Related CSS */
+#main-menu > #main-menu-authentication {
+    position: relative;
+    top: 20%;
+    transform: translateY(-20%);
+}
+
+#main-menu-authentication > ul {
+    list-style: none;
+}
+
+#main-menu-authentication > #login-form{
+    display:none;
+    text-align:center;
+}
+
+#main-menu-authentication > #register-form{
+    display:none;
+    text-align:center;
+}
+
+#login-form > ul{
+    list-style:none;
+}
+
+#register-form > ul{
+    list-style:none;
+}
+
+#register-form > ul > li{
+    margin:10px;
+}
+
+#login-form > ul > li{
+    margin:10px;
+}
+
+#login-form > ul > li > a {
+    color: white;
+}
+
+#register-form > ul > li > a {
+    color: white;
+}
+
+/* Generic Game Related CSS */
+.btn {
+    display: block;
+    width: 150px;
+    margin: 10 auto;
+    text-align: center;
+    text-decoration: none;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #AA2666;
+    color: white;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    background-color: #FB1886;
+    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
+    background-image: linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    border-radius: 5px;
 }
 
 .btn:hover {
-    background: #2CC06B;
+    background-color: #B30D5D;
+    background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
+    background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
 }

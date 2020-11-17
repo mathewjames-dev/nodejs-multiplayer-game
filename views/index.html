@@ -26,7 +26,70 @@
 <div class="gameContainer">
     <canvas width="800" height="608" class="mapContainer" id="mapContainer"></canvas>
     <canvas width="800" height="608" class="playerContainer" id="playerContainer"></canvas>
-    <canvas width="800" height="608" class="uiContainer" id="uiContainer"></canvas>
+    <div id="gameUI" class="gameUI">
+        <div id="main-menu">
+            <h1>mathewjames.dev HTML5 Game</h1>
+            <div id="main-menu-authentication">
+                <ul id="login-register">
+                    <li>
+                        <a href="#" class="btn login">
+                            Login
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn register">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+
+                <form id="login-form">
+                    <ul id="login">
+                        <li>
+                            <input type="text" name="username" value="" placeholder="Enter your username" />
+                        </li>
+
+                        <li>
+                            <input type="password" name="password" value="" placeholder="Enter your password" />
+                        </li>
+
+                        <li>
+                            <button class="btn">Login</button>
+                        </li>
+
+                        <li>
+                            <a href="#" class="login-form-register">or register an account</a>
+                        </li>
+                    </ul>
+                </form>
+
+                <form id="register-form">
+                    <ul id="register">
+                        <li>
+                            <input type="text" name="username" value="" placeholder="Enter your desired username" />
+                        </li>
+
+                        <li>
+                            <input type="password" name="password" value="" placeholder="Enter your desired password" />
+                        </li>
+
+                        <li>
+                            <input type="password" name="password-confirm" value="" placeholder="Confirm your desired password" />
+                        </li>
+
+                        <li>
+                            <button class="btn">Register</button>
+                        </li>
+
+                        <li>
+                            <a href="#" class="register-form-login">or login an account</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <canvas width="800" height="608" class="uiContainer" id="uiContainer"></canvas> -->
 </div>
 
 <script src="public/scripts/bundles/main.bundle.js"></script>

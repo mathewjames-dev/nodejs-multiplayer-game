@@ -11,4 +11,14 @@ module.exports = function (app, express, __dirname) {
     app.get('/', function (req, res) {
         res.sendFile(__dirname + '/views/index.html');
     });
+
+    // Authentication routing.
+    app.post('/auth/register', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+
+        /*res.send(JSON.stringify({
+            firstName: req.body.firstName || null,
+            lastName: req.body.lastName || null
+        }));*/
+    });
 }

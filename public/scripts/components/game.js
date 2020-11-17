@@ -9,8 +9,8 @@ const mapCanvas = document.getElementById('mapContainer');
 const mapContext = mapCanvas.getContext("2d");
 const playerCanvas = document.getElementById('playerContainer');
 const playerContext = playerCanvas.getContext("2d");
-const uiCanvas = document.getElementById('uiContainer');
-const uiContext = uiCanvas.getContext("2d");
+//const uiCanvas = document.getElementById('uiContainer');
+//const uiContext = uiCanvas.getContext("2d");
 
 // Setting up the components.
 const render = require('./map/render');

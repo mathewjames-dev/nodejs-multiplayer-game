@@ -4,8 +4,12 @@
  *
  ***/
 
-// Setting the socket to global as opposed to variables. This is to combat socket not being defined within other scripts / files.
+// Setting the socket to global as opposed to variables.
+// This is to combat socket not being defined within other scripts / files.
 global.socket = io();
+
+// Authentication
+const authentication = require('./components/auth/menu');
 
 // Setting the chat file to a constant variable -> Just incase we expand and include functions within this that we need to access.
 const chat = require('./components/chat/chat');
@@ -19,7 +23,7 @@ const game = require('./components/game');
 /*
  * Main client game loop
  */
-setInterval(function () {   
+setInterval(function () {
     /*
      * Player events.
      */

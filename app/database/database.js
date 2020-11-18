@@ -4,6 +4,8 @@
  *
  ***/
 const mysql = require('mysql');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class Database {
     constructor() {
@@ -15,16 +17,42 @@ class Database {
         this.connection = mysql.createConnection({
             host: this.host,
             user: this.user,
-            password: this.password
+            password: this.password,
+            database: "mathewjamesdev_nodegame"
+        });
+        this.connection.connect();
+    }
+
+    retrieveUser(username, callback) {
+        this.connection.query("SELECT * FROM users WHERE username = '" + username + "' LIMIT 1", function (err, result, fields) {
+            if (err) callback(false);
+
+            callback(result);
         });
     }
 
-    connect() {
-        connection.connect(function (err) {
-            if (err) throw err;
-            return true;
+    createUser(data, callback) {
+        bcrypt.hash(data.password, saltRounds, (err, hash) => {
+            let sql = "INSERT INTO users (username, password) VALUES ('" + data.username + "', '" + hash + "')";
+            this.connection.query(sql, function (err, result) {
+                if (err) callback(err);
+
+                callback(result);
+            });
         });
+    }
+
+    authenticateUser(data, callback) {
+        this.retrieveUser(data.username, function (user) {
+            bcrypt.compare(data.password, user[0].password, function (error, response) {
+                if (response) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            });
+        }) 
     }
 }
 
-
+module.exports = Database;

@@ -9,6 +9,8 @@ const Entity = require('../entity');
 class Player extends Entity {
     constructor(param) {
         super(param);
+
+        this.username = param.username
     }
 
     movePlayer(data) {

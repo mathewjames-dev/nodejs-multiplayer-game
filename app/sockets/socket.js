@@ -3,15 +3,13 @@
  * Back-end Socket Component File
  *
  ***/
+const constants = require('../game/constants');
 
 // Function to setup socket.io listening messaging.
 module.exports.listen = function(io, game) {
     io.sockets.on('connection', function (socket) {
         console.log('SERVER: NEW CONNECTION!');
-
         var socketId = socket.id;
-
-        game.addPlayer(socket);
 
         /*
          * PLAYER EVENT LISTENERS.

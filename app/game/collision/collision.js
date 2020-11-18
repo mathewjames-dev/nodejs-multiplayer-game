@@ -10,8 +10,8 @@ const fs = require('fs');
 
 class Collision {
     constructor() {
-        this.gameWidth = Constants.GAME_WIDTH;
-        this.gameHeight = Constants.Game_HEIGHT
+        this.gameWidth = 800;
+        this.gameHeight = 608;
 
         this.spriteRadius = 8;
         this.spriteWidth = this.spriteRadius * 2;

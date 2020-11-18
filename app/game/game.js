@@ -9,20 +9,20 @@ const Player = require('../game/entities/player/player');
 
 class Game {
     constructor() {
-        this.sockets = {};
+        this.sockets = [];
         this.players = {};
     }
 
-    addPlayer(socket) {
+    addPlayer(socketId, username) {
         // Pushing the users socket id into the socket list.
-        this.sockets[socket.id] = socket;
+        this.sockets.push(socketId);
 
         // Create a player with the socket id and the map they will be spawning in
         let player = new Player({
-            id: socket.id
+            id: socketId,
+            username: username
         });
-
-        this.players[socket.id] = player;
+        this.players[socketId] = player;
     }
 
     // Function to remove the player from the game.

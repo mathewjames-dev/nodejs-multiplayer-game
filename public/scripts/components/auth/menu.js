@@ -31,10 +31,23 @@ $(function () {
 
         Axios.post('/auth/register', $(this).serialize())
             .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
+                alert(response.data.message);
+            });
+    });
+
+    $('#login-form').on('submit', function (e) {
+        e.preventDefault();
+
+        let data = $(this).serialize() + '&socket=' + socket.id;
+          Axios.post('/auth/login', data)
+            .then(function (response) {
+                alert(response.data.message);
+
+                if (response.data.status === 200) {
+                    playerIsAuthenticated = true;
+                    playerUsername = response.data.username;
+                    $('#main-menu').hide();
+                }
             });
     });
 });

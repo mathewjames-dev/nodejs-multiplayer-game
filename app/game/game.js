@@ -23,6 +23,7 @@ class Game {
             username: user.username,
             x: user.x,
             y: user.y,
+            map: user.name
         });
         this.players[socketId] = player;
     }

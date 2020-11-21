@@ -15,4 +15,3 @@ global.playerContext = playerCanvas.getContext("2d");
 
 // Player Related Constants.
 global.playerIsAuthenticated = false;
-global.playerUsername = '';

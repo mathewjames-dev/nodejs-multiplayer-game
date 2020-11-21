@@ -46,7 +46,7 @@ module.exports = function (app, express, __dirname, database, game) {
                 res.send(JSON.stringify({
                     status: 200,
                     message: "User successfully authenticated",
-                    username: req.body.username
+                    user: user
                 }));
             } else {
                 res.send(JSON.stringify({

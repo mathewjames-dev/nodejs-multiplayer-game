@@ -46,7 +46,7 @@ class Database {
         this.retrieveUser(data.username, function (user) {
             bcrypt.compare(data.password, user[0].password, function (error, response) {
                 if (response) {
-                    callback(true);
+                    callback(user[0]);
                 } else {
                     callback(false);
                 }

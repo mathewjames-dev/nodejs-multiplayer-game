@@ -40,7 +40,7 @@ module.exports.loadSpriteSheet = function () {
         }
 
         // Load the image.
-        sprite.src = './public/images/characters/male-01-1.png';
+        sprite.src = './public/assets/images/characters/male-01-1.png';
     }
 }
 

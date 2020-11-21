@@ -24,7 +24,8 @@ class Database {
     }
 
     retrieveUser(username, callback) {
-        this.connection.query("SELECT * FROM users WHERE username = '" + username + "' LIMIT 1", function (err, result, fields) {
+        let sql = "SELECT * FROM users INNER JOIN maps ON users.map_id = maps.id WHERE username = '" + username + "' LIMIT 1"
+        this.connection.query(sql, function (err, result, fields) {
             if (err) callback(false);
 
             callback(result);

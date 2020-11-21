@@ -73,7 +73,7 @@ body {
 #main-menu {
     height: 100%;
     padding: 30px;
-    background-image: url('/public/images/ui/loading-background.jpg');
+    background-image: url('/public/assets/images/ui/loading-background.jpg');
     background-size: cover;
 }
 

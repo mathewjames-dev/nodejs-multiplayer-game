@@ -4,7 +4,7 @@
  *
  ***/
 module.exports.map = {
-    context: null,
+    context: mapContext,
     mapData: null,
     mapTileSet: null,
     mapLayers: [],
@@ -67,7 +67,7 @@ module.exports.map = {
     loadMapTileset: function (json) {
         this.mapData = json;    
         this.mapTileSet = new Image();
-        this.mapTileSet.src = '/public/maps/tilesets/' + json.tilesets[0].image;
+        this.mapTileSet.src = '/public/assets/maps/tilesets/' + json.tilesets[0].image;
         this.mapTileSet.onload = function () {
             module.exports.map.renderMapLayers(module.exports.map);
         }
@@ -75,7 +75,7 @@ module.exports.map = {
 
     loadMap: function (name) {
         // Utilize the name of the map to get the JSON from the maps folder.
-        $.getJSON("/public/maps/" + name + ".json", function (json) {
+        $.getJSON("/public/assets/maps/" + name + ".json", function (json) {
             module.exports.map.loadMapTileset(json);
         });
     }

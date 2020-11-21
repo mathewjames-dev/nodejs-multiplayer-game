@@ -9,17 +9,19 @@ const Collision = require('../collision/collision');
 class Entity extends Collision {
     constructor(param) {
         super();
+
         this.x = 320;
         this.y = 320;
+
         this.movement = {
             up: false,
             down: false,
             left: false,
             right: false
         };
-        this.movementSpeed = 1;
-        this.isColliding = false;
+        this.movementSpeed = 2;
 
+        this.isColliding = false;
         // If we don't want our object to be based off of the defaults above, 
         // we can pass an object which we've named param and set the defaults to what we would like them to be.
         if (param) {

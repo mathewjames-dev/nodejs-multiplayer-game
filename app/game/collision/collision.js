@@ -53,7 +53,7 @@ class Collision {
         // Future proofing for when we put in dynamic maps. We want to make sure we're not reading the file every time.
         if (!this.globalMapName) this.globalMapName = 'map1.json';
         if (!this.globalMapData) {
-            var mapData = JSON.parse(fs.readFileSync('./public/maps/' + this.globalMapName
+            var mapData = JSON.parse(fs.readFileSync('./public/assets/maps/' + this.globalMapName
                 //+ self.map
                 , 'utf8'));
             this.globalMapData = mapData;

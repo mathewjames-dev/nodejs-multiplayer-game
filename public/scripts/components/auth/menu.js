@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { playerInitialize } from "../game";
 
 /***
  *
@@ -44,9 +45,7 @@ $(function () {
                 alert(response.data.message);
 
                 if (response.data.status === 200) {
-                    playerIsAuthenticated = true;
-                    playerUsername = response.data.username;
-                    $('#main-menu').hide();
+                    playerInitialize(response.data.user);
                 }
             });
     });

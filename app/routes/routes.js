@@ -41,7 +41,7 @@ module.exports = function (app, express, __dirname, database, game) {
         // Check if the username and password match a user account.
         database.authenticateUser(req.body, function (user) {
             if (user) {
-                game.addPlayer(req.body.socket, req.body.username);
+                game.addPlayer(req.body.socket, user);
 
                 res.send(JSON.stringify({
                     status: 200,

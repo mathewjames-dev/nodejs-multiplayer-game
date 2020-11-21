@@ -13,14 +13,16 @@ class Game {
         this.players = {};
     }
 
-    addPlayer(socketId, username) {
+    addPlayer(socketId, user) {
         // Pushing the users socket id into the socket list.
         this.sockets.push(socketId);
 
         // Create a player with the socket id and the map they will be spawning in
         let player = new Player({
             id: socketId,
-            username: username
+            username: user.username,
+            x: user.x,
+            y: user.y,
         });
         this.players[socketId] = player;
     }

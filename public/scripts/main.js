@@ -23,13 +23,11 @@ module.exports.gameInitialize = function(player, mapData)
     // Setup the game instance. Pass the player and the current mapData for setup.
     game = new Game(player, mapData);
 
-    game.assetLoader.addSound('TownMusic', '/public/assets/sounds/TownTheme.mp3');
-
     // Load all assets
     game.assetLoader.loadAssets();
 
     $('#main-menu').hide();
-    game.assetLoader.sounds.TownMusic.play();
+    game.assetLoader.sounds.background.play();
 
     game.startGameLoop();
 }

@@ -36,7 +36,17 @@ class AssetLoader {
 
     // Loads the map.
     loadMap(mapData) {
+        this.loadMapSounds(mapData.sounds);
         this.mapRender.loadMap(mapData);
+    }
+
+    loadMapSounds(mapSounds) {
+        for (let s = 0; s <= mapSounds.length; s++) {
+            let sound = mapSounds[s];
+            if (!sound) continue;
+
+            this.addSound(sound.name, sound.location);
+        }
     }
 
 

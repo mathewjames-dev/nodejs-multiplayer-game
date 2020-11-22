@@ -15,7 +15,7 @@ const chat = require('./components/chat/chat');
  * Game Related
  */
 const Game = require('./components/game/game');
-var game;
+global.game;
 
 // Game Initialization.
 module.exports.gameInitialize = function(player, mapData)
@@ -27,6 +27,7 @@ module.exports.gameInitialize = function(player, mapData)
     game.assetLoader.loadAssets();
 
     $('#main-menu').hide();
+    game.assetLoader.sounds.background.volume = 0.5;
     game.assetLoader.sounds.background.play();
 
     game.startGameLoop();

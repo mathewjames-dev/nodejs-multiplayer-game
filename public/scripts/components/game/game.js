@@ -16,6 +16,9 @@ class Game {
 
         // Set the player up.
         this.player = player;
+
+        // Sound Related Values ( Eventually include a sound manager? )
+        this.lastPlayedTileSound;
     }
 
     startGameLoop() {

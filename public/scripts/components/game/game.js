@@ -3,12 +3,12 @@
  * Front-end Game Component
  *
  ***/
-const AssetLoader = require('./game/assets/assetLoader');
-const player = require('./player/player');
+const AssetLoader = require('./assets/assetLoader');
 const input = require('./input');
 
 class Game {
     constructor(player, mapData) {
+        this.gameSockets = require('./sockets/gameSockets');
         this.assetLoader = new AssetLoader();
 
         // Instantly load the map and render it on game setup.
@@ -26,10 +26,7 @@ class Game {
             socket.emit('playerMovement', input.getMovement());
         }, 1000 / 30); // 30 Times per second
     }
+
 }
 
 module.exports = Game;
-
-socket.on('playersState', function (players) {
-    player.updatePlayersState(playerContext, players);
-});

@@ -442,17 +442,6 @@ eval("/***\r\n *\r\n * Front-end Chat Class\r\n *\r\n ***/\nvar chatText = docum
 
 /***/ }),
 
-/***/ "./public/scripts/components/game.js":
-/*!*******************************************!*\
-  !*** ./public/scripts/components/game.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n/***\r\n *\r\n * Front-end Game Component\r\n *\r\n ***/\nvar AssetLoader = __webpack_require__(/*! ./game/assets/assetLoader */ \"./public/scripts/components/game/assets/assetLoader.js\");\n\nvar player = __webpack_require__(/*! ./player/player */ \"./public/scripts/components/player/player.js\");\n\nvar input = __webpack_require__(/*! ./input */ \"./public/scripts/components/input.js\");\n\nvar Game = /*#__PURE__*/function () {\n  function Game(player, mapData) {\n    _classCallCheck(this, Game);\n\n    this.assetLoader = new AssetLoader(); // Instantly load the map and render it on game setup.\n\n    this.assetLoader.loadMap(mapData); // Set the player up.\n\n    this.player = player;\n  }\n\n  _createClass(Game, [{\n    key: \"startGameLoop\",\n    value: function startGameLoop() {\n      setInterval(function () {\n        /*\r\n         * Player events.\r\n         */\n        socket.emit('playerMovement', input.getMovement());\n      }, 1000 / 30); // 30 Times per second\n    }\n  }]);\n\n  return Game;\n}();\n\nmodule.exports = Game;\nsocket.on('playersState', function (players) {\n  player.updatePlayersState(playerContext, players);\n});\n\n//# sourceURL=webpack:///./public/scripts/components/game.js?");
-
-/***/ }),
-
 /***/ "./public/scripts/components/game/assets/assetLoader.js":
 /*!**************************************************************!*\
   !*** ./public/scripts/components/game/assets/assetLoader.js ***!
@@ -475,36 +464,58 @@ eval("function _classCallCheck(instance, Constructor) { if (!(instance instanceo
 
 /***/ }),
 
-/***/ "./public/scripts/components/input.js":
-/*!********************************************!*\
-  !*** ./public/scripts/components/input.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/***\r\n *\r\n * Front-end Input Class\r\n *\r\n ***/\n// Setting up the players movement object.\nvar movement = {\n  up: false,\n  down: false,\n  left: false,\n  right: false\n}; // Key down event listener.\n\ndocument.addEventListener('keydown', function (event) {\n  switch (event.keyCode) {\n    case 65:\n      // A\n      module.exports.updateMovement('left', true);\n      break;\n\n    case 87:\n      // W\n      module.exports.updateMovement('up', true);\n      break;\n\n    case 68:\n      // D\n      module.exports.updateMovement('right', true);\n      break;\n\n    case 83:\n      //S\n      module.exports.updateMovement('down', true);\n      break;\n  }\n}); // Key up event listener.\n\ndocument.addEventListener('keyup', function (event) {\n  switch (event.keyCode) {\n    case 65:\n      // A\n      module.exports.updateMovement('left', false);\n      break;\n\n    case 87:\n      // W\n      module.exports.updateMovement('up', false);\n      break;\n\n    case 68:\n      // D\n      module.exports.updateMovement('right', false);\n      break;\n\n    case 83:\n      //S\n      module.exports.updateMovement('down', false);\n      break;\n  }\n}); // Function that we will export as well so we can call it elsewhere. This will be utilised to easily update the players movement.\n\nmodule.exports.updateMovement = function (key, value) {\n  movement[key] = value;\n}; // Function to return the movement object.\n\n\nmodule.exports.getMovement = function () {\n  return movement;\n};\n\n//# sourceURL=webpack:///./public/scripts/components/input.js?");
-
-/***/ }),
-
-/***/ "./public/scripts/components/player/player.js":
-/*!****************************************************!*\
-  !*** ./public/scripts/components/player/player.js ***!
-  \****************************************************/
+/***/ "./public/scripts/components/game/game.js":
+/*!************************************************!*\
+  !*** ./public/scripts/components/game/game.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("/***\r\n *\r\n * Front-end Player Component\r\n *\r\n ***/\n// Setup the relevant requirements for the file.\nvar sprite = __webpack_require__(/*! ./sprite/sprite */ \"./public/scripts/components/player/sprite/sprite.js\"); // Load the sprite sheet.\n\n\nsprite.loadSpriteSheet();\n\nmodule.exports.updatePlayersState = function (context, players) {\n  context.clearRect(0, 0, 800, 608);\n  context.fillStyle = 'green';\n\n  for (var id in players) {\n    var player = players[id];\n    context.beginPath();\n    sprite.drawPlayer(context, player);\n  }\n};\n\n//# sourceURL=webpack:///./public/scripts/components/player/player.js?");
+eval("function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n/***\r\n *\r\n * Front-end Game Component\r\n *\r\n ***/\nvar AssetLoader = __webpack_require__(/*! ./assets/assetLoader */ \"./public/scripts/components/game/assets/assetLoader.js\");\n\nvar input = __webpack_require__(/*! ./input */ \"./public/scripts/components/game/input.js\");\n\nvar Game = /*#__PURE__*/function () {\n  function Game(player, mapData) {\n    _classCallCheck(this, Game);\n\n    this.gameSockets = __webpack_require__(/*! ./sockets/gameSockets */ \"./public/scripts/components/game/sockets/gameSockets.js\");\n    this.assetLoader = new AssetLoader(); // Instantly load the map and render it on game setup.\n\n    this.assetLoader.loadMap(mapData); // Set the player up.\n\n    this.player = player;\n  }\n\n  _createClass(Game, [{\n    key: \"startGameLoop\",\n    value: function startGameLoop() {\n      setInterval(function () {\n        /*\r\n         * Player events.\r\n         */\n        socket.emit('playerMovement', input.getMovement());\n      }, 1000 / 30); // 30 Times per second\n    }\n  }]);\n\n  return Game;\n}();\n\nmodule.exports = Game;\n\n//# sourceURL=webpack:///./public/scripts/components/game/game.js?");
 
 /***/ }),
 
-/***/ "./public/scripts/components/player/sprite/sprite.js":
-/*!***********************************************************!*\
-  !*** ./public/scripts/components/player/sprite/sprite.js ***!
-  \***********************************************************/
+/***/ "./public/scripts/components/game/input.js":
+/*!*************************************************!*\
+  !*** ./public/scripts/components/game/input.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("/***\r\n *\r\n * Front-end Sprite Component\r\n *\r\n ***/\n// Setting the sprite variable.\nvar sprite;\nvar spriteWidth;\nvar spriteHeight; // Set the rows and columns for the sprite sheet.\n\nvar spriteSheetRows = 4;\nvar spriteSheetCols = 3; // Set which rows are tracking left and right within the sprite sheet.\n\nvar trackingDownRow = 0;\nvar trackingLeftRow = 1;\nvar trackingRightRow = 2;\nvar trackingUpRow = 3;\nvar currentFrame = 0;\nvar totalFrames = 3;\nvar srcX = 0;\nvar srcY = 0; // Function that we will utilize to load the image for the player.\n\nmodule.exports.loadSpriteSheet = function () {\n  if (!sprite) {\n    // If the sprite image isn't already setup.\n    sprite = new Image();\n\n    sprite.onload = function () {\n      // Once the sprite has loaded we will then set the frameWidth and frameHeight.\n      // Set the sprite width and height by doing simple calculation on the sprite sheet.\n      spriteWidth = sprite.width / spriteSheetCols;\n      spriteHeight = sprite.height / spriteSheetRows;\n    }; // Load the image.\n\n\n    sprite.src = './public/assets/images/characters/male-01-1.png';\n  }\n}; // Function to draw the player.\n\n\nmodule.exports.drawPlayer = function (context, player) {\n  //Updating the frame\n  module.exports.updateSpriteFrame(context, player); //Drawing the image \n\n  context.drawImage(sprite, srcX, srcY, spriteWidth, spriteHeight, player.x - spriteWidth / 2, player.y - spriteHeight / 2, spriteWidth, spriteHeight);\n}; // Function to update the sprite frame.\n\n\nmodule.exports.updateSpriteFrame = function (context, player) {\n  // We need to update the current frame.\n  if (!player.movement.left && !player.movement.right && !player.movement.up && !player.movement.down) {\n    currentFrame = 0;\n  } else {\n    currentFrame = ++currentFrame % totalFrames;\n  }\n\n  srcX = currentFrame * spriteWidth; // Calculate the new X co ordinate for the sprite sheet.\n\n  if (player.movement.up) {\n    srcY = trackingUpRow * spriteHeight;\n  }\n\n  if (player.movement.down) {\n    srcY = trackingDownRow * spriteHeight;\n  } // Calculate the new Y co ordinate for the sprite sheet.\n\n\n  if (player.movement.left) {\n    srcY = trackingLeftRow * spriteHeight;\n  }\n\n  if (player.movement.right) {\n    srcY = trackingRightRow * spriteHeight;\n  } //Clearing the drawn frame \n\n\n  context.clearRect(player.x, player.y, spriteWidth, spriteHeight);\n};\n\n//# sourceURL=webpack:///./public/scripts/components/player/sprite/sprite.js?");
+eval("/***\r\n *\r\n * Front-end Input Class\r\n *\r\n ***/\n// Setting up the players movement object.\nvar movement = {\n  up: false,\n  down: false,\n  left: false,\n  right: false\n}; // Key down event listener.\n\ndocument.addEventListener('keydown', function (event) {\n  switch (event.keyCode) {\n    case 65:\n      // A\n      module.exports.updateMovement('left', true);\n      break;\n\n    case 87:\n      // W\n      module.exports.updateMovement('up', true);\n      break;\n\n    case 68:\n      // D\n      module.exports.updateMovement('right', true);\n      break;\n\n    case 83:\n      //S\n      module.exports.updateMovement('down', true);\n      break;\n  }\n}); // Key up event listener.\n\ndocument.addEventListener('keyup', function (event) {\n  switch (event.keyCode) {\n    case 65:\n      // A\n      module.exports.updateMovement('left', false);\n      break;\n\n    case 87:\n      // W\n      module.exports.updateMovement('up', false);\n      break;\n\n    case 68:\n      // D\n      module.exports.updateMovement('right', false);\n      break;\n\n    case 83:\n      //S\n      module.exports.updateMovement('down', false);\n      break;\n  }\n}); // Function that we will export as well so we can call it elsewhere. This will be utilised to easily update the players movement.\n\nmodule.exports.updateMovement = function (key, value) {\n  movement[key] = value;\n}; // Function to return the movement object.\n\n\nmodule.exports.getMovement = function () {\n  return movement;\n};\n\n//# sourceURL=webpack:///./public/scripts/components/game/input.js?");
+
+/***/ }),
+
+/***/ "./public/scripts/components/game/player/player.js":
+/*!*********************************************************!*\
+  !*** ./public/scripts/components/game/player/player.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("/***\r\n *\r\n * Front-end Player Component\r\n *\r\n ***/\n// Setup the relevant requirements for the file.\nvar sprite = __webpack_require__(/*! ./sprite/sprite */ \"./public/scripts/components/game/player/sprite/sprite.js\"); // Load the sprite sheet.\n\n\nsprite.loadSpriteSheet();\n\nmodule.exports.updatePlayersState = function (context, players) {\n  context.clearRect(0, 0, 800, 608);\n  context.fillStyle = 'green';\n\n  for (var id in players) {\n    var player = players[id];\n    context.beginPath();\n    sprite.drawPlayer(context, player);\n  }\n};\n\n//# sourceURL=webpack:///./public/scripts/components/game/player/player.js?");
+
+/***/ }),
+
+/***/ "./public/scripts/components/game/player/sprite/sprite.js":
+/*!****************************************************************!*\
+  !*** ./public/scripts/components/game/player/sprite/sprite.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("/***\r\n *\r\n * Front-end Sprite Component\r\n *\r\n ***/\n// Setting the sprite variable.\nvar sprite;\nvar spriteWidth;\nvar spriteHeight; // Set the rows and columns for the sprite sheet.\n\nvar spriteSheetRows = 4;\nvar spriteSheetCols = 3; // Set which rows are tracking left and right within the sprite sheet.\n\nvar trackingDownRow = 0;\nvar trackingLeftRow = 1;\nvar trackingRightRow = 2;\nvar trackingUpRow = 3;\nvar currentFrame = 0;\nvar totalFrames = 3;\nvar srcX = 0;\nvar srcY = 0; // Function that we will utilize to load the image for the player.\n\nmodule.exports.loadSpriteSheet = function () {\n  if (!sprite) {\n    // If the sprite image isn't already setup.\n    sprite = new Image();\n\n    sprite.onload = function () {\n      // Once the sprite has loaded we will then set the frameWidth and frameHeight.\n      // Set the sprite width and height by doing simple calculation on the sprite sheet.\n      spriteWidth = sprite.width / spriteSheetCols;\n      spriteHeight = sprite.height / spriteSheetRows;\n    }; // Load the image.\n\n\n    sprite.src = './public/assets/images/characters/male-01-1.png';\n  }\n}; // Function to draw the player.\n\n\nmodule.exports.drawPlayer = function (context, player) {\n  //Updating the frame\n  module.exports.updateSpriteFrame(context, player); //Drawing the image \n\n  context.drawImage(sprite, srcX, srcY, spriteWidth, spriteHeight, player.x - spriteWidth / 2, player.y - spriteHeight / 2, spriteWidth, spriteHeight);\n}; // Function to update the sprite frame.\n\n\nmodule.exports.updateSpriteFrame = function (context, player) {\n  // We need to update the current frame.\n  if (!player.movement.left && !player.movement.right && !player.movement.up && !player.movement.down) {\n    currentFrame = 0;\n  } else {\n    currentFrame = ++currentFrame % totalFrames;\n  }\n\n  srcX = currentFrame * spriteWidth; // Calculate the new X co ordinate for the sprite sheet.\n\n  if (player.movement.up) {\n    srcY = trackingUpRow * spriteHeight;\n  }\n\n  if (player.movement.down) {\n    srcY = trackingDownRow * spriteHeight;\n  } // Calculate the new Y co ordinate for the sprite sheet.\n\n\n  if (player.movement.left) {\n    srcY = trackingLeftRow * spriteHeight;\n  }\n\n  if (player.movement.right) {\n    srcY = trackingRightRow * spriteHeight;\n  } //Clearing the drawn frame \n\n\n  context.clearRect(player.x, player.y, spriteWidth, spriteHeight);\n};\n\n//# sourceURL=webpack:///./public/scripts/components/game/player/sprite/sprite.js?");
+
+/***/ }),
+
+/***/ "./public/scripts/components/game/sockets/gameSockets.js":
+/*!***************************************************************!*\
+  !*** ./public/scripts/components/game/sockets/gameSockets.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("/***\r\n *\r\n * Front-end Game Sockets Component\r\n *\r\n ***/\nvar player = __webpack_require__(/*! ../player/player */ \"./public/scripts/components/game/player/player.js\");\n/*\r\n * Player Socket Listeners\r\n */\n\n\nsocket.on('playersState', function (players) {\n  player.updatePlayersState(playerContext, players);\n});\n\n//# sourceURL=webpack:///./public/scripts/components/game/sockets/gameSockets.js?");
 
 /***/ }),
 
@@ -526,7 +537,7 @@ eval("/* WEBPACK VAR INJECTION */(function(global) {/***\r\n *\r\n * Front-end C
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("/***\r\n *\r\n * Front-end Main Component\r\n *\r\n ***/\nvar constants = __webpack_require__(/*! ./constants */ \"./public/scripts/constants.js\"); // Authentication\n\n\nvar authentication = __webpack_require__(/*! ./components/auth/menu */ \"./public/scripts/components/auth/menu.js\"); // Chat Box\n\n\nvar chat = __webpack_require__(/*! ./components/chat/chat */ \"./public/scripts/components/chat/chat.js\");\n/*\r\n * Game Related\r\n */\n\n\nvar Game = __webpack_require__(/*! ./components/game */ \"./public/scripts/components/game.js\");\n\nvar game;\n\nmodule.exports.gameInitialize = function (player, mapData) {\n  // Setup the game instance. Pass the player and the current mapData for setup.\n  game = new Game(player, mapData);\n  game.assetLoader.addSound('TownMusic', '/public/assets/sounds/TownTheme.mp3'); // Load all assets\n\n  game.assetLoader.loadAssets();\n  $('#main-menu').hide();\n  game.assetLoader.sounds.TownMusic.play();\n  game.startGameLoop();\n};\n\n//# sourceURL=webpack:///./public/scripts/main.js?");
+eval("/***\r\n *\r\n * Front-end Main Component\r\n *\r\n ***/\nvar constants = __webpack_require__(/*! ./constants */ \"./public/scripts/constants.js\"); // Authentication\n\n\nvar authentication = __webpack_require__(/*! ./components/auth/menu */ \"./public/scripts/components/auth/menu.js\"); // Chat Box\n\n\nvar chat = __webpack_require__(/*! ./components/chat/chat */ \"./public/scripts/components/chat/chat.js\");\n/*\r\n * Game Related\r\n */\n\n\nvar Game = __webpack_require__(/*! ./components/game/game */ \"./public/scripts/components/game/game.js\");\n\nvar game; // Game Initialization.\n\nmodule.exports.gameInitialize = function (player, mapData) {\n  // Setup the game instance. Pass the player and the current mapData for setup.\n  game = new Game(player, mapData);\n  game.assetLoader.addSound('TownMusic', '/public/assets/sounds/TownTheme.mp3'); // Load all assets\n\n  game.assetLoader.loadAssets();\n  $('#main-menu').hide();\n  game.assetLoader.sounds.TownMusic.play();\n  game.startGameLoop();\n};\n\n//# sourceURL=webpack:///./public/scripts/main.js?");
 
 /***/ })
 

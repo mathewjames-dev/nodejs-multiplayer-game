@@ -41,11 +41,11 @@ $(function () {
 
         let data = $(this).serialize() + '&socket=' + socket.id;
           Axios.post('/auth/login', data)
-            .then(function (response) {
-                alert(response.data.message);
+            .then(function (res) {
+                alert(res.data.message);
 
-                if (response.data.status === 200) {
-                    gameInitialize(response.data.user);
+                if (res.data.status === 200) {
+                    gameInitialize(res.data.user, res.data.mapData);
                 }
             });
     });

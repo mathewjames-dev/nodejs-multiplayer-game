@@ -17,13 +17,11 @@ const chat = require('./components/chat/chat');
 const Game = require('./components/game');
 var game;
 
-module.exports.gameInitialize = function(player)
+module.exports.gameInitialize = function(player, mapData)
 {
-    // Setup the game instance for the player and start the client game loop.
-    game = new Game(player);
+    // Setup the game instance. Pass the player and the current mapData for setup.
+    game = new Game(player, mapData);
 
-    // Add the map.
-    game.assetLoader.setMap(player.name);
     game.assetLoader.addSound('TownMusic', '/public/assets/sounds/TownTheme.mp3');
 
     // Load all assets

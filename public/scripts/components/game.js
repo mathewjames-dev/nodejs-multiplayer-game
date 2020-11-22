@@ -8,9 +8,13 @@ const player = require('./player/player');
 const input = require('./input');
 
 class Game {
-    constructor(player) {
+    constructor(player, mapData) {
         this.assetLoader = new AssetLoader();
 
+        // Instantly load the map and render it on game setup.
+        this.assetLoader.loadMap(mapData);
+
+        // Set the player up.
         this.player = player;
     }
 

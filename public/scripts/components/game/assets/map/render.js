@@ -3,13 +3,36 @@
  * Front-end Render Component
  *
  ***/
-module.exports.map = {
-    context: mapContext,
-    mapData: null,
-    mapTileSet: null,
-    mapLayers: [],
+class MapRender {
+    constructor() {
+        this.context = mapContext;
+        this.mapLayers = [];
+    }
 
-    renderMapLayer: function (layer) {
+    loadMap(json) {
+        this.mapData = json;
+        this.loadMapTileset(json);
+    }
+
+    loadMapTileset(json) {
+        let $this = this;
+
+        this.mapTileSet = new Image();
+        this.mapTileSet.src = '/public/assets/maps/tilesets/' + json.tilesets[0].image;
+        this.mapTileSet.onload = function () {
+            $this.renderMapLayers();
+        }
+    }
+
+    renderMapLayers(layers) {
+        let $this = this;
+        layers = $.isArray(layers) ? layers : this.mapData.layers;
+        $.each(layers, function (index, value) {
+            $this.renderMapLayer($(this)[0]);
+        });
+    }
+
+    renderMapLayer(layer) {
         if (layer.type !== 'tilelayer' || !layer.opacity) {
             return;
         }
@@ -26,7 +49,7 @@ module.exports.map = {
             for (let c = 0; c < columns; c++) {
                 for (let r = 0; r < rows; r++) {
                     let tile = layer.data[r * columns + c];
-                  
+
                     if (tile !== 0) { // 0 => empty tile
                         tile--;
 
@@ -55,29 +78,7 @@ module.exports.map = {
                 this.context.drawImage(image, 0, 0);
             }
         }
-    },
-
-    renderMapLayers: function (layers) {
-        layers = $.isArray(layers) ? layers : this.mapData.layers;
-        $.each(layers, function (index, value) {
-            module.exports.map.renderMapLayer($(this)[0]);
-        });
-    },
-
-    loadMapTileset: function (json) {
-        this.mapData = json;    
-        this.mapTileSet = new Image();
-        this.mapTileSet.src = '/public/assets/maps/tilesets/' + json.tilesets[0].image;
-        this.mapTileSet.onload = function () {
-            module.exports.map.renderMapLayers(module.exports.map);
-        }
-    },
-
-    loadMap: function (name) {
-        // Utilize the name of the map to get the JSON from the maps folder.
-        $.getJSON("/public/assets/maps/" + name + ".json", function (json) {
-            module.exports.map.loadMapTileset(json);
-        });
     }
 }
 
+module.exports = MapRender;

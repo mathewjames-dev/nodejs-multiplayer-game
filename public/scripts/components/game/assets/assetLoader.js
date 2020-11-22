@@ -3,19 +3,24 @@
  * Front-end Asset Loader Component
  *
  ***/
+const MapRender = require("./map/render");
+
 class AssetLoader {
     constructor() {
         this.assetsLoaded = 0;
 
         // Map Loading
-        this.mapRender = require('./map/render');
-        this.map;
+        this.mapRender = new MapRender;
 
         // Sounds Library
         this.sounds = [];
     }
 
-    // Main Functions
+
+    /*
+     * Main Asset Loader Functions
+     */
+    // Checks an asset to see if it has been loaded.
     assetLoaded(array, name) {
         // Ignore already loaded assets
         if (this[array][name].status !== 'loading') return;
@@ -24,23 +29,20 @@ class AssetLoader {
         this.assetsLoaded++;
     }
 
+    // Loads all the assets.
     loadAssets() {
-        this.loadMap();
         this.loadSounds();
     }
 
-
-    // Map Related
-    setMap(name) {
-        this.map = name;
-    }
-
-    loadMap() {
-        this.mapRender.map.loadMap(this.map);
+    // Loads the map.
+    loadMap(mapData) {
+        this.mapRender.loadMap(mapData);
     }
 
 
-    // Sound Related
+    /*
+     * Sound Related Functions
+     */
     addSound(name, file) {
         this.sounds[name] = file;
     }

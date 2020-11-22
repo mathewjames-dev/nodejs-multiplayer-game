@@ -9,7 +9,7 @@ const CollisionMathematics = require('./collisionMathematics');
 const fs = require('fs');
 
 class Collision {
-    constructor() {
+    constructor(param) {
         this.gameWidth = 800;
         this.gameHeight = 608;
 
@@ -18,8 +18,10 @@ class Collision {
         this.spriteHeight = this.spriteRadius * 2;
 
         this.globalMapName;
-        this.globalMapData;
         this.globalNonCollidableObjects = [];
+
+        if (param.globalMapData)
+            this.globalMapData = param.globalMapData;
     }
 
     // Checking the edges of the map with the entities new X and Y position.
@@ -49,22 +51,11 @@ class Collision {
         return;
     }
 
-    checkNonCollidableMapObjects(newX, newY) {
-        // Future proofing for when we put in dynamic maps. We want to make sure we're not reading the file every time.
-        if (!this.globalMapName) this.globalMapName = 'map1.json';
-        if (!this.globalMapData) {
-            var mapData = JSON.parse(fs.readFileSync('./public/assets/maps/' + this.globalMapName
-                //+ self.map
-                , 'utf8'));
-            this.globalMapData = mapData;
-        } else {
-            var mapData = this.globalMapData;
-        }
-
+    checkNonCollidableMapObjects(newX, newY) {     
         if (this.globalNonCollidableObjects.length === 0) {
             // Non collidable objects haven't been pushed for this map.
-            for (let i = 0; i <= mapData.layers.length; i++) {
-                let layer = mapData.layers[i];
+            for (let i = 0; i <= this.globalMapData.layers.length; i++) {
+                let layer = this.globalMapData.layers[i];
 
                 if (!layer) continue;
 

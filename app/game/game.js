@@ -13,7 +13,7 @@ class Game {
         this.players = {};
     }
 
-    addPlayer(socketId, user) {
+    addPlayer(socketId, user, mapData) {
         // Pushing the users socket id into the socket list.
         this.sockets.push(socketId);
 
@@ -23,8 +23,9 @@ class Game {
             username: user.username,
             x: user.x,
             y: user.y,
-            map: user.name
+            globalMapData: mapData
         });
+
         this.players[socketId] = player;
     }
 

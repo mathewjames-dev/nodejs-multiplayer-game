@@ -1,3 +1,5 @@
+const Map = require("../game/map");
+
 /***
  *
  * Back-end Route Component File
@@ -12,7 +14,9 @@ module.exports = function (app, express, __dirname, database, game) {
         res.sendFile(__dirname + '/views/index.html');
     });
 
-    // Authentication routing.
+    /*
+     * Authentication Routing
+     */
     app.post('/auth/register', function (req, res) {       
         // Check if a user already exists with that username.
         database.retrieveUser(req.body.username, function (user) {
@@ -41,12 +45,16 @@ module.exports = function (app, express, __dirname, database, game) {
         // Check if the username and password match a user account.
         database.authenticateUser(req.body, function (user) {
             if (user) {
-                game.addPlayer(req.body.socket, user);
+                let map = new Map();
+                let mapData = map.getMapData(user.location);
+
+                game.addPlayer(req.body.socket, user, mapData);
 
                 res.send(JSON.stringify({
                     status: 200,
                     message: "User successfully authenticated",
-                    user: user
+                    user: user,
+                    mapData: mapData
                 }));
             } else {
                 res.send(JSON.stringify({

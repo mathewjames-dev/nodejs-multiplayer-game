@@ -8,7 +8,7 @@ const Collision = require('../collision/collision');
 
 class Entity extends Collision {
     constructor(param) {
-        super();
+        super(param);
 
         this.x = 320;
         this.y = 320;
@@ -29,8 +29,6 @@ class Entity extends Collision {
                 this.x = param.x;
             if (param.y)
                 this.y = param.y;
-            if (param.map)
-                this.map = param.map;
             if (param.name)
                 this.name = param.name;
             if (param.id)

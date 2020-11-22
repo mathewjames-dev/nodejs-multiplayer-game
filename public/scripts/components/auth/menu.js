@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { playerInitialize } from "../game";
+import { gameInitialize } from "../../main"; 
 
 /***
  *
@@ -45,7 +45,7 @@ $(function () {
                 alert(response.data.message);
 
                 if (response.data.status === 200) {
-                    playerInitialize(response.data.user);
+                    gameInitialize(response.data.user);
                 }
             });
     });

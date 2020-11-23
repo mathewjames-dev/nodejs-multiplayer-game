@@ -12,6 +12,19 @@ class Entity extends Collision {
 
         this.x = 320;
         this.y = 320;
+        this.movementSpeed = 2;
+
+        this.sprite = {
+            name: '',
+            location: '',
+            rows: null,
+            cols: null,
+            leftRow: null,
+            upRow: null,
+            rightRow: null,
+            downRow: null,
+            frames: null,
+        };
 
         this.movement = {
             up: false,
@@ -19,9 +32,8 @@ class Entity extends Collision {
             left: false,
             right: false
         };
-        this.movementSpeed = 2;
-
         this.isColliding = false;
+
         // If we don't want our object to be based off of the defaults above, 
         // we can pass an object which we've named param and set the defaults to what we would like them to be.
         if (param) {
@@ -33,6 +45,8 @@ class Entity extends Collision {
                 this.name = param.name;
             if (param.id)
                 this.id = param.id;
+            if (param.sprite)
+                this.sprite = param.sprite;
         }
     }
 

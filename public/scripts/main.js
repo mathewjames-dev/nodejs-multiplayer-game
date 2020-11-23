@@ -15,13 +15,12 @@ const chat = require('./components/chat/chat');
  * Game Related
  */
 const Game = require('./components/game/game');
-global.game;
 
 // Game Initialization.
 module.exports.gameInitialize = function(player, mapData)
 {
     // Setup the game instance. Pass the player and the current mapData for setup.
-    game = new Game(player, mapData);
+    global.game = new Game(player, mapData);
 
     // Load all assets
     game.assetLoader.loadAssets();

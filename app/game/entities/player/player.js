@@ -10,7 +10,7 @@ class Player extends Entity {
     constructor(param) {
         super(param);
 
-        this.username = param.username
+        this.name = param.username;
     }
 
     movePlayer(data) {

@@ -15,10 +15,14 @@ class AuthDatabase extends Database {
     }
 
     retrieveUser(username, callback) {
-        let sql = "SELECT * FROM users INNER JOIN maps ON users.map_id = maps.id WHERE username = ? LIMIT 1"
+        let sql = "SELECT users.username as username, users.password as password, users.x as x, users.y as y, maps.name as map_name, maps.location as map_location, " +
+            "sprites.name as sprite_name, sprites.location as sprite_location, sprites.number_of_rows, " +
+            "sprites.number_of_cols, sprites.tracking_down_row, sprites.tracking_up_row, sprites.tracking_left_row, sprites.tracking_right_row, sprites.total_frames FROM users " +
+            "INNER JOIN maps ON users.map_id = maps.id " +
+            "INNER JOIN sprites ON users.sprite_id = sprites.id " +
+            "WHERE username = ? LIMIT 1"
         this.connection.query(sql, [username], function (err, result, fields) {
             if (err) callback(false);
-
             callback(result);
         });
     }

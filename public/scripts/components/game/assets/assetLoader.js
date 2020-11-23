@@ -12,7 +12,8 @@ class AssetLoader {
         // Map Loading
         this.mapRender = new MapRender;
 
-        // Sounds Library
+        // Libraries
+        this.images = [];
         this.sounds = [];
     }
 
@@ -31,10 +32,36 @@ class AssetLoader {
 
     // Loads all the assets.
     loadAssets() {
+        this.loadImages();
         this.loadSounds();
     }
 
-    // Loads the map.
+    /*
+     * Image Related Functions.
+     */
+    addImage(name, file) {
+        this.images[name] = file;
+    }
+
+    loadImages() {
+        for (image in this.images) {
+            if (!this.images[image]) continue;
+
+            let $this = this;
+            let src = this.images[image];
+
+            this.images[image] = new Image();
+            this.images[image].status = 'loading';
+            this.images[image].name = image;
+            this.images[image].src = src;
+            this.images[image].onload = function () { $this.assetLoaded.call($this, "images", image) };
+        }
+    }  
+
+
+    /*
+     * Map Related Functions.
+     */
     loadMap(mapData) {
         this.loadMapSounds(mapData.sounds);
         this.mapRender.loadMap(mapData);

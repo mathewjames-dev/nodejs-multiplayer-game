@@ -51,7 +51,7 @@ module.exports = function (app, express, __dirname, game) {
         authDatabase.authenticateUser(req.body, function (user) {
             if (user) {
                 // Get all the map data required for the front end.
-                var map = new Map(user.name, user.location);
+                var map = new Map(user.map_name, user.map_location);
                 var mapData = map.getMapData();
 
                 map.getMapSounds()

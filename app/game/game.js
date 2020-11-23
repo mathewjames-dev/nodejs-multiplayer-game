@@ -20,9 +20,20 @@ class Game {
         // Create a player with the socket id and the map they will be spawning in
         let player = new Player({
             id: socketId,
-            username: user.username,
+            name: user.username,
             x: user.x,
             y: user.y,
+            sprite: {
+                name: user.sprite_name,
+                location: user.sprite_location,
+                rows: user.number_of_rows,
+                cols: user.number_of_cols,
+                leftRow: user.tracking_left_row,
+                upRow: user.tracking_up_row,
+                rightRow: user.tracking_right_row,
+                downRow: user.tracking_down_row,
+                frames: user.total_frames,
+            },
             globalMapData: mapData
         });
 

@@ -28,6 +28,7 @@ module.exports.gameInitialize = function(player, mapData)
 
     $('#main-menu').hide();
     game.assetLoader.sounds.background.volume = 0.5;
+    game.assetLoader.sounds.background.loop = true;
     game.assetLoader.sounds.background.play();
 
     game.startGameLoop();

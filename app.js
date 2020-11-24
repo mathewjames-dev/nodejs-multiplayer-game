@@ -43,8 +43,9 @@ server.listen(8000, () => {
 
         // Update States
         if (game.getPlayers()) {
+            // Update the player states.
             io.sockets.emit('playersState', game.getPlayers());
         }
 
-    }, 1000 / 30); // 60 times per second.
+    }, 1000 / 60); // 60 times per second.
 });

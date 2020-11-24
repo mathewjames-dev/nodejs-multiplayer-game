@@ -43,9 +43,8 @@ $(function () {
           Axios.post('/auth/login', data)
             .then(function (res) {
                 alert(res.data.message);
-
                 if (res.data.status === 200) {
-                    gameInitialize(res.data.user, res.data.mapData);
+                    gameInitialize(res.data.players, res.data.mapData);
                 }
             });
     });

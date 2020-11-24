@@ -9,20 +9,22 @@ const Canvas = require('./render/canvas');
 const input = require('./input');
 
 class Game {
-    constructor(player, mapData) {
+    constructor(players, mapData) {
+        // All asset loading.
         this.assetLoader = new AssetLoader;
 
-        // Instantly load the player sprite
-        this.assetLoader.addImage(player.sprite_name, player.sprite_location);
+        // All rendering / drawing.
+        this.canvas = new Canvas;
+
+        this.players = players;
+
+        for (player in this.players) {
+            // Instantly load all the players sprites
+            this.assetLoader.addImage(this.players[player].sprite.name, this.players[player].sprite.location);
+        }
 
         // Instantly load the map and render it on game setup.
         this.assetLoader.loadMap(mapData);
-
-        // Setup the canvas class - This will be used for our rendering.
-        this.canvas = new Canvas;
-
-        // Temporary?
-        this.player = player;
 
         // Sound Related Values ( Eventually include a sound manager? )
         this.lastPlayedTileSound;
@@ -34,7 +36,7 @@ class Game {
              * Player events.
              */
             socket.emit('playerMovement', input.getMovement());
-        }, 1000 / 30); // 30 Times per second
+        }, 1000 / 60); // 30 Times per second
     }
 }
 

@@ -14,30 +14,40 @@ class Game {
     }
 
     addPlayer(socketId, user, mapData) {
-        // Pushing the users socket id into the socket list.
-        this.sockets.push(socketId);
+        return new Promise((resolve, reject) => {
+            // Pushing the users socket id into the socket list.
+            this.sockets.push(socketId);
 
-        // Create a player with the socket id and the map they will be spawning in
-        let player = new Player({
-            id: socketId,
-            name: user.username,
-            x: user.x,
-            y: user.y,
-            sprite: {
-                name: user.sprite_name,
-                location: user.sprite_location,
-                rows: user.number_of_rows,
-                cols: user.number_of_cols,
-                leftRow: user.tracking_left_row,
-                upRow: user.tracking_up_row,
-                rightRow: user.tracking_right_row,
-                downRow: user.tracking_down_row,
-                frames: user.total_frames,
-            },
-            globalMapData: mapData
+            // Create a player with the socket id and the map they will be spawning in
+            let player = new Player({
+                id: socketId,
+                name: user.username,
+                x: user.x,
+                y: user.y,
+                sprite: {
+                    name: user.sprite_name,
+                    location: user.sprite_location,
+                    rows: user.number_of_rows,
+                    cols: user.number_of_cols,
+                    leftRow: user.tracking_left_row,
+                    upRow: user.tracking_up_row,
+                    rightRow: user.tracking_right_row,
+                    downRow: user.tracking_down_row,
+                    spriteWidth: user.sheet_width / user.number_of_cols,
+                    spriteHeight: user.sheet_height / user.number_of_rows,
+                    animation: {
+                        currentFrame: 0,
+                        totalFrames: user.total_frames,
+                        srcX: 0,
+                        srcY: 0
+                    }
+                },
+                globalMapData: mapData
+            });
+
+            this.players[socketId] = player;
+            resolve(player);
         });
-
-        this.players[socketId] = player;
     }
 
     // Function to remove the player from the game.
@@ -59,6 +69,18 @@ class Game {
     // Function to get all sockets.
     getSocketList() {
         return this.sockets;
+    }
+
+    getPlayerInitPackage() {
+        let initPackage = {};
+        for (let player in this.players) {
+            let p = this.players[player];
+            initPackage[p.id] = {
+                sprite: p.sprite
+            }
+        }
+
+        return initPackage;
     }
 }
 

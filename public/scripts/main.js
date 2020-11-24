@@ -17,10 +17,10 @@ const chat = require('./components/chat/chat');
 const Game = require('./components/game/game');
 
 // Game Initialization.
-module.exports.gameInitialize = function(player, mapData)
+module.exports.gameInitialize = function(players, mapData)
 {
     // Setup the game instance. Pass the player and the current mapData for setup.
-    global.game = new Game(player, mapData);
+    global.game = new Game(players, mapData);
 
     // Load all assets
     game.assetLoader.loadAssets();
@@ -33,6 +33,6 @@ module.exports.gameInitialize = function(player, mapData)
     $(game.assetLoader.sounds.background).animate({
         volume: 0.3
     }, 2000);
-
+    console.log(game.players);
     game.startGameLoop();
 }

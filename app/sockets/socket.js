@@ -16,7 +16,9 @@ module.exports.listen = function(io, game) {
          */
         socket.on('playerMovement', function (data) {
             let player = game.getPlayer(socketId); 
-            player.movePlayer(data)
+            if (player) {
+                player.movePlayer(data)
+            }
         });
 
 

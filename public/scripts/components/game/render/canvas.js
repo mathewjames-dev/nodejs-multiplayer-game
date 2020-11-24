@@ -4,19 +4,22 @@
  *
  ***/
 // Setup the relevant requirements for the file.
-const SpriteRender = require('./entities/spriteRender');
+const PlayerRender = require('./drawing/entities/playerRender');
+const Animation = require('./animation/animation');
 
 class Canvas {
+    constructor() {
+        this.playerRender = new PlayerRender;
+        this.animation = new Animation;
+    }
+
     drawPlayerStates(players) {
         playerContext.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
         // Loop the player object that we're passed.
         for (let id in players) {
             let player = players[id];
-            let spriteRender = new SpriteRender(player);
-
-            spriteRender.drawSprite(player);
-
+            this.playerRender.drawSprite(player);
 
             // SOUND RELATED
             let playerX = Math.round(player.x / 16),

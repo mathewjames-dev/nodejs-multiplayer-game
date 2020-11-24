@@ -57,14 +57,16 @@ module.exports = function (app, express, __dirname, game) {
                 map.getMapSounds()
                     .then(function (sounds) {
                         mapData.sounds = sounds;
-                        game.addPlayer(req.body.socket, user, mapData);
-
-                        res.send(JSON.stringify({
-                            status: 200,
-                            message: "User successfully authenticated",
-                            user: user,
-                            mapData: mapData
-                        }));
+                        game.addPlayer(req.body.socket, user, mapData)
+                            .then(function () {
+                                let players = game.getPlayerInitPackage();
+                                res.send(JSON.stringify({
+                                    status: 200,
+                                    message: "User successfully authenticated",
+                                    mapData: mapData,
+                                    players: players
+                                }));
+                            }); 
                     });
             } else {
                 res.send(JSON.stringify({

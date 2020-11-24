@@ -12,7 +12,7 @@ class Entity extends Collision {
 
         this.x = 320;
         this.y = 320;
-        this.movementSpeed = 2;
+        this.movementSpeed = 1;
 
         this.sprite = {
             name: '',
@@ -23,7 +23,7 @@ class Entity extends Collision {
             upRow: null,
             rightRow: null,
             downRow: null,
-            frames: null,
+            totalFrames: null,
         };
 
         this.movement = {

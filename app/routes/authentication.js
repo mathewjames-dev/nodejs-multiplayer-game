@@ -51,12 +51,6 @@ class AuthenticationRouting {
             // Check if the username and password match a user account.
             authDatabase.authenticateUser(req.body, function (user) {
                 if (user) {
-                    // we need to process adding the player 
-                    // we need to setup the players map data and map sounds
-                    // we need to then add the player to the game instance
-                    // respond back to the user on the front end with the current map data
-                    // respond back with the current players animations as well for the front end.
-
                     gameServer.game.createPlayer(req.body.socket, user)
                         .then(function (player) {
                             res.send(JSON.stringify({

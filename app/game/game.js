@@ -41,6 +41,7 @@ class Game {
                     let player = new Player({
                         id: socketId,
                         name: user.username,
+                        health: user.health,
                         x: user.x,
                         y: user.y,
                         sprite: {

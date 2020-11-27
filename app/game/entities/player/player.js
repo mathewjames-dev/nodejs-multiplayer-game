@@ -11,6 +11,7 @@ class Player extends Entity {
         super(param);
 
         this.name = param.username;
+        this.health = param.health;
     }
 
     movePlayer(data) {

@@ -18,12 +18,21 @@ class Canvas {
 
         // Loop the player object that we're passed.
         for (let id in players) {
-            if(!game.players[id]) continue;
+            if (!game.players[id]) continue;
 
             let player = players[id];
 
             this.playerRender.drawSprite(player);
 
+            // Draw Health only for current player.
+            if (id === game.player.id) {
+                // Health Related (divided by max health)
+                let hpWidth = 30 * player.health / 100;
+
+                playerContext.fillStyle = 'red';
+                playerContext.fillRect(player.x - hpWidth / 2, player.y - 30, hpWidth, 4); //Draw the health bar
+            }
+        
             // SOUND RELATED
             let playerX = Math.round(player.x / 16),
                 playerY = Math.round(player.y / 16),

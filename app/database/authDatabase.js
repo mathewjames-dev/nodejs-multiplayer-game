@@ -14,7 +14,8 @@ class AuthDatabase extends Database {
     }
 
     retrieveUser(username, callback) {
-        let sql = "SELECT users.username as username, users.password as password, users.x as x, users.y as y, maps.name as map_name, maps.location as map_location, " +
+        let sql = "SELECT users.username as username, users.password as password, users.x as x, users.y as y, users.health as health, " +
+            "maps.name as map_name, maps.location as map_location, " +
             "sprites.name as sprite_name, sprites.location as sprite_location, sprites.number_of_rows, " +
             "sprites.number_of_cols, sprites.tracking_down_row, sprites.tracking_up_row, sprites.tracking_left_row, sprites.tracking_right_row, sprites.total_frames, " +
             "sprites.sheet_width as sheet_width, sprites.sheet_height as sheet_height FROM users " +

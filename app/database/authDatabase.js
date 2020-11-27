@@ -5,7 +5,6 @@
  ***/
 const bcrypt = require('bcrypt');
 const Database = require('./database');
-const mysql = require('mysql');
 
 const saltRounds = 10;
 

@@ -44,7 +44,7 @@ $(function () {
             .then(function (res) {
                 alert(res.data.message);
                 if (res.data.status === 200) {
-                    gameInitialize(res.data.players, res.data.mapData);
+                    gameInitialize(res.data.player);
                 }
             });
     });

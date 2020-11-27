@@ -81,6 +81,37 @@ class Entity extends Collision {
         this.isColliding = false;
     }
 
+    updateEntityAnimation(entity){
+        // We need to update the current frame.
+        if (!entity.movement.left && !entity.movement.right
+            && !entity.movement.up && !entity.movement.down) {
+            gameServer.game.players[entity.id].sprite.animation.currentFrame = 0;
+        } else {
+            gameServer.game.players[entity.id].sprite.animation.currentFrame =
+                ++gameServer.game.players[entity.id].sprite.animation.currentFrame % gameServer.game.players[entity.id].sprite.animation.totalFrames;
+        }
+        gameServer.game.players[entity.id].sprite.animation.srcX = gameServer.game.players[entity.id].sprite.animation.currentFrame * entity.sprite.spriteWidth;
+
+
+        // Calculate the new X co ordinate for the sprite sheet.
+        if (entity.movement.up) {
+            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.upRow * entity.sprite.spriteHeight;
+        }
+
+        if (entity.movement.down) {
+            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.downRow * entity.sprite.spriteHeight;
+        }
+
+        // Calculate the new Y co ordinate for the sprite sheet.
+        if (entity.movement.left) {
+            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.leftRow * entity.sprite.spriteHeight;
+        }
+
+        if (entity.movement.right) {
+            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.rightRow * entity.sprite.spriteHeight;
+        }
+    }
+
     getDistance(pt) { //Pass a point (x and y) and it will return the distance with a square root
         return Math.sqrt(Math.pow(this.x - pt.x, 2) + Math.pow(this.y - pt.y, 2));
     }

@@ -44,7 +44,7 @@ class AssetLoader {
     }
 
     loadImages() {
-        for (image in this.images) {
+        for (var image in this.images) {
             if (!this.images[image]) continue;
 
             let $this = this;
@@ -92,7 +92,7 @@ class AssetLoader {
     }
 
     loadSounds() {
-        for (sound in this.sounds) {
+        for (var sound in this.sounds) {
             if (!this.sounds[sound]) continue;
 
             let $this = this;

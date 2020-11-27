@@ -57,10 +57,10 @@ document.addEventListener('keyup', function(event){
 // Function that we will export as well so we can call it elsewhere. This will be utilised to easily update the players movement.
 module.exports.updateMovement = function(key, value){
     movement[key] = value;
-}
+};
 
 // Function to return the movement object.
 module.exports.getMovement = function()
 {
     return movement;
-}
+};

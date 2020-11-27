@@ -16,6 +16,7 @@ class PlayerRender {
         this.trackingLeftRow = entity.sprite.leftRow;
         this.trackingRightRow = entity.sprite.rightRow;
         this.trackingUpRow = entity.sprite.upRow;
+
         this.currentFrame = game.players[entity.id].sprite.animation.currentFrame;
         this.totalFrames = game.players[entity.id].sprite.animation.totalFrames;
         this.srcX = game.players[entity.id].sprite.animation.srcX;
@@ -27,6 +28,7 @@ class PlayerRender {
 
         this.updateEntitySpriteFrames(entity);
 
+        // console.log(game.assetLoader.images[entity.sprite.name]);
         //Drawing the image
         playerContext.drawImage(game.assetLoader.images[entity.sprite.name],
             this.srcX, this.srcY,
@@ -36,35 +38,6 @@ class PlayerRender {
     }
 
     updateEntitySpriteFrames(entity) {
-        // We need to update the current frame.
-        if (!entity.movement.left && !entity.movement.right
-            && !entity.movement.up && !entity.movement.down) {
-            game.players[entity.id].sprite.animation.currentFrame = 0;
-        } else {
-            game.players[entity.id].sprite.animation.currentFrame =
-                ++game.players[entity.id].sprite.animation.currentFrame % game.players[entity.id].sprite.animation.totalFrames;
-        }
-        game.players[entity.id].sprite.animation.srcX = game.players[entity.id].sprite.animation.currentFrame * entity.sprite.spriteWidth;
-
-
-        // Calculate the new X co ordinate for the sprite sheet.
-        if (entity.movement.up) {
-            game.players[entity.id].sprite.animation.srcY = entity.sprite.upRow * entity.sprite.spriteHeight;
-        }
-
-        if (entity.movement.down) {
-            game.players[entity.id].sprite.animation.srcY = entity.sprite.downRow * entity.sprite.spriteHeight;
-        }
-
-        // Calculate the new Y co ordinate for the sprite sheet.
-        if (entity.movement.left) {
-            game.players[entity.id].sprite.animation.srcY = entity.sprite.leftRow * entity.sprite.spriteHeight;
-        }
-
-        if (entity.movement.right) {
-            game.players[entity.id].sprite.animation.srcY = entity.sprite.rightRow * entity.sprite.spriteHeight;
-        }
-
         //Clearing the drawn frame 
         playerContext.clearRect(entity.x, entity.y, this.spriteWidth, this.spriteHeight);
     }

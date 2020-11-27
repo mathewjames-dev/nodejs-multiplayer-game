@@ -9,6 +9,10 @@
  */
 socket.on('playersState', function (players) {
     if (global.game) {
-        game.canvas.drawPlayerStates(players);
+        let $players = players;
+        game.updatePlayersPackage($players)
+            .then(function(){
+            game.canvas.drawPlayerStates($players);
+        });
     }
 });

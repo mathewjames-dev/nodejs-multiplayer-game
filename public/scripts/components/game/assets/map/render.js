@@ -53,8 +53,8 @@ class MapRender {
                     if (tile !== 0) { // 0 => empty tile
                         tile--;
 
-                        img_x = (tile % (this.mapData.tilesets[0].imagewidth / size)) * size;
-                        img_y = ~~(tile / (this.mapData.tilesets[0].imagewidth / size)) * size;
+                        let img_x = (tile % (this.mapData.tilesets[0].imagewidth / size)) * size;
+                        let img_y = ~~(tile / (this.mapData.tilesets[0].imagewidth / size)) * size;
 
                         contextDuplication.drawImage(
                             this.mapTileSet,

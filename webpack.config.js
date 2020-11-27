@@ -14,13 +14,13 @@ module.exports = {
             {
                 test: /\.m?js$/,
                 exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: ["syntax-class-properties", "transform-class-properties"]
-                    }
-                }
+                // use: {
+                //     loader: 'babel-loader',
+                //     options: {
+                //         presets: ['@babel/preset-env'],
+                //         plugins: ["syntax-class-properties", "transform-class-properties"]
+                //     }
+                // }
             }
         ]
     }

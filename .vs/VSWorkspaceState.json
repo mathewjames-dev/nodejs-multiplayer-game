@@ -2,16 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\routes",
-    "\\public",
-    "\\public\\maps",
-    "\\public\\scripts",
-    "\\public\\scripts\\components",
-    "\\public\\scripts\\components\\map",
-    "\\public\\scripts\\components\\player",
-    "\\public\\scripts\\components\\player\\sprite",
-    "\\public\\styles"
+    "\\app\\database",
+    "\\app\\game",
+    "\\app\\game\\map",
+    "\\app\\routes"
   ],
-  "SelectedNode": "\\public\\scripts\\components\\map\\render.js",
+  "SelectedNode": "\\app\\game\\map\\map.js",
   "PreviewInSolutionExplorer": false
 }

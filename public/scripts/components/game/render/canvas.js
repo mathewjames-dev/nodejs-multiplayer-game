@@ -18,7 +18,10 @@ class Canvas {
 
         // Loop the player object that we're passed.
         for (let id in players) {
+            if(!game.players[id]) continue;
+
             let player = players[id];
+
             this.playerRender.drawSprite(player);
 
             // SOUND RELATED

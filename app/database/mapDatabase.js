@@ -1,5 +1,4 @@
 const Database = require("./database");
-const mysql = require('mysql');
 
 /***
  *

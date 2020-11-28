@@ -183,7 +183,7 @@ eval("/* WEBPACK VAR INJECTION */(function(Buffer) {/*!\r\n * Socket.IO v2.3.0\r
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("/* WEBPACK VAR INJECTION */(function(global) {// Setting jQuery and io variables to be global so that we can use elsewhere and within other files.\r\nglobal.jQuery = __webpack_require__(/*! ./jquery/jquery */ \"./public/scripts/vendors/jquery/jquery.js\");\r\nglobal.io = __webpack_require__(/*! ./socket.io/socket.io */ \"./public/scripts/vendors/socket.io/socket.io.js\");\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./public/scripts/vendors/vendor.js?");
+eval("/* WEBPACK VAR INJECTION */(function(global) {// Setting jQuery and io variables to be global so that we can use elsewhere and within other files.\r\nglobal.jQuery = __webpack_require__(/*! ./jquery/jquery */ \"./public/scripts/vendors/jquery/jquery.js\");\r\nglobal.io = __webpack_require__(/*! ./socket.io/socket.io */ \"./public/scripts/vendors/socket.io/socket.io.js\");\r\nglobal.socket = io();\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./public/scripts/vendors/vendor.js?");
 
 /***/ })
 

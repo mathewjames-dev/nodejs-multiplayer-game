@@ -1,37 +1,58 @@
 /***
  *
- * Front-end Game Component
+ * Game Front-end File
+ * This will be utilized to house the main game files and structure.
  *
  ***/
-const GameSockets = require('./sockets/gameSockets');
-const AssetLoader = require('./assets/assetLoader');
-const Canvas = require('./render/canvas');
-const input = require('./input');
+
+const AssetLoader = require("./assets/assetLoader");
+const Canvas = require("./render/canvas");
+const input = require("./input");
 
 class Game {
-    constructor(player) {
-        // All asset loading.
+    constructor() {
+        // Will be utilized for all real time functionality.
+        this.gameSockets = require("./sockets/gameSockets");
+
+        // Will be utilized for all asset loading.
         this.assetLoader = new AssetLoader;
 
-        // All rendering / drawing.
+        // Will be utilized to house the game canvas and respective functions.
         this.canvas = new Canvas;
+    }
 
+    async gameInit(player) {
         this.player = player;
-        this.players = player.initPackage;
-
-        for (player in this.players) {
-            // Instantly load all the players sprites
-            this.assetLoader.addImage(this.players[player].sprite.name, this.players[player].sprite.location);
-        }
-
-        // Instantly load the map and render it on game setup.
-        this.assetLoader.loadMap(this.player.globalMapData);
-
         // Sound Related Values ( Eventually include a sound manager? )
         this.lastPlayedTileSound = 0;
+
+        await this.loadPlayerSprites(this.player.initPackage)
+            .then(this.assetLoader.loadMap(this.player.globalMapData))
+            .then(this.assetLoader.loadAssets)
+            .then(this.startGameLoop);
+    }
+
+    async loadPlayerSprites(players) {
+        for (let player in players) {
+            if (this.assetLoader.images[players[player].sprite.name]) continue;
+            // We need to add a check to see if the players image has already been loaded
+            // If not we can then add that image.
+            this.assetLoader.addImage(players[player].sprite.name,
+                players[player].sprite.location);
+        }
     }
 
     startGameLoop() {
+        $('#main-menu').hide();
+        $('#inventory').show()
+        game.assetLoader.sounds.background.volume = 0;
+        game.assetLoader.sounds.background.currentTime = 0;
+        game.assetLoader.sounds.background.loop = true;
+        game.assetLoader.sounds.background.play();
+        $(game.assetLoader.sounds.background).animate({
+            volume: 0.3
+        }, 2000);
+
         setInterval(function () {
             /*
              * Player events.
@@ -40,7 +61,7 @@ class Game {
         }, 1000 / 60); // 30 Times per second
     }
 
-    async updatePlayersPackage(players){
+    async updatePlayersPackage(players) {
         let updatedPlayersPackage = {};
         for (let p in players) {
             // Instantly load all the players sprites

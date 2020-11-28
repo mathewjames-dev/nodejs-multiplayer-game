@@ -4,10 +4,7 @@
  *
  ***/
 // Import the components required.
-const Constants = require('../constants');
 const CollisionMathematics = require('./collisionMathematics');
-const fs = require('fs');
-
 class Collision {
     constructor(param) {
         this.gameWidth = 800;

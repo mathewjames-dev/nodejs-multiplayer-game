@@ -1,11 +1,13 @@
-import Axios from "axios";
-import { gameInitialize } from "../../main"; 
-
 /***
  *
- * Front-end Menu Component
+ * Authentication Menu Front-end File
+ * This will be utilized to house the jQuery for the authentication menu
+ * It will also login the user then initialize the game start for the user.
  *
  ***/
+
+import * as Game from "../game";
+
 $(function () {
     $('.login').on('click', function () {
         $('#login-register').hide();
@@ -27,25 +29,22 @@ $(function () {
         $('#login-form').show();
     });
 
-    $('#register-form').on('submit', function (e) {
+    $('#register-form').on('submit', async function (e) {
         e.preventDefault();
-
-        Axios.post('/auth/register', $(this).serialize())
-            .then(function (response) {
-                alert(response.data.message);
-            });
+        let data = $(this).serialize();
+        await routes.register(data, function (r) {
+            console.log(r);
+        });
     });
 
-    $('#login-form').on('submit', function (e) {
+    $('#login-form').on('submit', async function (e) {
         e.preventDefault();
-
         let data = $(this).serialize() + '&socket=' + socket.id;
-          Axios.post('/auth/login', data)
-            .then(function (res) {
-                alert(res.data.message);
-                if (res.data.status === 200) {
-                    gameInitialize(res.data.player);
-                }
-            });
+        await routes.login(data, async function (r) {
+            if (r.status === 200) {
+                global.game = new Game;
+                await game.gameInit(r.player);
+            }
+        })
     });
 });

@@ -59,7 +59,6 @@ body {
 
 /* Game UI Related CSS */
 .gameUI {
-    //display: none;
     height: 100%;
     overflow: auto;
     margin: auto;

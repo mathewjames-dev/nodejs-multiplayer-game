@@ -1,11 +1,14 @@
 /***
  *
- * Front-end Constants Component
+ * Constants Front-end File
+ * This file will be utilized to house top level global variables.
  *
  ***/
+const Routing = require("./components/routes/routes");
 
-// Socket IO.
-global.socket = io();
+// Routing
+global.routes = new Routing();
+
 
 // Element Related Constants
 global.mapCanvas = document.getElementById('mapContainer');

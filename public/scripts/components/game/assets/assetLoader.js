@@ -32,8 +32,8 @@ class AssetLoader {
 
     // Loads all the assets.
     loadAssets() {
-        this.loadImages();
-        this.loadSounds();
+        game.assetLoader.loadImages();
+        game.assetLoader.loadSounds();
     }
 
     /*
@@ -43,7 +43,7 @@ class AssetLoader {
         this.images[name] = file;
     }
 
-    loadImages() {
+    async loadImages() {
         for (var image in this.images) {
             if (!this.images[image]) continue;
 
@@ -91,7 +91,7 @@ class AssetLoader {
         }
     }
 
-    loadSounds() {
+    async loadSounds() {
         for (var sound in this.sounds) {
             if (!this.sounds[sound]) continue;
 

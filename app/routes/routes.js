@@ -24,9 +24,9 @@ class Routes {
     }
 
     getRouting() {
-        // GET [/]
         let $this = this;
 
+        // GET [/]
         this.app.get('/', function (req, res) {
             res.sendFile($this.rootDirectory + '/views/index.html');
         });

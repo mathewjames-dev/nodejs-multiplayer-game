@@ -28,7 +28,7 @@ class PlayerRender {
 
         this.updateEntitySpriteFrames(entity);
 
-        // console.log(game.assetLoader.images[entity.sprite.name]);
+        console.log(game.assetLoader.images[entity.sprite.name]);
         //Drawing the image
         playerContext.drawImage(game.assetLoader.images[entity.sprite.name],
             this.srcX, this.srcY,

@@ -4,21 +4,24 @@
  * This will be utilized to house the main game files and structure.
  *
  ***/
-
+const GameSockets = require('./sockets/gameSockets');
 const AssetLoader = require("./assets/assetLoader");
 const Canvas = require("./render/canvas");
-const input = require("./input");
+const Movement = require("./input/movement");
 
 class Game {
     constructor() {
         // Will be utilized for all real time functionality.
-        this.gameSockets = require("./sockets/gameSockets");
+        this.gameSockets = new GameSockets;
 
         // Will be utilized for all asset loading.
         this.assetLoader = new AssetLoader;
 
         // Will be utilized to house the game canvas and respective functions.
         this.canvas = new Canvas;
+
+        // Will be utilized for all movement functionality.
+        this.movement = new Movement;
     }
 
     async gameInit(player) {
@@ -43,6 +46,9 @@ class Game {
     }
 
     startGameLoop() {
+        /*
+         * Temporary Code
+         */
         $('#main-menu').hide();
         $('#inventory').show()
         game.assetLoader.sounds.background.volume = 0;
@@ -57,7 +63,8 @@ class Game {
             /*
              * Player events.
              */
-            socket.emit('playerMovement', input.getMovement());
+
+            socket.emit('playerMovement', game.movement.getMovement());
         }, 1000 / 60); // 30 Times per second
     }
 

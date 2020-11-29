@@ -1,16 +1,18 @@
 /***
  *
- * Front-end Canvas Component
+ * Canvas Front-end File
+ * This will be utilized to house the canvas related elements for the game.
  *
  ***/
-// Setup the relevant requirements for the file.
-const PlayerRender = require('./drawing/entities/playerRender');
-const Animation = require('./animation/animation');
+const PlayerRender = require('./entities/player/playerRender');
+const MapRender = require('./map/render');
 
 class Canvas {
     constructor() {
+        this.mapRender = new MapRender;
+
+        // The canvas will have render files and animation files.
         this.playerRender = new PlayerRender;
-        this.animation = new Animation;
     }
 
     drawPlayerStates(players) {
@@ -18,7 +20,7 @@ class Canvas {
 
         // Loop the player object that we're passed.
         for (let id in players) {
-            if (!game.player.initPackage[id]) continue;
+            if (!game.players[id]) continue;
 
             let player = players[id];
             this.playerRender.drawSprite(player);

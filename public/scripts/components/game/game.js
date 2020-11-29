@@ -6,12 +6,12 @@
  ***/
 const GameSockets = require('./sockets/gameSockets');
 const AssetLoader = require("./assets/assetLoader");
-const Canvas = require("./render/canvas");
+const Canvas = require("./canvas/canvas");
 const Movement = require("./input/movement");
 
 class Game {
     constructor() {
-        // Will be utilized for all real time functionality.
+        //  be utilized for all real time functionality.
         this.gameSockets = new GameSockets;
 
         // Will be utilized for all asset loading.
@@ -30,7 +30,7 @@ class Game {
         this.lastPlayedTileSound = 0;
 
         await this.loadPlayerSprites(this.player.initPackage)
-            .then(this.assetLoader.loadMap(this.player.globalMapData))
+            .then(this.canvas.mapRender.loadMap(this.player.globalMapData))
             .then(this.assetLoader.loadAssets)
             .then(this.startGameLoop);
     }

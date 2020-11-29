@@ -1,6 +1,7 @@
 /***
  *
- * Front-end Render Component
+ * Map Render Front-end File
+ * This will be utilized to house the map rendering for the game.
  *
  ***/
 class MapRender {
@@ -9,7 +10,21 @@ class MapRender {
         this.mapLayers = [];
     }
 
-    loadMap(json) {
+    async loadMap(mapData) {
+        await this.loadMapSounds(mapData.sounds)
+            .then(this.renderMap(mapData));
+    }
+
+    async loadMapSounds(mapSounds) {
+        for (let s = 0; s <= mapSounds.length; s++) {
+            let sound = mapSounds[s];
+            if (!sound) continue;
+
+            game.assetLoader.addSound(sound.name, sound.location);
+        }
+    }
+
+    renderMap(json) {
         this.mapData = json;
         this.loadMapTileset(json);
     }

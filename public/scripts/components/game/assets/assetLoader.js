@@ -1,26 +1,18 @@
 /***
  *
- * Front-end Asset Loader Component
+ * Asset Loader Front-end File
+ * This will be utilized to house the assets for the game.
  *
  ***/
-const MapRender = require("./map/render");
-
 class AssetLoader {
     constructor() {
         this.assetsLoaded = 0;
-
-        // Map Loading
-        this.mapRender = new MapRender;
 
         // Libraries
         this.images = [];
         this.sounds = [];
     }
 
-
-    /*
-     * Main Asset Loader Functions
-     */
     // Checks an asset to see if it has been loaded.
     assetLoaded(array, name) {
         // Ignore already loaded assets
@@ -57,25 +49,6 @@ class AssetLoader {
             this.images[image].onload = function () { $this.assetLoaded.call($this, "images", image) };
         }
     }  
-
-
-    /*
-     * Map Related Functions.
-     */
-    loadMap(mapData) {
-        this.loadMapSounds(mapData.sounds);
-        this.mapRender.loadMap(mapData);
-    }
-
-    loadMapSounds(mapSounds) {
-        for (let s = 0; s <= mapSounds.length; s++) {
-            let sound = mapSounds[s];
-            if (!sound) continue;
-
-            this.addSound(sound.name, sound.location);
-        }
-    }
-
 
     /*
      * Sound Related Functions

@@ -28,7 +28,7 @@ class Routes {
 
         // GET [/]
         this.app.get('/', function (req, res) {
-            res.sendFile($this.rootDirectory + '/views/index.html');
+            res.render('index');
         });
     }
 }

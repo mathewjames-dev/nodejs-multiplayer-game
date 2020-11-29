@@ -1,6 +1,7 @@
 /***
  *
- * Front-end Sprite Render Component
+ * Player Render Front-end File
+ * This will be utilized to house the player rendering for the game.
  *
  ***/
 class PlayerRender {

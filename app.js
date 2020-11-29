@@ -11,6 +11,8 @@ const bodyParser = require('body-parser');
 // Setting up the instance of the app
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('views', './views');
+app.set('view engine', 'pug');
 
 // File utilized for routing.
 const Routes = require('./app/routes/routes');

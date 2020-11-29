@@ -1,0 +1,68 @@
+extends template.pug
+
+block styles
+    link(rel="stylesheet",href="public/styles/inventory.css")
+
+block content
+    div(class="chatContainer")
+        h4 Chat
+
+        div(class="chatBox",id="chat-text")
+        
+        form(id="chat-form")
+            input(id="chat-input" type="text" style="width:75%;height:30px;" autocomplete="off")
+            input(class="btn" type="submit" value="Send")
+
+    div(class="gameContainer")
+        canvas(width="800" height="608" class="mapContainer" id="mapContainer")
+        canvas(width="800" height="608" class="playerContainer" id="playerContainer")
+
+        div(id="gameUI" class="gameUI")
+            div(id="main-menu")
+                h1 mathewjames.dev HTML5 Game
+                div(id="main-menu-authentication")
+                    ul(id="login-register")
+                        li
+                            a(href="#" class="btn login") Login
+                        li
+                            a(href="#" class="btn register") Register
+
+                    form(id="login-form")
+                        ul(id="login")
+                            li
+                                input(type="text" name="username" value="" placeholder="Enter your username")
+                            li
+                                input(type="password" name="password" value="" placeholder="Enter your password")
+                            li
+                                button(class="btn") Login
+                            li
+                                a(href="#" class="login-form-register") or register an account
+                    
+                    form(id="register-form")
+                        ul(id="register")
+                            li
+                                input(type="text" name="username" value="" placeholder="Enter your username")
+                            li
+                                input(type="password" name="password" value="" placeholder="Enter your password")
+                            li
+                                button(class="btn") Register
+                            li
+                                a(href="#" class="register-form-login") or login to an account
+
+            div(id="inventory")
+                header Backpack
+                    button(class="close")
+                      span(style="position: relative; top: -5px; left: -2px;") &#x2716;
+                ul(id="inventory-list")
+                    li
+                        div(class="item")
+                    li
+                    li
+                    li
+                    li
+                    li
+                    li
+                    li
+       
+block scripts
+    script(src="public/scripts/bundles/main.bundle.js")

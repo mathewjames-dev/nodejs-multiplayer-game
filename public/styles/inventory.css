@@ -1,0 +1,232 @@
+html, body, div, span, object,
+form, input, h1, h2, button, label, a, img {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    /* this will work for QtWebKit in future */
+    -webkit-user-drag: none;
+}
+
+#inventory {
+    bottom: 10px;
+    right: 10px;
+    width: 280px;
+    height: 140px;
+}
+
+    #inventory .resize {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 20px 20px;
+        border-color: transparent transparent rgba(0, 0, 0, 0.25) transparent;
+    }
+
+#character {
+    width: 260px;
+    height: 395px;
+    left: 10px;
+    top: 50px;
+}
+
+    #character .preview {
+        position: absolute;
+        width: 200px;
+        height: auto;
+        right: 0;
+    }
+
+    #character ul.armor {
+        width: 50px;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    #character footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    #character ul.weapons {
+        height: 50px;
+        bottom: 10px;
+        width: 175px;
+        margin: 0 auto;
+    }
+
+        #character ul.weapons li:last-child {
+            margin-left: 10px;
+        }
+
+.window, #messaging, #inventory, #character {
+    display: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    background-color: rgba(73,75,75, 0.85);
+    -webkit-transition: background 0.5s;
+    -moz-transition: background 0.5s;
+    -ms-transition: background 0.5s;
+    -o-transition: background 0.5s;
+    transition: background 0.5s;
+}
+
+    .window.focused, .focused#messaging, .focused#inventory, .focused#character {
+        z-index: 1500;
+    }
+
+    .window.closed, .closed#messaging, .closed#inventory, .closed#character {
+        display: none;
+    }
+
+    .window header, #messaging header, #inventory header, #character header {
+        background-color: #0d9263;
+        line-height: 25px;
+        color: white;
+        text-transform: uppercase;
+        font-size: 0.75em;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        top: -25px;
+        cursor: move;
+    }
+
+        .window header button.close, #messaging header button.close, #inventory header button.close, #character header button.close {
+            background: #d4ce46;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            border: 0;
+            border-radius: 2px;
+            cursor: pointer;
+            color: white;
+            font-size: 9px;
+            font-family: arial;
+        }
+
+            .window header button.close:hover, #messaging header button.close:hover, #inventory header button.close:hover, #character header button.close:hover {
+                -webkit-box-shadow: inset 0 0 2px white;
+                -moz-box-shadow: inset 0 0 2px white;
+                box-shadow: inset 0 0 2px white;
+                color: gold;
+            }
+
+            .window header button.close:active, #messaging header button.close:active, #inventory header button.close:active, #character header button.close:active {
+                padding: 0;
+            }
+
+    .slot, #inventory li, #character li, #holding {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        margin: 5px 0 0 5px;
+        float: left;
+        background-color: rgba(13,146,99, 0.25);
+        border-radius: 2px;
+        /* not needed */
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-indent: 2px;
+    }
+
+        .slot:not(:empty), #inventory li:not(:empty), #character li:not(:empty), #holding:not(:empty) {
+            background: rgba(74,186,145, 0.5);
+        }
+
+        .slot.highlight, #inventory li.highlight, #character li.highlight, .highlight#holding {
+            -webkit-box-shadow: inset 0 0 10px white;
+            -moz-box-shadow: inset 0 0 10px white;
+            box-shadow: inset 0 0 10px white;
+        }
+
+            .slot.highlight.invalid, #inventory li.highlight.invalid, #character li.highlight.invalid, .highlight.invalid#holding {
+                -webkit-box-shadow: inset 0 0 10px red;
+                -moz-box-shadow: inset 0 0 10px red;
+                box-shadow: inset 0 0 10px red;
+            }
+
+        .slot .item, #inventory li .item, #character li .item, #holding .item {
+            opacity: 1;
+            -webkit-transition: opacity 0.25s;
+            -moz-transition: opacity 0.25s;
+            -ms-transition: opacity 0.25s;
+            -o-transition: opacity 0.25s;
+            transition: opacity 0.25s;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, 0);
+        }
+
+            .slot .item img, #inventory li .item img, #character li .item img, #holding .item img {
+                pointer-events: none;
+            }
+
+            .slot .item.held, #inventory li .item.held, #character li .item.held, #holding .item.held {
+                opacity: 0.5;
+            }
+
+            .slot .item.highlight, #inventory li .item.highlight, #character li .item.highlight, #holding .item.highlight {
+                -webkit-box-shadow: inset 0 0 10px grey;
+                -moz-box-shadow: inset 0 0 10px grey;
+                box-shadow: inset 0 0 10px grey;
+            }
+
+#holding {
+    opacity: 0;
+    -webkit-transition: opacity 0.25s;
+    -moz-transition: opacity 0.25s;
+    -ms-transition: opacity 0.25s;
+    -o-transition: opacity 0.25s;
+    transition: opacity 0.25s;
+    background: #444;
+    border: 1px solid #111;
+    position: absolute;
+    z-index: 2000;
+    pointer-events: none;
+    -webkit-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+    #holding.show {
+        opacity: 1;
+    }
+
+#xp {
+    height: 5px;
+    background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 10%, white 10.1%);
+}
+
+    #xp div {
+        width: 25%;
+        height: 100%;
+        background: dodgerblue;
+    }
+
+.bigger-height {
+    color: white;
+    text-transform: uppercase;
+    font-size: 5em;
+    position: absolute;
+    width: 25%;
+    right: 0;
+    text-align: right;
+}
+
+@media screen and (min-height: 450px) {
+    .bigger-height {
+        display: none;
+    }
+}

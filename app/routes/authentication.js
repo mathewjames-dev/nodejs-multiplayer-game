@@ -24,19 +24,13 @@ class AuthenticationRouting {
             authDatabase.retrieveUser(req.body.username, function (user) {
                 // If user exists return 400 error.
                 if (user) {
-                    res.send(JSON.stringify({
-                        status: 400,
-                        message: "User already exists!"
-                    }));
+                    res.status(400).send("User already exists!");
                 } else {
                     // If a user doesn't exist we create one and return a success.
                     authDatabase.createUser(req.body, function (user) {
                         // If a user has been created return success.
                         if (user) {
-                            res.send(JSON.stringify({
-                                status: 200,
-                                message: "User successfully created!"
-                            }));
+                            res.status(200).send("User successfully created!");
                         }
                     });
                 }
@@ -53,8 +47,7 @@ class AuthenticationRouting {
                 if (user) {
                     gameServer.game.createPlayer(req.body.socket, user)
                         .then(function (player) {
-                            res.send(JSON.stringify({
-                                status: 200,
+                            res.status(200).send(JSON.stringify({
                                 message: "User successfully authenticated",
                                 player: player,
                             }));
@@ -62,10 +55,7 @@ class AuthenticationRouting {
                             console.log(err);
                         });
                 } else {
-                    res.send(JSON.stringify({
-                        status: 400,
-                        message: "User credentials incorrect!"
-                    }));
+                    res.status(400).send("User credentials incorrect!");
                 }
             })
         });

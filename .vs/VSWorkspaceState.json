@@ -2,11 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\database",
-    "\\app\\game",
-    "\\app\\game\\map",
-    "\\app\\routes"
+    "\\public",
+    "\\public\\scripts",
+    "\\public\\scripts\\components",
+    "\\public\\scripts\\components\\game",
+    "\\public\\scripts\\components\\game\\canvas",
+    "\\public\\scripts\\components\\game\\canvas\\entities",
+    "\\public\\scripts\\components\\game\\canvas\\entities\\player",
+    "\\public\\scripts\\components\\routes"
   ],
-  "SelectedNode": "\\app\\game\\map\\map.js",
+  "SelectedNode": "\\app\\database\\authDatabase.js",
   "PreviewInSolutionExplorer": false
 }

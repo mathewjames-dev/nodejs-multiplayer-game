@@ -8,9 +8,10 @@ const GameSockets = require('./sockets/gameSockets');
 const AssetLoader = require("./assets/assetLoader");
 const Canvas = require("./canvas/canvas");
 const Movement = require("./input/movement");
+const Inventory = require('./player/inventory');
 
 class Game {
-    constructor() {
+    constructor(player) {
         //  be utilized for all real time functionality.
         this.gameSockets = new GameSockets;
 
@@ -22,13 +23,16 @@ class Game {
 
         // Will be utilized for all movement functionality.
         this.movement = new Movement;
-    }
 
-    async gameInit(player) {
-        this.player = player;
         // Sound Related Values ( Eventually include a sound manager? )
         this.lastPlayedTileSound = 0;
 
+        // Logged In Player
+        this.player = player;
+        this.player.inventory = new Inventory(this.player);
+    }
+
+    async gameInit() {
         await this.loadPlayerSprites(this.player.initPackage)
             .then(this.canvas.mapRender.loadMap(this.player.globalMapData))
             .then(this.assetLoader.loadAssets)

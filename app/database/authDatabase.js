@@ -1,6 +1,6 @@
 /***
  *
- * Back-end Database Component File
+ * Back-end Auth Database Component File
  *
  ***/
 const bcrypt = require('bcrypt');

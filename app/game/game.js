@@ -40,7 +40,7 @@ class Game {
                     // Create a player with the socket id and the map they will be spawning in
                     let player = new Player({
                         id: socketId,
-                        name: user.username,
+                        username: user.username,
                         health: user.health,
                         x: user.x,
                         y: user.y,
@@ -64,6 +64,7 @@ class Game {
                         },
                         globalMapData: mapData
                     });
+
                     gameServer.game.addPlayer(socketId, player);
                     player.initPackage = gameServer.game.getPlayerInitPackage();
 

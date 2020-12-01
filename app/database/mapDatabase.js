@@ -1,3 +1,8 @@
+/***
+ *
+ * Back-end Map Database Component File
+ *
+ ***/
 const Database = require("./database");
 
 /***

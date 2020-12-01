@@ -7,14 +7,12 @@
 const { default: Axios } = require("axios");
 
 class AuthRouting {
-    constructor() {
-
-    }
+    constructor() { }
 
     async register(data, cb) {
         Axios.post('/auth/register', data)
             .then(function (res) {
-                cb(res.data)
+                cb(res)
             }).catch(function (error) {
                 console.log(error);
             });
@@ -23,7 +21,7 @@ class AuthRouting {
     async login(data, cb) {
         Axios.post('/auth/login', data)
             .then(function (res) {
-                cb(res.data);
+                cb(res);
             })
             .catch(function (error) {
                 console.log(error);

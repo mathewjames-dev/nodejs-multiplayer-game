@@ -9,8 +9,7 @@ const Entity = require('../entity');
 class Player extends Entity {
     constructor(param) {
         super(param);
-
-        this.name = param.username;
+        this.username = param.username;
         this.health = param.health;
     }
 

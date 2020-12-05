@@ -12,7 +12,7 @@ class SocketServer {
     }
 
     listen() {
-        this.io.sockets.on('connection', function (socket) {
+        this.io.sockets.on('connection', (socket) => {
             console.log('*** SERVER: NEW CONNECTION! ***');
 
             var socketId = socket.id;
@@ -21,7 +21,7 @@ class SocketServer {
              * GAME EVENT LISTENERS
              */
             // Upon disconnection from the socket server, remove the player from the game list and socket list.
-            socket.on('disconnect', function () {
+            socket.on('disconnect', () => {
                 console.log('*** SERVER: DISCONNECTED USER! ***');
                 gameServer.game.removePlayer(socketId);
                 gameServer.socketServer.removeSocket(socketId);
@@ -30,17 +30,22 @@ class SocketServer {
             /*
              * PLAYER EVENT LISTENERS.
              */
-            socket.on('playerMovement', function (data) {
+            socket.on('playerMovement', (data) => {
                 let player = gameServer.game.getPlayer(socketId);
                 if (player) {
                     player.movePlayer(data)
                 }
             });
 
+            socket.on('increaseHealth', (data) => {
+                let player = gameServer.game.getPlayer(data.id);
+                if (player) player.health += data.health;
+            });
+
             /*
              * CHAT EVENT LISTENERS.
              */
-            socket.on('sendMsgToServer', function (data) {
+            socket.on('sendMsgToServer', (data) => {
                 console.log('SERVER: Someone sent a message!');
 
                 gameServer.socketServer.io.emit('broadcastMessage', data);

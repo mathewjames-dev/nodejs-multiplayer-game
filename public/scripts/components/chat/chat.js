@@ -10,24 +10,24 @@ var chatForm = document.getElementById('chat-form');
 var typing = false;
 
 // Function for when the chat submit has been clicked.
-chatForm.onsubmit = function (e) {
+chatForm.onsubmit = (e) => {
     // Prevent the form from refreshing the page
     e.preventDefault();
 
     // Call sendMsgToServer socket function, with form text value as argument
-    socket.emit('sendMsgToServer', chatInput.value);
+    socket.emit('sendMsgToServer', { username: game.player.username, text: chatInput.value });
     chatInput.value = "";
 }
 
 // Add a chat block to the list view and scroll to the bottom upon successful message receive.
-socket.on('addToChat', function (data) {
+socket.on('broadcastMessage', (data) => {
     console.log('CLIENT: Received chat message.');
-    chatText.innerHTML += '<div class="chatCell">' + data + '</div>';
+    chatText.innerHTML += '<div class="chatCell">' + data.username + ': ' + data.text + '</div>';
     chatText.scrollTop = chatText.scrollHeight;
 });
 
 // Add a global event listener for when the dom has been loaded.
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
 
     // Focus event listener for the chat input. Once focused we set the global typing variable to true.
     document.getElementById('chat-input').addEventListener('focus', function () {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Event listener for a key up event.
-document.onkeyup = function (event) {
+document.onkeyup = (event) => {
 
     // User pressed the enter key.
     if (event.keyCode === 13) {

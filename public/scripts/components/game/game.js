@@ -54,7 +54,8 @@ class Game {
          * Temporary Code
          */
         $('#main-menu').hide();
-        $('#inventory').show()
+        $('#inventory').show();
+        $('.chatContainer').show();
         game.assetLoader.sounds.background.volume = 0;
         game.assetLoader.sounds.background.currentTime = 0;
         game.assetLoader.sounds.background.loop = true;

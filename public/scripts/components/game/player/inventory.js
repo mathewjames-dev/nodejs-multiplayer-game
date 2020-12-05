@@ -31,18 +31,24 @@ class Inventory {
                     if (!item) {
                         inventoryList.append("<li>" +
                             "<div class='item'>" +
-                            "</div > " +
+                            "</div> " +
                             "</li>");
                     } else {
                         inventoryList.append("<li>" +
-                            "<div class='item'>" +
+                            "<div data-name='" + (item ? item.item_name : '') + "' class='item'>" +
                             "<img name='" + (item ? item.item_name : '') + "' src='" + (item ? item.item_image : '') + "' />" +
-                            "</div > " +
+                            "</div> " +
                             "</li>");
                     }
                 }
             }
         })
+    }
+
+    async potionUsed() {
+
+        // Emit the appropriate call based on potion type. (Database type eventually - For now hard coded)
+        game.gameSockets.increaseHealth(50)
     }
 }
 

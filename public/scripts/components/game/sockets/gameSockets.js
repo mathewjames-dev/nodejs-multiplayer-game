@@ -21,6 +21,10 @@ class GameSockets {
             }
         });
     }
+
+    increaseHealth(amount) {
+        socket.emit('increaseHealth', { id: socket.id, health: amount });
+    }
 }
 
 module.exports = GameSockets;

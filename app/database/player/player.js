@@ -21,6 +21,14 @@ class PlayerDatabase extends Database {
             callback(result);
         });
     }
+
+    async updatePlayerState(player) {
+            console.log(player);
+        let sql = "UPDATE users SET health = ?, x = ?, y = ? " +
+            "WHERE username = ?";
+        this.connection.query(sql, [player.health, player.x, player.y, player.username], function (err, result, fields) {
+        });
+    }
 }
 
 module.exports = PlayerDatabase;

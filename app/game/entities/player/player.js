@@ -5,6 +5,7 @@
  ***/
 // Import the components required.
 const Entity = require('../entity');
+const PlayerDatabase = require('../../../database/player/player');
 
 class Player extends Entity {
     constructor(param) {
@@ -16,6 +17,11 @@ class Player extends Entity {
     movePlayer(data) {
         this.movement = data;
         this.updatePosition(data);
+    }
+
+    async updatePlayerState() {
+        let playerDatabase = new PlayerDatabase;
+        playerDatabase.updatePlayerState(this);
     }
 }
 

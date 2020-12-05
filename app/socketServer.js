@@ -21,10 +21,15 @@ class SocketServer {
              * GAME EVENT LISTENERS
              */
             // Upon disconnection from the socket server, remove the player from the game list and socket list.
-            socket.on('disconnect', () => {
+            socket.on('disconnect', async () => {
                 console.log('*** SERVER: DISCONNECTED USER! ***');
-                gameServer.game.removePlayer(socketId);
-                gameServer.socketServer.removeSocket(socketId);
+
+                // Start by removing the player from both the game and socket server.
+                let player = gameServer.game.getPlayer(socketId);
+
+                player.updatePlayerState()
+                    .then(gameServer.game.removePlayer(socketId))
+                    .then(gameServer.socketServer.removeSocket(socketId));
             });
 
             /*
@@ -59,7 +64,7 @@ class SocketServer {
     }
 
     // Remove a socket from the list.
-    removeSocket(id) {
+    async removeSocket(id) {
         delete this.sockets[id];
     }
 

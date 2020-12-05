@@ -78,7 +78,7 @@ class Game {
     }
 
     // Function to remove the player from the game.
-    removePlayer(socket) {
+    async removePlayer(socket) {
         delete this.players[socket.id];
     }
 

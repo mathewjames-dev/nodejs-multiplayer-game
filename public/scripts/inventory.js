@@ -165,14 +165,13 @@ $(document).ready(function () {
     $('#inventory').on('click', '.item', async (e) => {
         let object = $('div[data-name="' + e.target.getAttribute('data-name') + '"]');
 
-        // Determine object type (In future use item types from database)
-        if (object.data('name').indexOf('Health Potion') > 0) {
-            // If position go to potion used function which will modify players attributes accordingly
-            // and on database side
-            await game.player.inventory.potionUsed()
-                .then(() => {
-                    object.remove();
-                });
+        switch (object.data('type')) {
+            case 'Health Potion':
+                await game.player.inventory.potionUsed('Health Potion', object.data('value'))
+                    .then(() => {
+                        object.remove();
+                    });
+                break;
         }
     });
 

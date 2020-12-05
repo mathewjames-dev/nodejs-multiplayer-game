@@ -34,9 +34,12 @@ class Inventory {
                             "</div> " +
                             "</li>");
                     } else {
+                        item.item_properties = JSON.parse(item.item_properties);
+
                         inventoryList.append("<li>" +
-                            "<div data-name='" + (item ? item.item_name : '') + "' class='item'>" +
-                            "<img name='" + (item ? item.item_name : '') + "' src='" + (item ? item.item_image : '') + "' />" +
+                            "<div data-value='" + item.item_properties.value + "'  data-name='" + item.item_name + "' " +
+                            "data-type='" + item.item_properties.type + "' class= 'item' > " +
+                            "<img src='" + item.item_image + "'/>" +
                             "</div> " +
                             "</li>");
                     }
@@ -45,10 +48,13 @@ class Inventory {
         })
     }
 
-    async potionUsed() {
-
-        // Emit the appropriate call based on potion type. (Database type eventually - For now hard coded)
-        game.gameSockets.increaseHealth(50)
+    async potionUsed(type, value) {
+        // Emit the appropriate call based on potion type.
+        switch (type) {
+            case 'Health Potion':
+                game.gameSockets.increaseHealth(value);
+                break;
+        }
     }
 }
 

@@ -42,10 +42,8 @@ class SocketServer {
              */
             socket.on('sendMsgToServer', function (data) {
                 console.log('SERVER: Someone sent a message!');
-                // Loop all the connected socket connections and emit the add to chat signal.
-                for (let i in gameServer.socketServer.getSocketList()) {
-                    gameServer.socketServer.getSocketList()[i].emit('addToChat', data);
-                }
+
+                gameServer.socketServer.io.emit('broadcastMessage', data);
             });
         });
     }

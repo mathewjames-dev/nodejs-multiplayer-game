@@ -59,7 +59,8 @@ class Routes {
 
                         inventoryObj.items.push({
                             item_name: item.name,
-                            item_image: item.image
+                            item_image: item.image,
+                            item_properties: item.properties
                         });
                     }
 

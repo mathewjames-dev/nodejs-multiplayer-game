@@ -164,10 +164,19 @@ $(document).ready(function () {
 
     $('#inventory').on('click', '.item', async (e) => {
         let object = $('div[data-name="' + e.target.getAttribute('data-name') + '"]');
+        let objectId = object.data('id');
 
-        switch (object.data('type')) {
+        for (let index in game.player.inventory.items) {
+            let item = game.player.inventory.items[index];
+            if (objectId === item.item_id) {
+                // We can set the object type.
+                var objectType = item.item_properties.type;
+            }
+        }
+        switch (objectType) {
             case 'Health Potion':
                 await game.player.inventory.potionUsed('Health Potion', object.data('value'))
+                    .then(() => game.player.inventory.removeItemFromInventory(objectId))
                     .then(() => {
                         object.remove();
                     });

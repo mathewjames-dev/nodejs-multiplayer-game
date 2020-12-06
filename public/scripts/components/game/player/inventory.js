@@ -37,8 +37,7 @@ class Inventory {
                         item.item_properties = JSON.parse(item.item_properties);
 
                         inventoryList.append("<li>" +
-                            "<div data-value='" + item.item_properties.value + "'  data-name='" + item.item_name + "' " +
-                            "data-type='" + item.item_properties.type + "' class= 'item' > " +
+                            "<div data-id='" + item.item_id + "'  data-name='" + item.item_name + "' class= 'item'> " +
                             "<img src='" + item.item_image + "'/>" +
                             "</div> " +
                             "</li>");
@@ -46,6 +45,10 @@ class Inventory {
                 }
             }
         })
+    }
+
+    async removeItemFromInventory(itemId) {
+        socket.emit('removeItemFromInventory', { id: game.player.id, itemId: itemId });
     }
 
     async potionUsed(type, value) {

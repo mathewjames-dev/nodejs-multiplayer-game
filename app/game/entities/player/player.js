@@ -23,6 +23,11 @@ class Player extends Entity {
         let playerDatabase = new PlayerDatabase;
         playerDatabase.updatePlayerState(this);
     }
+
+    async removeItemFromInventory(data) {
+        let playerDatabase = new PlayerDatabase;
+        playerDatabase.removeItemFromInventory(this, data);
+    }
 }
 
 module.exports = Player;

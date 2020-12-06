@@ -47,6 +47,11 @@ class SocketServer {
                 if (player) player.health += data.health;
             });
 
+            socket.on('removeItemFromInventory', (data) => {
+                let player = gameServer.game.getPlayer(data.id);
+                player.removeItemFromInventory(data);
+            })
+
             /*
              * CHAT EVENT LISTENERS.
              */

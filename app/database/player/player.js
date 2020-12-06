@@ -10,6 +10,25 @@ class PlayerDatabase extends Database {
         super();
     }
 
+    async getPlayer(username, callback) {
+        let sql = "SELECT * from users WHERE username = ?";
+        this.connection.query(sql, [username], function (err, result, fields) {
+            if (err) callback(false);
+            callback(result);
+        });
+    }
+
+    async getPlayerInventoryId(username, callback) {
+        await this.getPlayer(username, (player) => {
+            let sql = "SELECT inventory.id FROM inventory " +
+                "WHERE user_id = ? ";
+            this.connection.query(sql, [player[0].id], function (err, result, fields) {
+                if (err) callback(false);
+                callback(result);
+            })
+        })
+    }
+
     async getPlayerInventory(username, callback) {
         let sql = "SELECT inv.max_size, item.* FROM users " +
             "INNER JOIN inventory inv ON users.id = inv.id " +
@@ -23,10 +42,19 @@ class PlayerDatabase extends Database {
     }
 
     async updatePlayerState(player) {
-            console.log(player);
         let sql = "UPDATE users SET health = ?, x = ?, y = ? " +
             "WHERE username = ?";
         this.connection.query(sql, [player.health, player.x, player.y, player.username], function (err, result, fields) {
+        });
+    }
+
+    async removeItemFromInventory(player, data) {
+        let $this = this;
+        this.getPlayerInventoryId(player.username, (inventory) => {
+            let sql = "DELETE from inventory_items WHERE item_id = ? AND inventory_id = ?";
+            $this.connection.query(sql, [data.itemId, inventory[0].id], function (err, result, fields) {
+                if (err) console.log(err);
+            });
         });
     }
 }

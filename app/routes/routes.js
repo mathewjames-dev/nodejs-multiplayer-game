@@ -58,6 +58,7 @@ class Routes {
                         if (!inventoryObj.max_size) inventoryObj.max_size = item.max_size;
 
                         inventoryObj.items.push({
+                            item_id: item.id,
                             item_name: item.name,
                             item_image: item.image,
                             item_properties: item.properties

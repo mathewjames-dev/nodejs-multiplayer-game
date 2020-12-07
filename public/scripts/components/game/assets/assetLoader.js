@@ -38,6 +38,8 @@ class AssetLoader {
     async loadImages() {
         for (var image in this.images) {
             if (!this.images[image]) continue;
+            if (this.images[image].status == 'loaded') continue;
+
 
             let $this = this;
             let src = this.images[image];
@@ -67,9 +69,11 @@ class AssetLoader {
     async loadSounds() {
         for (var sound in this.sounds) {
             if (!this.sounds[sound]) continue;
+            if (this.sounds[sound].status == 'loaded') continue;
 
             let $this = this;
             let src = this.sounds[sound];
+
 
             this.sounds[sound] = new Audio();
             this.sounds[sound].status = 'loading';

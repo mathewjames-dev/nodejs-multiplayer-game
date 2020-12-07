@@ -29,6 +29,7 @@ class Inventory {
                     let item = game.player.inventory.items[i];
 
                     if (!item) {
+                        // Implement an empty item slot
                         inventoryList.append("<li>" +
                             "<div class='item'>" +
                             "</div> " +
@@ -36,6 +37,10 @@ class Inventory {
                     } else {
                         item.item_properties = JSON.parse(item.item_properties);
 
+                        // Load the item sound.
+                        game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+
+                        // Implement the item
                         inventoryList.append("<li>" +
                             "<div data-id='" + item.item_id + "'  data-name='" + item.item_name + "' class= 'item'> " +
                             "<img src='" + item.item_image + "'/>" +

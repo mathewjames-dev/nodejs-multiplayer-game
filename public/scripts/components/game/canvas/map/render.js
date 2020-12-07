@@ -8,11 +8,13 @@ class MapRender {
     constructor() {
         this.context = mapContext;
         this.mapLayers = [];
+        this.mapTilesets = [];
     }
 
     async loadMap(mapData) {
+        let $this = this;
         await this.loadMapSounds(mapData.sounds)
-            .then(this.renderMap(mapData));
+            .then(this.loadMapTileset(mapData));
     }
 
     async loadMapSounds(mapSounds) {
@@ -24,24 +26,31 @@ class MapRender {
         }
     }
 
-    renderMap(json) {
+    async loadMapTileset(json) {
         this.mapData = json;
-        this.loadMapTileset(json);
-    }
 
-    loadMapTileset(json) {
-        let $this = this;
+        for (let t = 0; t <= json.tilesets.length; t++) {
+            let tileset = json.tilesets[t];
+            if (!tileset) continue;
 
-        this.mapTileSet = new Image();
-        this.mapTileSet.src = '/public/assets/maps/tilesets/' + json.tilesets[0].image;
-        this.mapTileSet.onload = function () {
-            $this.renderMapLayers();
+            let $this = this;
+            let src = tileset.image;
+
+            this.mapTilesets[tileset.name] = new Image();
+            this.mapTilesets[tileset.name].name = tileset.name;
+            this.mapTilesets[tileset.name].src = '/public/assets/maps/tilesets/' + src;
+            this.mapTilesets[tileset.name].gid = tileset.firstgid;
+            this.mapTilesets[tileset.name].onload = function () {
+                $this.renderMapLayers();
+            }
         }
     }
 
     renderMapLayers(layers) {
         let $this = this;
+
         layers = $.isArray(layers) ? layers : this.mapData.layers;
+
         $.each(layers, function (index, value) {
             $this.renderMapLayer($(this)[0]);
         });
@@ -52,12 +61,17 @@ class MapRender {
             return;
         }
 
-        let contextDuplication = this.context.canvas.cloneNode();
-        contextDuplication = contextDuplication.getContext("2d");
-
-        let rows = this.mapData.height,
+        let tileset = layer.properties.find(function (property, index) {
+            if (property.name == 'tileset')
+                return true;
+        }),
+            contextDuplication = this.context.canvas.cloneNode(),
+            rows = this.mapData.height,
             columns = this.mapData.width,
-            size = this.mapData.tilewidth;
+            size = this.mapData.tilewidth,
+            tilesetGid = this.mapTilesets[tileset.value].gid;
+
+        contextDuplication = contextDuplication.getContext("2d");
 
         // If the map hasn't been rendered already - We need to render it.
         if (this.mapLayers.length < this.mapData.layers.length) {
@@ -68,11 +82,13 @@ class MapRender {
                     if (tile !== 0) { // 0 => empty tile
                         tile--;
 
-                        let img_x = (tile % (this.mapData.tilesets[0].imagewidth / size)) * size;
-                        let img_y = ~~(tile / (this.mapData.tilesets[0].imagewidth / size)) * size;
+                        tile = tile - (tilesetGid - 1);
+
+                        let img_x = (tile % (this.mapTilesets[tileset.value].width / size)) * size;
+                        let img_y = ~~(tile / (this.mapTilesets[tileset.value].width / size)) * size;
 
                         contextDuplication.drawImage(
-                            this.mapTileSet,
+                            this.mapTilesets[tileset.value],
                             img_x,
                             img_y,
                             size,
@@ -88,7 +104,7 @@ class MapRender {
             this.mapLayers.push(contextDuplication.canvas.toDataURL());
             this.context.drawImage(contextDuplication.canvas, 0, 0);
         } else {
-            for (i = 0; i <= this.mapLayers.length; i++) {
+            for (let i = 0; i <= this.mapLayers.length; i++) {
                 var image = $("<img />", { src: this.mapLayers[i] })[0];
                 this.context.drawImage(image, 0, 0);
             }

@@ -56,13 +56,16 @@ class Game {
         $('#main-menu').hide();
         $('#inventory').show();
         $('.chatContainer').show();
-        game.assetLoader.sounds.background.volume = 0;
-        game.assetLoader.sounds.background.currentTime = 0;
-        game.assetLoader.sounds.background.loop = true;
-        game.assetLoader.sounds.background.play();
-        $(game.assetLoader.sounds.background).animate({
-            volume: 0.3
-        }, 2000);
+
+        if (game.assetLoader.sounds.background) {
+            game.assetLoader.sounds.background.volume = 0;
+            game.assetLoader.sounds.background.currentTime = 0;
+            game.assetLoader.sounds.background.loop = true;
+            game.assetLoader.sounds.background.play();
+            $(game.assetLoader.sounds.background).animate({
+                volume: 0.3
+            }, 2000);
+        }
 
         setInterval(function () {
             /*

@@ -27,9 +27,9 @@ class SocketServer {
                 // Start by removing the player from both the game and socket server.
                 let player = gameServer.game.getPlayer(socketId);
 
-                player.updatePlayerState()
-                    .then(gameServer.game.removePlayer(socketId))
-                    .then(gameServer.socketServer.removeSocket(socketId));
+                gameServer.game.removePlayer(socketId)
+                    .then(gameServer.socketServer.removeSocket(socketId))
+                    .then(player.updatePlayerState());
             });
 
             /*

@@ -39,17 +39,17 @@ class AuthenticationRouting {
     }
 
     authLogin() {
-        this.app.post('/auth/login', function (req, res) {
+        this.app.post('/auth/login', (req, res) => {
             let authDatabase = new AuthDatabase();
 
             // Check if the username and password match a user account.
-            authDatabase.authenticateUser(req.body, function (user) {
+            authDatabase.authenticateUser(req.body, (user) => {
                 if (user) {
-                    gameServer.game.createPlayer(req.body.socket, user)
-                        .then(function (player) {
+                    gameServer.game.addPlayer(req.body.socket, user)
+                        .then((initPackage) => {
                             res.status(200).send(JSON.stringify({
                                 message: "User successfully authenticated",
-                                player: player,
+                                initPackage: initPackage,
                             }));
                         }).catch(function (err) {
                             console.log(err);

@@ -11,33 +11,54 @@ const Map = require('./map/map');
 class Game {
     constructor() {
         this.players = {};
+
+        this.shouldSendUpdate = false;
+        // Start the game loop.
+        setInterval(this.gameLoop.bind(this), 1000 / 60);
     }
 
-    startGameLoop() {
-        // Main Game Loop
-        setInterval(async function () {
-            // Update States
-            if (await gameServer.game.getPlayers()) {
-                //Update the player states.
-                await gameServer.game.updatePlayers();
-                gameServer.io.sockets.emit('playersState', await gameServer.game.getPlayers());
+    // Main game loop function.
+    gameLoop() {
+        // Update Players
+        // If there are players logged into the game then this code will need running, otherwise we don't need to.
+        if (this.players) {
+
+            // Update each player state.
+            Object.keys(this.players).forEach(id => {
+                let player = this.players[id];
+                player.update();
+            });
+
+            // Send a game update to each player every other time
+            if (this.shouldSendUpdate) {
+                // Emit the states individually to each socket - We loop the logged in sockets to do this.
+                Object.keys(gameServer.socketServer.sockets).forEach(id => {
+                    let socket = gameServer.socketServer.sockets[id];
+                    let player = this.players[id];
+                    if (!player) return;
+                    socket.emit('gameUpdate', this.createUpdate(player));
+                });
+                this.shouldSendUpdate = false;
+            } else {
+                this.shouldSendUpdate = true;
             }
-
-        }, 1000 / 60); // 60 times per second.
+        }
     }
 
-    createPlayer(socketId, user) {
+    // Function to add a player to the game upon authentication.
+    addPlayer(socketId, user) {
         return new Promise((resolve, reject) => {
             // Get all the map data required for the front end.
             let map = new Map(user.map_name, user.map_location);
 
+            // Get the map data from the database.
             map.getMapData()
+                // Then use the map data retrieved to get map sounds.
                 .then(mapData => map.getMapSounds(mapData))
-                .then(function (mapData) {
-                    // Pushing the users socket id into the socket list.
-                    gameServer.socketServer.addSocket(socketId);
 
-                    // Create a player with the socket id and the map they will be spawning in
+                // Then finally we will setup and add the player.
+                .then((mapData) => {
+                    // Create the player.
                     let player = new Player({
                         id: socketId,
                         username: user.username,
@@ -65,54 +86,34 @@ class Game {
                         globalMapData: mapData
                     });
 
-                    gameServer.game.addPlayer(socketId, player);
-                    player.initPackage = gameServer.game.getPlayerInitPackage();
+                    // Add the player to the game players object.
+                    gameServer.game.players[socketId] = player;
 
-                    resolve(player);
+                    // Setup the player initialization package and resolve.
+                    let initPackage = gameServer.game.createUpdate(player);
+                    resolve(initPackage);
                 });
         });
     }
 
-    addPlayer(socketId, player) {
-        this.players[socketId] = player;
+    // Function to create an update for the player.
+    createUpdate(player) {
+        let update = {
+            player: player,
+            players: {}
+        };
+
+        Object.keys(this.players).forEach(id => {
+            let player = this.players[id];
+            update.players[player.id] = player.getUpdate();
+        });
+
+        return JSON.stringify(update);
     }
 
     // Function to remove the player from the game.
     async removePlayer(socketId) {
         delete this.players[socketId];
-    }
-
-    // Function to get a player by socket id.
-    getPlayer(socketId) {
-        return this.players[socketId];
-    }
-
-    // Function to get all players.
-    async getPlayers() {
-        return this.players;
-    }
-
-    // Function to update players.
-    async updatePlayers(){
-        for (let player in this.players) {
-            let p = this.players[player];
-            p.updateEntityAnimation(p);
-        }
-    }
-
-    // Get a new players initialization package.
-    getPlayerInitPackage() {
-        let initPackage = {};
-        for (let player in this.players) {
-            let p = this.players[player];
-            initPackage[p.id] = {
-                // We're only allowing the front end user access to the sprite object within each player
-                // As opposed to all the values of the players where they could change them and modify the game easier.
-                sprite: p.sprite
-            }
-        }
-
-        return initPackage;
     }
 }
 

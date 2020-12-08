@@ -24,12 +24,6 @@ class GameServer {
         gameServer.socketServer.listen();
 
         console.log('*** SERVER: SOCKET SERVER STARTED ***');
-
-        console.log('*** SERVER: STARTING GAME LOOP ***');
-
-        gameServer.game.startGameLoop();
-
-        console.log('*** SERVER: GAME LOOP STARTED ***');
     }
 }
 

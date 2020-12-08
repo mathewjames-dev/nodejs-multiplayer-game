@@ -7,12 +7,11 @@
 const GameSockets = require('./sockets/gameSockets');
 const AssetLoader = require("./assets/assetLoader");
 const Canvas = require("./canvas/canvas");
-const Movement = require("./input/movement");
-const Inventory = require('./player/inventory');
+const Input = require("./input/input");
 
 class Game {
-    constructor(player) {
-        //  be utilized for all real time functionality.
+    constructor() {
+        // Will be utilized for all real time functionality.
         this.gameSockets = new GameSockets;
 
         // Will be utilized for all asset loading.
@@ -21,20 +20,17 @@ class Game {
         // Will be utilized to house the game canvas and respective functions.
         this.canvas = new Canvas;
 
-        // Will be utilized for all movement functionality.
-        this.movement = new Movement;
+        // Will be utilized for all input functionality.
+        this.input = new Input;
 
         // Sound Related Values ( Eventually include a sound manager? )
         this.lastPlayedTileSound = 0;
-
-        // Logged In Player
-        this.player = player;
-        this.player.inventory = new Inventory(this.player);
     }
 
-    async gameInit() {
-        await this.loadPlayerSprites(this.player.initPackage)
-            .then(this.canvas.mapRender.loadMap(this.player.globalMapData))
+    async gameInit(initPackage) {
+        initPackage = JSON.parse(initPackage);
+        await this.loadPlayerSprites(initPackage.players)
+            .then(this.canvas.mapRender.loadMap(initPackage.player.globalMapData))
             .then(this.assetLoader.loadAssets)
             .then(this.startGameLoop);
     }
@@ -72,24 +68,8 @@ class Game {
              * Player events.
              */
 
-            socket.emit('playerMovement', game.movement.getMovement());
+            socket.emit('playerMovement', game.input.getMovement());
         }, 1000 / 60); // 30 Times per second
-    }
-
-    async updatePlayersPackage(players) {
-        let updatedPlayersPackage = {};
-        for (let p in players) {
-            // Instantly load all the players sprites
-            // this.assetLoader.addImage(this.players[player].sprite.name, this.players[player].sprite.location);
-
-            let player = players[p];
-            updatedPlayersPackage[player.id] = {
-                // We're only allowing the front end user access to the sprite object within each player
-                // As opposed to all the values of the players where they could change them and modify the game easier.
-                sprite: player.sprite
-            }
-        }
-        game.players = updatedPlayersPackage;
     }
 }
 

@@ -10,39 +10,27 @@ const MapRender = require('./map/render');
 class Canvas {
     constructor() {
         this.mapRender = new MapRender;
-
-        // The canvas will have render files and animation files.
         this.playerRender = new PlayerRender;
+
+        this.inventoryDrawn = 0;
     }
 
-    drawPlayerStates(players) {
+    async drawPlayerStates(updatePackage) {
         playerContext.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
-        // Loop the player object that we're passed.
-        for (let id in players) {
-            if (!game.players[id]) continue;
-
-            let player = players[id];
+        // Loop the players within the update package object that we're passed to then draw the player states
+        for (let id in updatePackage.players) {
+            let player = updatePackage.players[id];
             this.playerRender.drawSprite(player);
 
-            // Draw Health only for current player.
-            if (id === game.player.id) {
-                // Health Related (divided by max health)
-                let hpWidth = 30 * player.health / 100;
-
-                playerContext.fillStyle = 'red';
-                playerContext.fillRect(player.x - hpWidth / 2, player.y - 30, hpWidth, 4); //Draw the health bar
-            }
-        
             // SOUND RELATED
             let playerX = Math.round(player.x / 16),
                 playerY = Math.round(player.y / 16),
-                tile = player.globalMapData.layers[0].data[playerY * player.globalMapData.width + playerX];
+                tile = player.mapData.layers[0].data[playerY * player.mapData.width + playerX];
             if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
                 if (game.assetLoader.sounds[tile]) {
                     game.assetLoader.sounds[tile].play();
                     game.lastPlayedTileSound = tile;
-
                 }
             } else {
                 if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
@@ -50,6 +38,48 @@ class Canvas {
                 }
             }
         }
+    }
+
+    // Function to do all the current player rendering / drawing.
+    async drawPlayerUpdate(player) {
+        // Utilize the player object within the update package to draw the current players health.
+        let hpWidth = 30 * player.health / 100;
+
+        playerContext.fillStyle = 'red';
+        playerContext.fillRect(player.x - hpWidth / 2, player.y - 30, hpWidth, 4); //Draw the health bar
+    }
+
+    async drawPlayerInventory(inventory) {
+        //WE NEED TO LOAD THE IMAGES IF THEY HAVENT BEEN LOADED ALREADY
+        let inventoryList = $('#inventory-list');
+        inventoryList.html();
+
+        if (this.inventoryDrawn == 0) {
+            for (let i = 0; i < inventory.maxSlots; i++) {
+                let item = inventory.items[i];
+                if (!item) {
+                    // Implement an empty item slot
+                    inventoryList.append("<li>" +
+                        "<div class='item'>" +
+                        "</div> " +
+                        "</li>");
+                } else {
+                    item.item_properties = JSON.parse(item.item_properties);
+
+                    // Load the item sound.
+                    game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+
+                    // Implement the item
+                    inventoryList.append("<li>" +
+                        "<div data-id='" + item.item_id + "'  data-name='" + item.item_name + "' class= 'item'> " +
+                        "<img src='" + item.item_image + "'/>" +
+                        "</div> " +
+                        "</li>");
+                }
+            }
+        }
+
+        this.inventoryDrawn = 1;
     }
 }
 

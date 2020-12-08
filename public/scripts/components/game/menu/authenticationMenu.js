@@ -42,8 +42,8 @@ $(function () {
         let data = $(this).serialize() + '&socket=' + socket.id;
         await routes.login(data, async function (r) {
             if (r.status === 200) {
-                global.game = new Game(r.data.player);
-                await game.gameInit();
+                global.game = new Game();
+                await game.gameInit(r.data.initPackage);
             }
         })
     });

@@ -11,13 +11,15 @@ class GameSockets {
     }
 
     playerSockets() {
-        socket.on('playersState', function (players) {
+        socket.on('gameUpdate', async function (updatePackage) {
+            updatePackage = JSON.parse(updatePackage);
             if (global.game) {
-                let $players = players;
-                game.updatePlayersPackage($players)
-                    .then(function () {
-                        game.canvas.drawPlayerStates($players);
-                    });
+                game.canvas.drawPlayerStates(updatePackage)
+                    .then(async () => {
+                        // Draw Player Related Elements
+                        game.canvas.drawPlayerUpdate(updatePackage.player)
+                    })
+                    .then(game.canvas.drawPlayerInventory(updatePackage.player.inventory));
             }
         });
     }

@@ -4,7 +4,7 @@
  * This will be utilized to house the main game input functions.
  *
  ***/
-class Movement {
+class Input {
     constructor() {
         this.up = false;
         this.down = false;
@@ -20,19 +20,19 @@ class Movement {
         document.addEventListener('keydown', function (event) {
             switch (event.keyCode) {
                 case 65: // A
-                    game.movement.left = true;
+                    game.input.left = true;
                     break;
 
                 case 87: // W
-                    game.movement.up = true;
+                    game.input.up = true;
                     break;
 
                 case 68: // D
-                    game.movement.right = true;
+                    game.input.right = true;
                     break;
 
                 case 83: //S
-                    game.movement.down = true;
+                    game.input.down = true;
                     break;
             }
         });
@@ -43,19 +43,19 @@ class Movement {
         document.addEventListener('keyup', function (event) {
             switch (event.keyCode) {
                 case 65: // A
-                    game.movement.left = false;
+                    game.input.left = false;
                     break;
 
                 case 87: // W
-                    game.movement.up = false;
+                    game.input.up = false;
                     break;
 
                 case 68: // D
-                    game.movement.right = false;
+                    game.input.right = false;
                     break;
 
                 case 83: //S
-                    game.movement.down = false;
+                    game.input.down = false;
                     break;
             }
         });
@@ -63,12 +63,12 @@ class Movement {
 
     getMovement() {
         return {
-            up: game.movement.up,
-            down: game.movement.down,
-            left: game.movement.left,
-            right: game.movement.right
+            up: game.input.up,
+            down: game.input.down,
+            left: game.input.left,
+            right: game.input.right
         }
     }
 }
 
-module.exports = Movement;
+module.exports = Input;

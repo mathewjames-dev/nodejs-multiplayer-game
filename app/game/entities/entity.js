@@ -32,6 +32,7 @@ class Entity extends Collision {
             left: false,
             right: false
         };
+
         this.isColliding = false;
 
         // If we don't want our object to be based off of the defaults above, 
@@ -48,6 +49,54 @@ class Entity extends Collision {
             if (param.sprite)
                 this.sprite = param.sprite;
         }
+    }
+
+    // Function to update the entity.
+    update() {
+        this.updateEntityAnimation();
+    }
+
+    // Function to update the entity sprite animation.
+    updateEntityAnimation() {
+        // We need to update the current frame.
+        if (!this.movement.left && !this.movement.right
+            && !this.movement.up && !this.movement.down) {
+            this.sprite.animation.currentFrame = 0;
+        } else {
+            this.sprite.animation.currentFrame =
+                ++this.sprite.animation.currentFrame % this.sprite.animation.totalFrames;
+        }
+        this.sprite.animation.srcX = this.sprite.animation.currentFrame * this.sprite.spriteWidth;
+
+
+        // Calculate the new X co ordinate for the sprite sheet.
+        if (this.movement.up) {
+            this.sprite.animation.srcY = this.sprite.upRow * this.sprite.spriteHeight;
+        }
+
+        if (this.movement.down) {
+            this.sprite.animation.srcY = this.sprite.downRow * this.sprite.spriteHeight;
+        }
+
+        // Calculate the new Y co ordinate for the sprite sheet.
+        if (this.movement.left) {
+            this.sprite.animation.srcY = this.sprite.leftRow * this.sprite.spriteHeight;
+        }
+
+        if (this.movement.right) {
+            this.sprite.animation.srcY = this.sprite.rightRow * this.sprite.spriteHeight;
+        }
+    }
+
+    // Function to get update for the entity.
+    getUpdate() {
+        return {
+            id: this.id,
+            x: this.x,
+            y: this.y,
+            movement: this.movement,
+            mapData: this.globalMapData,
+        };
     }
 
     updatePosition(data) {
@@ -79,37 +128,6 @@ class Entity extends Collision {
         }
 
         this.isColliding = false;
-    }
-
-    updateEntityAnimation(entity){
-        // We need to update the current frame.
-        if (!entity.movement.left && !entity.movement.right
-            && !entity.movement.up && !entity.movement.down) {
-            gameServer.game.players[entity.id].sprite.animation.currentFrame = 0;
-        } else {
-            gameServer.game.players[entity.id].sprite.animation.currentFrame =
-                ++gameServer.game.players[entity.id].sprite.animation.currentFrame % gameServer.game.players[entity.id].sprite.animation.totalFrames;
-        }
-        gameServer.game.players[entity.id].sprite.animation.srcX = gameServer.game.players[entity.id].sprite.animation.currentFrame * entity.sprite.spriteWidth;
-
-
-        // Calculate the new X co ordinate for the sprite sheet.
-        if (entity.movement.up) {
-            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.upRow * entity.sprite.spriteHeight;
-        }
-
-        if (entity.movement.down) {
-            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.downRow * entity.sprite.spriteHeight;
-        }
-
-        // Calculate the new Y co ordinate for the sprite sheet.
-        if (entity.movement.left) {
-            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.leftRow * entity.sprite.spriteHeight;
-        }
-
-        if (entity.movement.right) {
-            gameServer.game.players[entity.id].sprite.animation.srcY = entity.sprite.rightRow * entity.sprite.spriteHeight;
-        }
     }
 
     getDistance(pt) { //Pass a point (x and y) and it will return the distance with a square root

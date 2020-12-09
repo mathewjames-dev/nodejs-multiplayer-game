@@ -6,7 +6,8 @@
  ***/
 class MapRender {
     constructor() {
-        this.context = mapContext;
+        this.contextBelow = mapContextBelow;
+        this.contextAbove = mapContextAbove;
         this.mapLayers = [];
         this.mapTilesets = [];
         this.loadedTilesets = 0;
@@ -20,12 +21,12 @@ class MapRender {
 
     async loadMapSounds(mapSounds) {
         return true;
-       /* for (let s = 0; s <= mapSounds.length; s++) {
-            let sound = mapSounds[s];
-            if (!sound) continue;
-
-            game.assetLoader.addSound(sound.name, sound.location);
-        }*/
+        /* for (let s = 0; s <= mapSounds.length; s++) {
+             let sound = mapSounds[s];
+             if (!sound) continue;
+ 
+             game.assetLoader.addSound(sound.name, sound.location);
+         }*/
     }
 
     async loadMapTileset(json) {
@@ -70,11 +71,28 @@ class MapRender {
         if (layer.type !== 'tilelayer' || !layer.opacity) {
             return;
         }
+
+        var layerAbove = false;
+
+        if (layer.properties) {
+            for (let p in layer.properties) {
+                let property = layer.properties[p];
+                if (property.hasOwnProperty('name') && property['name'] === 'player' && property['value'] === 1) {
+                    layerAbove = true;
+                }
+            }
+        }
+
+        if (layerAbove) {
+            var contextDuplication = this.contextAbove.canvas.cloneNode();
+        } else {
+            var contextDuplication = this.contextBelow.canvas.cloneNode();
+        }
+
         let tileset = layer.properties.find(function (property, index) {
             if (property.name == 'tileset')
                 return true;
         }),
-            contextDuplication = this.context.canvas.cloneNode(),
             rows = this.mapData.height,
             columns = this.mapData.width,
             size = this.mapData.tilewidth,
@@ -83,41 +101,48 @@ class MapRender {
         contextDuplication = contextDuplication.getContext("2d");
 
         // If the map hasn't been rendered already - We need to render it.
-        if (this.mapLayers.length < this.mapData.layers.length) {
-            for (let c = 0; c < columns; c++) {
-                for (let r = 0; r < rows; r++) {
-                    let tile = layer.data[r * columns + c];
+        // if (this.mapLayers.length < this.mapData.layers.length) {
+        for (let c = 0; c < columns; c++) {
+            for (let r = 0; r < rows; r++) {
+                let tile = layer.data[r * columns + c];
 
-                    if (tile !== 0) { // 0 => empty tile
-                        tile--;
+                if (tile !== 0) { // 0 => empty tile
+                    tile--;
 
-                        tile = tile - (tilesetGid - 1);
+                    tile = tile - (tilesetGid - 1);
 
-                        let img_x = (tile % (this.mapTilesets[tileset.value].width / size)) * size;
-                        let img_y = ~~(tile / (this.mapTilesets[tileset.value].width / size)) * size;
+                    let img_x = (tile % (this.mapTilesets[tileset.value].width / size)) * size;
+                    let img_y = ~~(tile / (this.mapTilesets[tileset.value].width / size)) * size;
 
-                        contextDuplication.drawImage(
-                            this.mapTilesets[tileset.value],
-                            img_x,
-                            img_y,
-                            size,
-                            size,
-                            (c * size),
-                            (r * size),
-                            size,
-                            size);
-                    }
+                    contextDuplication.drawImage(
+                        this.mapTilesets[tileset.value],
+                        img_x,
+                        img_y,
+                        size,
+                        size,
+                        (c * size),
+                        (r * size),
+                        size,
+                        size);
                 }
             }
-            // Store the map so we can render faster next time, then draw to canvas.
-            this.mapLayers.push(contextDuplication.canvas.toDataURL());
-            this.context.drawImage(contextDuplication.canvas, 0, 0);
-        } else {
-            for (let i = 0; i <= this.mapLayers.length; i++) {
-                var image = $("<img />", { src: this.mapLayers[i] })[0];
-                this.context.drawImage(image, 0, 0);
-            }
         }
+
+        // Store the map so we can render faster next time, then draw to canvas.
+        this.mapLayers.push(contextDuplication.canvas.toDataURL());
+
+        if (layerAbove) {
+            this.contextAbove.drawImage(contextDuplication.canvas, 0, 0);
+        } else {
+            this.contextBelow.drawImage(contextDuplication.canvas, 0, 0);
+        }
+        // }
+        //else {
+        //  for (let i = 0; i <= this.mapLayers.length; i++) {
+        //    var image = $("<img />", { src: this.mapLayers[i] })[0];
+        //  this.context.drawImage(image, 0, 0);
+        //  }
+        // }
     }
 }
 

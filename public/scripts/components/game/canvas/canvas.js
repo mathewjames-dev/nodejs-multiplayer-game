@@ -16,7 +16,7 @@ class Canvas {
     }
 
     async drawPlayerStates(updatePackage) {
-        playerContext.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+        playerContext.clearRect(0, 0, mapCanvasBelow.width, mapCanvasBelow.height);
 
         // Loop the players within the update package object that we're passed to then draw the player states
         for (let id in updatePackage.players) {

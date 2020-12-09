@@ -58,7 +58,7 @@ class Collision {
             if (layer.properties) {
                 for (let p in layer.properties) {
                     let property = layer.properties[p];
-                    if (property.hasOwnProperty('name') && property['name'] === 'Colliding' && property['value'] === true) {
+                    if (property.hasOwnProperty('name') && property['name'] === 'colliding' && property['value'] === true) {
                         // Non-Colliding layer that we need to check for collision
                         for (let d = 0; d <= layer.objects.length; d++) {
                             let object = layer.objects[d];

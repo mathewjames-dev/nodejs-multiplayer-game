@@ -11,7 +11,9 @@ global.routes = new Routing();
 
 
 // Element Related Constants
-global.mapCanvas = document.getElementById('mapContainer');
-global.mapContext = mapCanvas.getContext("2d");
+global.mapCanvasBelow = document.getElementById('mapContainerBelow');
+global.mapContextBelow = mapCanvasBelow.getContext("2d");
+global.mapCanvasAbove = document.getElementById('mapContainerAbove');
+global.mapContextAbove = mapCanvasAbove.getContext("2d");
 global.playerCanvas = document.getElementById('playerContainer');
 global.playerContext = playerCanvas.getContext("2d");

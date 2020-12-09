@@ -9,6 +9,7 @@ class MapRender {
         this.context = mapContext;
         this.mapLayers = [];
         this.mapTilesets = [];
+        this.loadedTilesets = 0;
     }
 
     async loadMap(mapData) {
@@ -18,12 +19,13 @@ class MapRender {
     }
 
     async loadMapSounds(mapSounds) {
-        for (let s = 0; s <= mapSounds.length; s++) {
+        return true;
+       /* for (let s = 0; s <= mapSounds.length; s++) {
             let sound = mapSounds[s];
             if (!sound) continue;
 
             game.assetLoader.addSound(sound.name, sound.location);
-        }
+        }*/
     }
 
     async loadMapTileset(json) {
@@ -41,8 +43,16 @@ class MapRender {
             this.mapTilesets[tileset.name].src = '/public/assets/maps/tilesets/' + src;
             this.mapTilesets[tileset.name].gid = tileset.firstgid;
             this.mapTilesets[tileset.name].onload = function () {
-                $this.renderMapLayers();
+                $this.loadedTileset();
             }
+        }
+    }
+
+    loadedTileset() {
+        this.loadedTilesets++;
+
+        if (this.loadedTilesets === this.mapData.tilesets.length) {
+            this.renderMapLayers();
         }
     }
 
@@ -60,7 +70,6 @@ class MapRender {
         if (layer.type !== 'tilelayer' || !layer.opacity) {
             return;
         }
-
         let tileset = layer.properties.find(function (property, index) {
             if (property.name == 'tileset')
                 return true;

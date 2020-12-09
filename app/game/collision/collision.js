@@ -48,40 +48,33 @@ class Collision {
         return;
     }
 
-    checkNonCollidableMapObjects(newX, newY) {     
+    checkNonCollidableMapObjects(newX, newY) {
         if (this.globalNonCollidableObjects.length === 0) {
             // Non collidable objects haven't been pushed for this map.
-            for (let i = 0; i <= this.globalMapData.layers.length; i++) {
-                let layer = this.globalMapData.layers[i];
+            let layer = this.globalMapData.layers.find(function (property, index) {
+                if (property.type === 'objectgroup') return true;
+            });
 
-                if (!layer) continue;
+            if (layer.properties) {
+                for (let p in layer.properties) {
+                    let property = layer.properties[p];
+                    if (property.hasOwnProperty('name') && property['name'] === 'Colliding' && property['value'] === true) {
+                        // Non-Colliding layer that we need to check for collision
+                        for (let d = 0; d <= layer.objects.length; d++) {
+                            let object = layer.objects[d];
+                            if (!object) return;
 
-                // If there isn't a layer to check return.
-                if (layer.type !== 'objectgroup') continue;
-
-                if (layer.hasOwnProperty('properties')) {
-                    for (let p = 0; p <= layer['properties'].length; p++) {
-                        let property = layer['properties'][p];
-
-                        if (property.hasOwnProperty('name') && property['name'] === 'Colliding' && property['value'] === true) {
-                            // Non-Colliding layer that we need to check for collision
-                            for (let d = 0; d <= layer.objects.length; d++) {
-                                let object = layer.objects[d];
-                                if (!object) return;
-
-                                this.globalNonCollidableObjects.push({
-                                    'x': object.x,
-                                    'y': object.y,
-                                    'w': object.width,
-                                    'h': object.height
-                                });
-                            }
+                            this.globalNonCollidableObjects.push({
+                                'x': object.x,
+                                'y': object.y,
+                                'w': object.width,
+                                'h': object.height
+                            });
                         }
                     }
                 }
             }
         }
-
 
         for (let nonCollidingObject in this.globalNonCollidableObjects) {
             if (CollisionMathematics.rectToRect(newX, newY, this.spriteWidth, this.spriteHeight,

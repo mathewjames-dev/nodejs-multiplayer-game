@@ -24,10 +24,11 @@ class Canvas {
             this.playerRender.drawSprite(player);
 
             // SOUND RELATED
-            let playerX = Math.round(player.x / 16),
+           /* let playerX = Math.round(player.x / 16),
                 playerY = Math.round(player.y / 16),
                 tile = player.mapData.layers[0].data[playerY * player.mapData.width + playerX];
             if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
+                console.log(tile);
                 if (game.assetLoader.sounds[tile]) {
                     game.assetLoader.sounds[tile].play();
                     game.lastPlayedTileSound = tile;
@@ -36,7 +37,7 @@ class Canvas {
                 if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
                     game.assetLoader.sounds[game.lastPlayedTileSound].pause();
                 }
-            }
+            }*/
         }
     }
 

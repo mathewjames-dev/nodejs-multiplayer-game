@@ -52,47 +52,47 @@ class Game {
             let map = new Map(user.map_name, user.map_location);
 
             // Get the map data from the database.
-            map.getMapData()
-                // Then use the map data retrieved to get map sounds.
-                .then(mapData => map.getMapSounds(mapData))
+            let mapData = map.getMapData();
 
-                // Then finally we will setup and add the player.
-                .then((mapData) => {
-                    // Create the player.
-                    let player = new Player({
-                        id: socketId,
-                        username: user.username,
-                        health: user.health,
-                        x: user.x,
-                        y: user.y,
-                        sprite: {
-                            name: user.sprite_name,
-                            location: user.sprite_location,
-                            rows: user.number_of_rows,
-                            cols: user.number_of_cols,
-                            leftRow: user.tracking_left_row,
-                            upRow: user.tracking_up_row,
-                            rightRow: user.tracking_right_row,
-                            downRow: user.tracking_down_row,
-                            spriteWidth: user.sheet_width / user.number_of_cols,
-                            spriteHeight: user.sheet_height / user.number_of_rows,
-                            animation: {
-                                currentFrame: 0,
-                                totalFrames: user.total_frames,
-                                srcX: 0,
-                                srcY: 0
-                            }
-                        },
-                        globalMapData: mapData
-                    });
 
-                    // Add the player to the game players object.
-                    gameServer.game.players[socketId] = player;
+            // Then use the map data retrieved to get map sounds.
+            mapData = map.getMapSounds(mapData);
 
-                    // Setup the player initialization package and resolve.
-                    let initPackage = gameServer.game.createUpdate(player);
-                    resolve(initPackage);
-                });
+            // Then finally we will setup and add the player.
+            // Create the player.
+            let player = new Player({
+                id: socketId,
+                username: user.username,
+                health: user.health,
+                x: user.x,
+                y: user.y,
+                sprite: {
+                    name: user.sprite_name,
+                    location: user.sprite_location,
+                    rows: user.number_of_rows,
+                    cols: user.number_of_cols,
+                    leftRow: user.tracking_left_row,
+                    upRow: user.tracking_up_row,
+                    rightRow: user.tracking_right_row,
+                    downRow: user.tracking_down_row,
+                    spriteWidth: user.sheet_width / user.number_of_cols,
+                    spriteHeight: user.sheet_height / user.number_of_rows,
+                    animation: {
+                        currentFrame: 0,
+                        totalFrames: user.total_frames,
+                        srcX: 0,
+                        srcY: 0
+                    }
+                },
+                globalMapData: mapData
+            });
+
+            // Add the player to the game players object.
+            gameServer.game.players[socketId] = player;
+
+            // Setup the player initialization package and resolve.
+            let initPackage = gameServer.game.createUpdate(player);
+            resolve(initPackage);
         });
     }
 

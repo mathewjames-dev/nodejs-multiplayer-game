@@ -15,27 +15,11 @@ class Map {
     }
 
     getMapData() {
-        return new Promise((resolve, reject) => {
-            let mapData = JSON.parse(fs.readFileSync('./storage' + this.location, 'utf8'));
-
-            if (mapData) {
-                resolve(mapData);
-            } else {
-                reject("Could not retrieve map data");
-            }
-        });
+        return JSON.parse(fs.readFileSync('./storage' + this.location, 'utf8'));
     }
 
     getMapSounds(mapData) {
-        return new Promise((resolve, reject) => {
-            this.mapDatabase.retrieveMapSounds(this.name, function (sounds) {
-                if (sounds) {
-                    mapData.sounds = sounds; resolve(mapData);
-                } else {
-                    reject("Could not retrieve sounds");
-                }
-            });
-        });
+        return mapData;
     }
 }
 

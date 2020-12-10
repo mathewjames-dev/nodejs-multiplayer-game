@@ -15,6 +15,7 @@ class Canvas {
         this.inventoryDrawn = 0;
     }
 
+    // Function to draw the player states / sprites.
     async drawPlayerStates(updatePackage) {
         playerContext.clearRect(0, 0, mapCanvasBelow.width, mapCanvasBelow.height);
 
@@ -50,6 +51,7 @@ class Canvas {
         playerContext.fillRect(player.x - hpWidth / 2, player.y - 30, hpWidth, 4); //Draw the health bar
     }
 
+    // Function to draw the player inventory. (We only draw the inventory once).
     async drawPlayerInventory(inventory) {
         //WE NEED TO LOAD THE IMAGES IF THEY HAVENT BEEN LOADED ALREADY
         let inventoryList = $('#inventory-list');

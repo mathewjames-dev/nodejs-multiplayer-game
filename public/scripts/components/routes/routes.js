@@ -11,17 +11,6 @@ class Routing extends AuthRouting {
     constructor() {
         super();
     }
-
-    // Get players inventory by username.
-    async getPlayerInventory(username, cb) {
-        Axios.get('/' + username + '/inventory')
-            .then(function (res) {
-                cb(res);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
 }
 
 module.exports = Routing;

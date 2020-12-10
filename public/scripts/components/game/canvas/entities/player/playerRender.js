@@ -5,7 +5,9 @@
  *
  ***/
 class PlayerRender {
+    // Function to draw the players sprite.
     drawSprite(entity) {
+        // Ensure the sprite image has been fully loaded.
         if (!game.assetLoader.images[entity.sprite.name]) return;
 
         playerContext.beginPath();

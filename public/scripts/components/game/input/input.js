@@ -1,6 +1,6 @@
 /***
  *
- * Movement Front-end File
+ * Input Front-end File
  * This will be utilized to house the main game input functions.
  *
  ***/
@@ -15,6 +15,7 @@ class Input {
         this.addKeyUpListener();
     }
 
+    // Adding the key down listeners within this function.
     addKeyDownListener() {
         // Key down event listener.
         document.addEventListener('keydown', function (event) {
@@ -38,6 +39,7 @@ class Input {
         });
     }
 
+    // Adding the key up listeners within this function.
     addKeyUpListener() {
         // Key up event listener.
         document.addEventListener('keyup', function (event) {
@@ -61,6 +63,7 @@ class Input {
         });
     }
 
+    // Function to return all the movement values as an object.
     getMovement() {
         return {
             up: game.input.up,

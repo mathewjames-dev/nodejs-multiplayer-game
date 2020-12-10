@@ -29,6 +29,7 @@ $(function () {
         $('#login-form').show();
     });
 
+    // When the register form has been submitted we can then submit this to the server.
     $('#register-form').on('submit', async function (e) {
         e.preventDefault();
         let data = $(this).serialize();
@@ -37,6 +38,7 @@ $(function () {
         });
     });
 
+    // When the login form has been submitted, we can authenticate via the server and then initialize the game.
     $('#login-form').on('submit', async function (e) {
         e.preventDefault();
         let data = $(this).serialize() + '&socket=' + socket.id;

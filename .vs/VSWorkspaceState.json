@@ -7,10 +7,10 @@
     "\\public\\scripts\\components",
     "\\public\\scripts\\components\\game",
     "\\public\\scripts\\components\\game\\canvas",
-    "\\public\\scripts\\components\\game\\canvas\\entities",
-    "\\public\\scripts\\components\\game\\canvas\\entities\\player",
-    "\\public\\scripts\\components\\routes"
+    "\\public\\scripts\\components\\game\\player",
+    "\\public\\scripts\\components\\game\\sockets",
+    "\\public\\styles"
   ],
-  "SelectedNode": "\\app\\database\\authDatabase.js",
+  "SelectedNode": "\\storage\\maps\\earthstart.json",
   "PreviewInSolutionExplorer": false
 }

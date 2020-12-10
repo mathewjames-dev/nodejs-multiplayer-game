@@ -27,6 +27,7 @@ class Game {
         this.lastPlayedTileSound = 0;
     }
 
+    // Function that is called upon authenticating.
     async gameInit(initPackage) {
         initPackage = JSON.parse(initPackage);
         await this.loadPlayerSprites(initPackage.players)
@@ -35,6 +36,7 @@ class Game {
             .then(this.startGameLoop);
     }
 
+    // Function to load the players sprites.
     async loadPlayerSprites(players) {
         for (let player in players) {
             if (this.assetLoader.images[players[player].sprite.name]) continue;
@@ -45,6 +47,7 @@ class Game {
         }
     }
 
+    // Function to start the game loop on the client side.
     startGameLoop() {
         /*
          * Temporary Code

@@ -21,24 +21,39 @@ class Canvas {
 
         // Loop the players within the update package object that we're passed to then draw the player states
         for (let id in updatePackage.players) {
-            let player = updatePackage.players[id];
+            let player = updatePackage.players[id],
+                playerX = Math.round(player.x / 16),
+                playerY = Math.round(player.y / 16);
+
             this.playerRender.drawSprite(player);
 
             // SOUND RELATED
-           /* let playerX = Math.round(player.x / 16),
-                playerY = Math.round(player.y / 16),
-                tile = player.mapData.layers[0].data[playerY * player.mapData.width + playerX];
-            if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
-                console.log(tile);
-                if (game.assetLoader.sounds[tile]) {
-                    game.assetLoader.sounds[tile].play();
-                    game.lastPlayedTileSound = tile;
+            let sound = '';
+            for (let l in player.mapData.layers) {
+                let layer = player.mapData.layers[l];
+                let properties = layer.properties;
+                for (let p in properties) {
+                    let prop = properties[p];
+                    if (prop.name === 'sound' && layer.data[playerY * player.mapData.width + playerX] > 0) {
+                        sound = "/public/assets/sounds/" + prop.value;
+                        if (!game.assetLoader.sounds[sound]) {
+                            game.assetLoader.addSound(sound, sound);
+                            game.assetLoader.loadSounds();
+                        }
+                    }
                 }
-            } else {
-                if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
-                    game.assetLoader.sounds[game.lastPlayedTileSound].pause();
-                }
-            }*/
+            }
+
+             if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
+                 if (game.assetLoader.sounds[sound]) {
+                     game.assetLoader.sounds[sound].play();
+                     game.lastPlayedTileSound = sound;
+                 }
+             } else {
+                 if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
+                     game.assetLoader.sounds[game.lastPlayedTileSound].pause();
+                 }
+             }
         }
     }
 

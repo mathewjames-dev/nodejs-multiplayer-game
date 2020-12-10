@@ -54,10 +54,6 @@ class Game {
             // Get the map data from the database.
             let mapData = map.getMapData();
 
-
-            // Then use the map data retrieved to get map sounds.
-            mapData = map.getMapSounds(mapData);
-
             // Then finally we will setup and add the player.
             // Create the player.
             let player = new Player({

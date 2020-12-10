@@ -17,10 +17,6 @@ class Map {
     getMapData() {
         return JSON.parse(fs.readFileSync('./storage' + this.location, 'utf8'));
     }
-
-    getMapSounds(mapData) {
-        return mapData;
-    }
 }
 
 module.exports = Map;

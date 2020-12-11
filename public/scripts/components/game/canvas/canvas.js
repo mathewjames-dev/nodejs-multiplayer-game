@@ -36,24 +36,19 @@ class Canvas {
                     let prop = properties[p];
                     if (prop.name === 'sound' && layer.data[playerY * player.mapData.width + playerX] > 0) {
                         sound = prop.value;
-                        if (!game.assetLoader.sounds[prop.value]) {
-                            game.assetLoader.addSound(prop.value, "/public/assets/sounds/" + sound);
-                            game.assetLoader.loadSounds();
-                        }
                     }
                 }
             }
-
-             if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
-                 if (game.assetLoader.sounds[sound]) {
-                     game.assetLoader.sounds[sound].play();
-                     game.lastPlayedTileSound = sound;
-                 }
-             } else {
-                 if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
-                     game.assetLoader.sounds[game.lastPlayedTileSound].pause();
-                 }
-             }
+            if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
+                if (game.assetLoader.sounds[sound]) {
+                    game.assetLoader.sounds[sound].play();
+                    game.lastPlayedTileSound = sound;
+                }
+            } else {
+                if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
+                    game.assetLoader.sounds[game.lastPlayedTileSound].pause();
+                }
+            }
         }
     }
 

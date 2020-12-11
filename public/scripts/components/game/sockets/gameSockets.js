@@ -14,7 +14,7 @@ class GameSockets {
         // Listening for the game update package from the server side game loop.
         socket.on('gameUpdate', async function (updatePackage) {
             updatePackage = JSON.parse(updatePackage);
-            if (global.game) {
+            if (global.game && game.loaded == 1) {
                 game.canvas.drawPlayerStates(updatePackage)
                     .then(async () => {
                         // Draw Player Related Elements

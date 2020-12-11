@@ -25,15 +25,25 @@ class Game {
 
         // Sound Related Values ( Eventually include a sound manager? )
         this.lastPlayedTileSound = 0;
+
+        this.loaded = 0;
     }
 
     // Function that is called upon authenticating.
     async gameInit(initPackage) {
         initPackage = JSON.parse(initPackage);
-        await this.loadPlayerSprites(initPackage.players)
-            .then(this.canvas.mapRender.loadMap(initPackage.player.globalMapData))
-            .then(this.assetLoader.loadAssets)
-            .then(this.startGameLoop);
+
+        // Load the player sprite/s.
+        await this.loadPlayerSprites(initPackage.players);
+
+        // Load the map and add the map sounds.
+        await this.canvas.mapRender.loadMap(initPackage.player.globalMapData);
+
+        // Load all the assets in the asset loader.
+        await this.assetLoader.loadAssets();
+
+        // Start the game loop.
+        this.startGameLoop();
     }
 
     // Function to load the players sprites.
@@ -49,6 +59,8 @@ class Game {
 
     // Function to start the game loop on the client side.
     startGameLoop() {
+        game.loaded = 1;
+
         /*
          * Temporary Code
          */

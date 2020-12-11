@@ -16,19 +16,24 @@ class MapRender {
     // Function to load the map data (Sounds and tilesets).
     async loadMap(mapData) {
         let $this = this;
-        await this.loadMapSounds(mapData.sounds)
+        await this.loadMapSounds(mapData)
             .then(this.loadMapTileset(mapData));
     }
 
     // Function to load the map sounds.
-    async loadMapSounds(mapSounds) {
-        return true;
-        /* for (let s = 0; s <= mapSounds.length; s++) {
-             let sound = mapSounds[s];
-             if (!sound) continue;
- 
-             game.assetLoader.addSound(sound.name, sound.location);
-         }*/
+    async loadMapSounds(mapData) {
+        for (let l in mapData.layers) {
+            let layer = mapData.layers[l];
+            let properties = layer.properties;
+            for (let p in properties) {
+                let prop = properties[p];
+                if (prop.name === 'sound') {
+                    if (!game.assetLoader.sounds[prop.value]) {
+                        game.assetLoader.addSound(prop.value, "/public/assets/sounds/" + prop.value);
+                    }
+                }
+            }
+        }
     }
 
     // Function to load the map tilesets.

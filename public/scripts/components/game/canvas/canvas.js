@@ -35,9 +35,9 @@ class Canvas {
                 for (let p in properties) {
                     let prop = properties[p];
                     if (prop.name === 'sound' && layer.data[playerY * player.mapData.width + playerX] > 0) {
-                        sound = "/public/assets/sounds/" + prop.value;
-                        if (!game.assetLoader.sounds[sound]) {
-                            game.assetLoader.addSound(sound, sound);
+                        sound = prop.value;
+                        if (!game.assetLoader.sounds[prop.value]) {
+                            game.assetLoader.addSound(prop.value, "/public/assets/sounds/" + sound);
                             game.assetLoader.loadSounds();
                         }
                     }

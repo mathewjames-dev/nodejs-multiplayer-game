@@ -13,6 +13,8 @@ class Player extends Entity {
         super(param);
         this.username = param.username;
         this.health = param.health;
+        this.maxHealth = param.maxHealth;
+
         this.inventory = new Inventory(this);
     }
 
@@ -42,11 +44,6 @@ class Player extends Entity {
     async updatePlayerState() {
         let playerDatabase = new PlayerDatabase;
         playerDatabase.updatePlayerState(this);
-    }
-
-    async removeItemFromInventory(data) {
-        let playerDatabase = new PlayerDatabase;
-        playerDatabase.removeItemFromInventory(this, data);
     }
 }
 

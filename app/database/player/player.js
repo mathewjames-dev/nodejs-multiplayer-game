@@ -48,11 +48,11 @@ class PlayerDatabase extends Database {
         });
     }
 
-    async removeItemFromInventory(player, data) {
+    async removeItemFromInventory(player, itemId) {
         let $this = this;
         this.getPlayerInventoryId(player.username, (inventory) => {
-            let sql = "DELETE from inventory_items WHERE item_id = ? AND inventory_id = ?";
-            $this.connection.query(sql, [data.itemId, inventory[0].id], function (err, result, fields) {
+            let sql = "DELETE from inventory_items WHERE item_id = ? AND inventory_id = ? LIMIT 1";
+            $this.connection.query(sql, [itemId, inventory[0].id], function (err, result, fields) {
                 if (err) console.log(err);
             });
         });

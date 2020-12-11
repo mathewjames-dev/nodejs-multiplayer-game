@@ -5,6 +5,8 @@
  *
  ***/
 
+const GameDatabase = require("./database/game/game");
+
 class SocketServer {
     constructor(io) {
         this.io = io;
@@ -44,15 +46,20 @@ class SocketServer {
                 if (player) player.movePlayer(data)
             });
 
-            socket.on('increaseHealth', (data) => {
-                let player = gameServer.game.players[socketId];
-                if (player) player.health += data.health;
-            });
+            socket.on('inventoryItemUsed', async (data) => {
+                var player = gameServer.game.players[socket.id];
+                let gameDatabase = new GameDatabase;
 
-            socket.on('removeItemFromInventory', (data) => {
-                let player = gameServer.game.players[socketId];
-                player.removeItemFromInventory(data);
-            })
+                gameDatabase.getItemById(data.itemId, function (item) {
+                    let itemProperties = JSON.parse(item[0].properties);
+                    console.log(player.maxHealth);
+                    if (itemProperties.type === 'Health Potion' && player.health < player.maxHealth) {
+                        player.health += itemProperties.value;
+                        player.inventory.removeItemFromInventory(player, data.itemId);
+                    }
+                })
+
+            });
 
             /*
              * CHAT EVENT LISTENERS.

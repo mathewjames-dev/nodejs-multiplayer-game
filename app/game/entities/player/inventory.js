@@ -36,6 +36,17 @@ class Inventory {
             }
         });
     }
+
+    removeItemFromInventory(player, itemId) {
+        this.items.some(function (property, index) {
+            if (property.item_id === itemId) {
+                delete player.inventory.items[index]
+                return true;
+            }
+        });
+        let playerDatabase = new PlayerDatabase;
+        playerDatabase.removeItemFromInventory(player, itemId);
+    }
 }
 
 module.exports = Inventory;

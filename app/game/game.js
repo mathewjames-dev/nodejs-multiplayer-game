@@ -60,6 +60,7 @@ class Game {
                 id: socketId,
                 username: user.username,
                 health: user.health,
+                maxHealth: user.max_health,
                 x: user.x,
                 y: user.y,
                 sprite: {

@@ -12,7 +12,7 @@ class Canvas {
         this.mapRender = new MapRender;
         this.playerRender = new PlayerRender;
 
-        this.inventoryDrawn = 0;
+        this.inventoryDrawn = false;
     }
 
     // Function to draw the player states / sprites.
@@ -63,11 +63,12 @@ class Canvas {
 
     // Function to draw the player inventory. (We only draw the inventory once).
     async drawPlayerInventory(inventory) {
-        //WE NEED TO LOAD THE IMAGES IF THEY HAVENT BEEN LOADED ALREADY
-        let inventoryList = $('#inventory-list');
-        inventoryList.html();
+        if (!this.inventoryDrawn) {
 
-        if (this.inventoryDrawn == 0) {
+            //WE NEED TO LOAD THE IMAGES IF THEY HAVENT BEEN LOADED ALREADY
+            let inventoryList = $('#inventory-list');
+            inventoryList.html("");
+
             for (let i = 0; i < inventory.maxSlots; i++) {
                 let item = inventory.items[i];
                 if (!item) {
@@ -80,19 +81,27 @@ class Canvas {
                     item.item_properties = JSON.parse(item.item_properties);
 
                     // Load the item sound.
-                    game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+                    if (!game.assetLoader.sounds[item.item_name] && item.item_properties.sound) {
+                        game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+                        await game.assetLoader.loadSounds();
+                    }
+
+               /*     if (!game.assetLoader.sounds[item.item_name] && item.item_properties.sound) {
+                        game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+                        await game.assetLoader.loadSounds();
+                    }*/
 
                     // Implement the item
                     inventoryList.append("<li>" +
-                        "<div data-id='" + item.item_id + "'  data-name='" + item.item_name + "' class= 'item'> " +
+                        "<div data-id='" + item.item_id + "' data-name='" + item.item_name + "' class= 'item'> " +
                         "<img src='" + item.item_image + "'/>" +
                         "</div> " +
                         "</li>");
                 }
             }
-        }
 
-        this.inventoryDrawn = 1;
+            this.inventoryDrawn = true;
+        }
     }
 }
 

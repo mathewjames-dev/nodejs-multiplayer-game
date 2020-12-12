@@ -22,15 +22,23 @@ class MapRender {
 
     // Function to load the map sounds.
     async loadMapSounds(mapData) {
+        // Check to see if the map has any background music also.
+        for (let p in mapData.properties) {
+            let prop = mapData.properties[p];
+            if (prop.name === 'sound' && !game.assetLoader.sounds['background']) {
+                // Map has background music
+                game.assetLoader.addSound("background", "/public/assets/sounds/" + prop.value);
+            }
+        }
+
+        // Then we can loop the layers and add in the layer sounds.
         for (let l in mapData.layers) {
             let layer = mapData.layers[l];
             let properties = layer.properties;
             for (let p in properties) {
                 let prop = properties[p];
-                if (prop.name === 'sound') {
-                    if (!game.assetLoader.sounds[prop.value]) {
+                if (prop.name === 'sound' && !game.assetLoader.sounds[prop.value]) {
                         game.assetLoader.addSound(prop.value, "/public/assets/sounds/" + prop.value);
-                    }
                 }
             }
         }

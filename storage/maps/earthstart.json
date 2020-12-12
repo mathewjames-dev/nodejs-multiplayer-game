@@ -176,7 +176,7 @@
                  "value":"forest_tiles"
                 }],
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -751,6 +751,12 @@
  "nextlayerid":31,
  "nextobjectid":205,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"sound",
+         "type":"string",
+         "value":"forest.mp3"
+        }],
  "renderorder":"right-down",
  "tiledversion":"1.4.2",
  "tileheight":16,

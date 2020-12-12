@@ -19,6 +19,7 @@ class AssetLoader {
         if (this[array][name].status !== 'loading') return;
 
         this[array][name].status = 'loaded';
+
         this.assetsLoaded++;
     }
 
@@ -68,11 +69,10 @@ class AssetLoader {
     async loadSounds() {
         for (var sound in this.sounds) {
             if (!this.sounds[sound]) continue;
-            if (this.sounds[sound].status && this.sounds[sound].status == 'loaded') continue;
-
+            if (this.sounds[sound].readyState === 0) continue;
+           
             let $this = this;
             let src = this.sounds[sound];
-
             this.sounds[sound] = new Audio();
             this.sounds[sound].status = 'loading';
             this.sounds[sound].name = sound;

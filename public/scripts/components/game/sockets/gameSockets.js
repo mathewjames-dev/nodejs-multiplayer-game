@@ -26,8 +26,8 @@ class GameSockets {
     }
 
     // Function to increase the players health by the selected amount.
-    increaseHealth(amount) {
-        socket.emit('increaseHealth', { id: socket.id, health: amount });
+    inventoryItemUsed(itemId) {
+        socket.emit('inventoryItemUsed', { itemId: itemId});
     }
 }
 

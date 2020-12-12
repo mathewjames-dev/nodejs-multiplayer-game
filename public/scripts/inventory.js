@@ -144,14 +144,13 @@ $(document).ready(function () {
         $(this).removeClass('highlight');
     });
 
-    $('#inventory').on('mousedown', '.item', (e) => {
+    /*$('#inventory').on('mousedown', '.item', (e) => {
         let object = $('div[data-name="' + e.target.getAttribute('data-name') + '"]');
         var from = "";
         if (object.parents('#inventory').length > 0)
             from = "inventory";
         if (object.parents('#character').length > 0)
             from = "character";
-
         holding = {
             element: object,
             from: from,
@@ -160,27 +159,22 @@ $(document).ready(function () {
             clientX: e.clientX,
             clientY: e.clientY
         }
-    });
+    });*/
 
     $('#inventory').on('click', '.item', async (e) => {
         let object = $('div[data-name="' + e.target.getAttribute('data-name') + '"]');
         let objectId = object.data('id');
+        let objectName = object.data('name');
+       
+        // Emit an event to the server that an inventory item has been used.
+        game.gameSockets.inventoryItemUsed(objectId);
 
-        for (let index in game.player.inventory.items) {
-            let item = game.player.inventory.items[index];
-            if (objectId === item.item_id) {
-                // We can set the object type.
-                var objectType = item.item_properties.type;
-            }
-        }
-        switch (objectType) {
-            case 'Health Potion':
-                await game.player.inventory.potionUsed('Health Potion', object.data('value'))
-                    .then(() => game.player.inventory.removeItemFromInventory(objectId))
-                    .then(() => {
-                        object.remove();
-                    });
-                break;
+        // Then play the sound.
+        if (game.assetLoader.sounds[objectName]) {
+            game.assetLoader.sounds[objectName].play();
+            setTimeout(function () {
+                game.assetLoader.sounds[objectName].pause();
+            }, 2000);
         }
     });
 

@@ -49,7 +49,6 @@ class SocketServer {
             socket.on('inventoryItemUsed', async (data) => {
                 var player = gameServer.game.players[socket.id];
                 let gameDatabase = new GameDatabase;
-
                 gameDatabase.getItemById(data.itemId, function (item) {
                     let itemProperties = JSON.parse(item[0].properties);
                     if (itemProperties.type === 'Health Potion' && player.health < player.maxHealth) {

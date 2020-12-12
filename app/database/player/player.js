@@ -22,7 +22,7 @@ class PlayerDatabase extends Database {
     // Function to get the players inventory record.
     async getPlayerInventory(username, callback) {
         let sql = "SELECT inv.* FROM users " +
-            "INNER JOIN inventory inv ON users.id = inv.id " +
+            "INNER JOIN inventory inv ON users.id = inv.user_id " +
             "WHERE username = ?";
         this.connection.query(sql, [username], function (err, result, fields) {
             if (err) callback(false);

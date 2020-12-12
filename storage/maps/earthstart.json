@@ -682,26 +682,26 @@
                  "y":351.833
                 }, 
                 {
-                 "height":97.3333333333333,
+                 "height":97.3333,
                  "id":165,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":66,
-                 "x":166.666666666667,
-                 "y":5.33333333333333
+                 "x":166.667,
+                 "y":5.33333
                 }, 
                 {
-                 "height":66.6666666666667,
+                 "height":66.6667,
                  "id":166,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":14.6666666666667,
+                 "width":14.6667,
                  "x":234,
-                 "y":21.3333333333333
+                 "y":21.3333
                 }, 
                 {
                  "height":52,
@@ -710,8 +710,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":47.3333333333333,
-                 "x":117.333333333333,
+                 "width":47.3333,
+                 "x":117.333,
                  "y":38
                 }, 
                 {
@@ -723,7 +723,7 @@
                  "visible":true,
                  "width":80,
                  "x":134,
-                 "y":90.6666666666667
+                 "y":90.6667
                 }, 
                 {
                  "height":12,
@@ -732,9 +732,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":7.33333333333331,
+                 "width":7.33333,
                  "x":214,
-                 "y":98.6666666666667
+                 "y":98.6667
                 }],
          "opacity":1,
          "properties":[
@@ -747,9 +747,31 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":31,
+         "name":"Spawn Points",
+         "objects":[
+                {
+                 "height":0,
+                 "id":205,
+                 "name":"Player Spawn",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":71.5,
+                 "y":104.5
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":31,
- "nextobjectid":205,
+ "nextlayerid":32,
+ "nextobjectid":206,
  "orientation":"orthogonal",
  "properties":[
         {

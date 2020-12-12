@@ -52,14 +52,17 @@ class SocketServer {
 
                 gameDatabase.getItemById(data.itemId, function (item) {
                     let itemProperties = JSON.parse(item[0].properties);
-                    console.log(player.maxHealth);
                     if (itemProperties.type === 'Health Potion' && player.health < player.maxHealth) {
                         player.health += itemProperties.value;
                         player.inventory.removeItemFromInventory(player, data.itemId);
                     }
                 })
-
             });
+
+            socket.on('inventoryRedrawn', async (data) => {
+                let player = gameServer.game.players[socket.id];
+                player.inventory.redraw = 0;
+            })
 
             /*
              * CHAT EVENT LISTENERS.

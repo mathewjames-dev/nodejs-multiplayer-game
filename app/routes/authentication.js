@@ -17,19 +17,19 @@ class AuthenticationRouting {
     }
 
     authRegister() {
-        this.app.post('/auth/register', function (req, res) {
+        this.app.post('/auth/register', async (req, res) => {
             let authDatabase = new AuthDatabase;
 
             // Check if a user already exists with that username.
-            authDatabase.retrieveUser(req.body.username, function (user) {
+            authDatabase.retrieveUser(req.body.username, async (user) => {
                 // If user exists return 400 error.
-                if (user) {
+                if (user.length > 0) {
                     res.status(400).send("User already exists!");
                 } else {
                     // If a user doesn't exist we create one and return a success.
-                    authDatabase.createUser(req.body, function (user) {
+                    await authDatabase.createUser(req.body, async (user) => {
                         // If a user has been created return success.
-                        if (user) {
+                        if (user.length > 0) {
                             res.status(200).send("User successfully created!");
                         }
                     });

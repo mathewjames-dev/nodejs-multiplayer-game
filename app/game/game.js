@@ -54,6 +54,26 @@ class Game {
             // Get the map data from the database.
             let mapData = map.getMapData();
 
+            if (user.firstLogin === 1) {
+                // We know we need to get the starting spawn point for players in the particular map.
+                var playerSpawn;
+                mapData.layers.filter((property, index) => {
+                    if (property.name === 'Spawn Points') {
+                        let playerSpawnObject = property.objects.filter((object, i) => {
+                            if (object.name === 'Player Spawn') {
+                                playerSpawn = object;
+                            }
+                        });
+                    }
+                });
+                
+                // Double check the player spawn object has been set.
+                if (playerSpawn) {
+                    user.x = playerSpawn.x;
+                    user.y = playerSpawn.y;
+                }
+            }
+
             // Then finally we will setup and add the player.
             // Create the player.
             let player = new Player({

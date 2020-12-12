@@ -63,44 +63,33 @@ class Canvas {
 
     // Function to draw the player inventory. (We only draw the inventory once).
     async drawPlayerInventory(inventory) {
-        if (!this.inventoryDrawn) {
+        //WE NEED TO LOAD THE IMAGES IF THEY HAVENT BEEN LOADED ALREADY
+        let inventoryList = $('#inventory-list');
+        inventoryList.html("");
+        for (let i = 0; i < inventory.maxSlots; i++) {
+            let item = inventory.items[i];
+            if (!item) {
+                // Implement an empty item slot
+                inventoryList.append("<li>" +
+                    "<div class='item'>" +
+                    "</div> " +
+                    "</li>");
+            } else {
+                item.item_properties = JSON.parse(item.item_properties);
 
-            //WE NEED TO LOAD THE IMAGES IF THEY HAVENT BEEN LOADED ALREADY
-            let inventoryList = $('#inventory-list');
-            inventoryList.html("");
-
-            for (let i = 0; i < inventory.maxSlots; i++) {
-                let item = inventory.items[i];
-                if (!item) {
-                    // Implement an empty item slot
-                    inventoryList.append("<li>" +
-                        "<div class='item'>" +
-                        "</div> " +
-                        "</li>");
-                } else {
-                    item.item_properties = JSON.parse(item.item_properties);
-
-                    // Load the item sound.
-                    if (!game.assetLoader.sounds[item.item_name] && item.item_properties.sound) {
-                        game.assetLoader.addSound(item.item_name, item.item_properties.sound);
-                        await game.assetLoader.loadSounds();
-                    }
-
-               /*     if (!game.assetLoader.sounds[item.item_name] && item.item_properties.sound) {
-                        game.assetLoader.addSound(item.item_name, item.item_properties.sound);
-                        await game.assetLoader.loadSounds();
-                    }*/
-
-                    // Implement the item
-                    inventoryList.append("<li>" +
-                        "<div data-id='" + item.item_id + "' data-name='" + item.item_name + "' class= 'item'> " +
-                        "<img src='" + item.item_image + "'/>" +
-                        "</div> " +
-                        "</li>");
+                // Load the item sound.
+                if (!game.assetLoader.sounds[item.item_name] && item.item_properties.sound) {
+                    game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+                    await game.assetLoader.loadSounds();
                 }
-            }
 
-            this.inventoryDrawn = true;
+                // Implement the item
+                inventoryList.append("<li>" +
+                    "<div data-id='" + item.item_id + "' data-name='" + item.item_name + "' class= 'item'> " +
+                    "<img src='" + item.item_image + "'/>" +
+                    "</div> " +
+                    "</li>");
+            }
         }
     }
 }

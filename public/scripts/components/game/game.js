@@ -39,6 +39,9 @@ class Game {
         // Load the map and add the map sounds.
         await this.canvas.mapRender.loadMap(initPackage.player.globalMapData);
 
+        // Draw the player inventory.
+        await this.canvas.drawPlayerInventory(initPackage.player.inventory);
+
         // Load all the assets in the asset loader.
         await this.assetLoader.loadAssets();
 
@@ -74,7 +77,7 @@ class Game {
             game.assetLoader.sounds.background.loop = true;
             game.assetLoader.sounds.background.play();
             $(game.assetLoader.sounds.background).animate({
-                volume: 0.3
+                volume: 0.1
             }, 2000);
         }
 

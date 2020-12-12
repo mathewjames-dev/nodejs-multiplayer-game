@@ -31,7 +31,6 @@ class Player extends Entity {
             ...(super.getUpdate()),
             inventory: this.inventory,
             sprite: this.sprite,
-            //direction: this.direction,
             //hp: this.hp,
         };
     }

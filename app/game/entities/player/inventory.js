@@ -7,33 +7,43 @@
 const PlayerDatabase = require("../../../database/player/player");
 
 class Inventory {
-    constructor(player) {
+    constructor() {
+        this.items = [];
         this.takenSlots = 0;
         this.maxSlots = 0;
-        this.items = [];
-
-        this.setupInventory(player);
+        this.redraw = 0;
     }
 
-    setupInventory(player) {
-        let inventoryObj = this;
-        let playerDatabase = new PlayerDatabase;
-        playerDatabase.getPlayerInventory(player.username, function (inventory) {
-            if (inventory) {
-                inventoryObj.takenSlots = inventory.length;
-                for (let i = 0; i < inventory.length; i++) {
-                    let item = inventory[i];
-                    if (!item) continue;
-                    if (inventoryObj.maxSlots == 0) inventoryObj.maxSlots = item.max_size;
+    setupInventory(playerUsername) {
+        return new Promise(async (resolve, reject) => {
+            let inventoryObj = this;
+            let playerDatabase = new PlayerDatabase;
+            await playerDatabase.getPlayerInventory(playerUsername, async function (inventoryRecord) {
+                if (inventoryRecord) {
+                    inventoryObj.maxSlots = inventoryRecord[0].max_size;
 
-                    inventoryObj.items.push({
-                        item_id: item.id,
-                        item_name: item.name,
-                        item_image: item.image,
-                        item_properties: item.properties
+                    await playerDatabase.getPlayerInventoryItems(inventoryRecord[0].id, async function (inventoryItems) {
+                        if (inventoryItems) {
+                            for (let i = 0; i < inventoryItems.length; i++) {
+                                let item = inventoryItems[i];
+                                if (!item) continue;
+
+                                inventoryObj.items.push({
+                                    item_id: item.id,
+                                    item_name: item.name,
+                                    item_image: item.image,
+                                    item_properties: item.properties
+                                });
+                            }
+
+                            resolve(inventoryObj);
+                        }
                     });
+                } else {
+                    resolve(false);
                 }
-            }
+
+            });
         });
     }
 
@@ -46,6 +56,8 @@ class Inventory {
         });
         let playerDatabase = new PlayerDatabase;
         playerDatabase.removeItemFromInventory(player, itemId);
+
+        this.redraw = 1;
     }
 }
 

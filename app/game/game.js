@@ -47,7 +47,7 @@ class Game {
 
     // Function to add a player to the game upon authentication.
     addPlayer(socketId, user) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             // Get all the map data required for the front end.
             let map = new Map(user.map_name, user.map_location);
 
@@ -60,7 +60,7 @@ class Game {
                 id: socketId,
                 username: user.username,
                 health: user.health,
-                maxHealth: user.max_health,
+                maxHealth: user.maxHealth,
                 x: user.x,
                 y: user.y,
                 sprite: {
@@ -83,6 +83,8 @@ class Game {
                 },
                 globalMapData: mapData
             });
+
+            await player.inventory.setupInventory(player.username);
 
             // Add the player to the game players object.
             gameServer.game.players[socketId] = player;

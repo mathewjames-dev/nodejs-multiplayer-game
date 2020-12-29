@@ -46,17 +46,33 @@ class Inventory {
         }        
     }
 
-    removeItemFromInventory(player, itemId) {
-        this.items.some(function (property, index) {
-            if (property.item_id === itemId) {
-                delete player.inventory.items[index]
-                return true;
-            }
-        });
-        let playerDatabase = new PlayerDatabase;
-        playerDatabase.removeItemFromInventory(player, itemId);
+    async removeItemFromInventory(dbId, itemId) {
+        try {
+            var $this = this;
+            this.items.some(await function (property, index) {
+                try {
+                    if (property.id == itemId) {
+                        delete $this.items[index]
+                        return true;
+                    }
+                } catch{
+                    throw Error;
+                }
+            });
 
-        this.redraw = 1;
+            let playerInventory = await InventoryModel.findOne({ "userId": dbId }).exec();
+            if (playerInventory) {
+                await InventoryItemModel.deleteOne({
+                    "inventoryId": playerInventory._id,
+                    "itemId": itemId
+                });
+            }
+
+            this.redraw = 1;
+        } catch{
+            throw Error;
+        } 
+  
     }
 }
 

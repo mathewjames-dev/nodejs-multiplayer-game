@@ -20,6 +20,34 @@ class Game {
         this.loop;
     }
 
+    // Function to load the games maps.
+    async loadMaps() {
+        try {
+            var $this = this;
+            await MapModel.find((err, maps) => {
+                for (let m = 0; m < maps.length; m++) {
+                    let map = maps[m];
+
+                    // Setup the map for first time storing.
+                    let mapManager = new MapManager(map.name, map.location);
+
+                    // Load up the map NPCs.
+                    mapManager.getNPCs()
+                        .then((npcs) => mapManager.setupNPCS(npcs))
+                        .then((mapData) => {
+                            return;
+                        }).catch((err) => {
+                            console.log(err);
+                        })
+                    $this.maps[map.id] = mapManager;
+                }
+            });
+        } catch{
+            throw Error;
+        }
+
+    }
+
     // Function to start the game loops.
     startGameLoop() {
         // Start the game loop.
@@ -52,34 +80,6 @@ class Game {
                 this.shouldSendUpdate = true;
             }
         }
-    }
-
-    // Function to load the games maps.
-    async loadMaps() {
-        try {
-            var $this = this;
-            await MapModel.find((err, maps) => {
-                for (let m = 0; m < maps.length; m++) {
-                    let map = maps[m];
-
-                    // Setup the map for first time storing.
-                    let mapManager = new MapManager(map.name, map.location);
-
-                    // Load up the map NPCs.
-                    mapManager.getNPCs()
-                        .then((npcs) => mapManager.setupNPCS(npcs))
-                        .then((mapData) => {
-                            return;
-                        }).catch((err) => {
-                            console.log(err);
-                        })
-                    $this.maps[map.id] = mapManager;
-                }
-            });
-        } catch{
-            throw Error;
-        }
-
     }
 
     // Function to create an update for the player.

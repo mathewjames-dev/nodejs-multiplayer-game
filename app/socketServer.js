@@ -4,8 +4,7 @@
  * This will be utilized to house the main socket function/s.
  *
  ***/
-
-const GameDatabase = require("./database/game/game");
+const ItemModel = require("./database/models/item");
 
 class SocketServer {
     constructor(io) {
@@ -48,14 +47,11 @@ class SocketServer {
 
             socket.on('inventoryItemUsed', async (data) => {
                 var player = gameServer.game.players[socket.id];
-                let gameDatabase = new GameDatabase;
-                gameDatabase.getItemById(data.itemId, function (item) {
-                    let itemProperties = JSON.parse(item[0].properties);
-                    if (itemProperties.type === 'Health Potion' && player.health < player.maxHealth) {
-                        player.health += itemProperties.value;
-                        player.inventory.removeItemFromInventory(player, data.itemId);
-                    }
-                })
+                let item = await ItemModel.findById(data.itemId).exec();
+                if (item.properties.type === 'Health Potion' && player.health < player.maxHealth) {
+                    player.health += item.properties.value;
+                    await player.inventory.removeItemFromInventory(player.dbId, data.itemId);
+                }
             });
 
             socket.on('inventoryRedrawn', async (data) => {

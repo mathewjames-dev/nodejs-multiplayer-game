@@ -6,15 +6,24 @@
 
 // Import the components required.
 const Player = require('../game/entities/player/player');
-const Map = require('./map/map');
+const MapModel = require('../database/models/map');
+const SpriteModel = require('../database/models/sprite');
+const SpriteManager = require('./classes/sprite/spriteManager');
+const MapManager = require('./classes/sprite/mapManager');
 
 class Game {
     constructor() {
+        this.maps = {};
         this.players = {};
 
         this.shouldSendUpdate = false;
+        this.loop;
+    }
+
+    // Function to start the game loops.
+    startGameLoop() {
         // Start the game loop.
-        setInterval(this.gameLoop.bind(this), 1000 / 60);
+        this.loop = setInterval(this.gameLoop.bind(this), 1000 / 60);
     }
 
     // Main game loop function.
@@ -22,7 +31,6 @@ class Game {
         // Update Players
         // If there are players logged into the game then this code will need running, otherwise we don't need to.
         if (this.players) {
-
             // Update each player state.
             Object.keys(this.players).forEach(id => {
                 let player = this.players[id];
@@ -31,6 +39,7 @@ class Game {
 
             // Send a game update to each player every other time
             if (this.shouldSendUpdate) {
+
                 // Emit the states individually to each socket - We loop the logged in sockets to do this.
                 Object.keys(gameServer.socketServer.sockets).forEach(id => {
                     let socket = gameServer.socketServer.sockets[id];
@@ -45,80 +54,38 @@ class Game {
         }
     }
 
-    // Function to add a player to the game upon authentication.
-    addPlayer(socketId, user) {
-        return new Promise(async (resolve, reject) => {
-            // Get all the map data required for the front end.
-            let map = new Map(user.map_name, user.map_location);
+    // Function to load the games maps.
+    async loadMaps() {
+        try {
+            var $this = this;
+            await MapModel.find((err, maps) => {
+                for (let m = 0; m < maps.length; m++) {
+                    let map = maps[m];
 
-            // Get the map data from the database.
-            let mapData = map.getMapData();
+                    // Setup the map for first time storing.
+                    let mapManager = new MapManager(map.name, map.location);
 
-            if (user.firstLogin === 1) {
-                // We know we need to get the starting spawn point for players in the particular map.
-                var playerSpawn;
-                mapData.layers.filter((property, index) => {
-                    if (property.name === 'Spawn Points') {
-                        let playerSpawnObject = property.objects.filter((object, i) => {
-                            if (object.name === 'Player Spawn') {
-                                playerSpawn = object;
-                            }
-                        });
-                    }
-                });
-                
-                // Double check the player spawn object has been set.
-                if (playerSpawn) {
-                    user.x = playerSpawn.x;
-                    user.y = playerSpawn.y;
+                    // Load up the map NPCs.
+                    mapManager.getNPCs()
+                        .then((npcs) => mapManager.setupNPCS(npcs))
+                        .then((mapData) => {
+                            return;
+                        }).catch((err) => {
+                            console.log(err);
+                        })
+                    $this.maps[map.id] = mapManager;
                 }
-            }
-
-            // Then finally we will setup and add the player.
-            // Create the player.
-            let player = new Player({
-                id: socketId,
-                username: user.username,
-                health: user.health,
-                maxHealth: user.maxHealth,
-                x: user.x,
-                y: user.y,
-                sprite: {
-                    name: user.sprite_name,
-                    location: user.sprite_location,
-                    rows: user.number_of_rows,
-                    cols: user.number_of_cols,
-                    leftRow: user.tracking_left_row,
-                    upRow: user.tracking_up_row,
-                    rightRow: user.tracking_right_row,
-                    downRow: user.tracking_down_row,
-                    spriteWidth: user.sheet_width / user.number_of_cols,
-                    spriteHeight: user.sheet_height / user.number_of_rows,
-                    animation: {
-                        currentFrame: 0,
-                        totalFrames: user.total_frames,
-                        srcX: 0,
-                        srcY: 0
-                    }
-                },
-                globalMapData: mapData
             });
+        } catch{
+            throw Error;
+        }
 
-            await player.inventory.setupInventory(player.username);
-
-            // Add the player to the game players object.
-            gameServer.game.players[socketId] = player;
-
-            // Setup the player initialization package and resolve.
-            let initPackage = gameServer.game.createUpdate(player);
-            resolve(initPackage);
-        });
     }
 
     // Function to create an update for the player.
     createUpdate(player) {
         let update = {
-            player: player,
+            player: player.getUpdate(),
             players: {}
         };
 
@@ -130,10 +97,62 @@ class Game {
         return JSON.stringify(update);
     }
 
+    // Function to add a player to the game upon authentication.
+    async addPlayer(socketId, user) {
+        var map = this.maps[user.mapId];
+
+        if (user.firstLogin) {
+            // We know we need to get the starting spawn point for players in the particular map.
+            var playerSpawn;
+            map.data.layers.filter((property, index) => {
+                if (property.name === 'Spawn Points') {
+                    let playerSpawnObject = property.objects.filter((object, i) => {
+                        if (object.type === 'playerspawn') {
+                            playerSpawn = object;
+                        }
+                    });
+                }
+            });
+
+            // Double check the player spawn object has been set.
+            if (playerSpawn) {
+                user.x = playerSpawn.x;
+                user.y = playerSpawn.y;
+            }
+        }
+
+        // Get the users sprite from the database.
+        let spriteRecord = await SpriteModel.findOne({ "id": user.spriteId }).exec();
+        let userSprite = new SpriteManager(spriteRecord);
+
+        // Then finally we will setup and add the player.
+        let player = new Player({
+            id: socketId,
+            dbId: user.id,
+            username: user.username,
+            health: user.health,
+            maxHealth: user.maxHealth,
+            x: user.x,
+            y: user.y,
+            sprite: userSprite,
+            globalMapData: map
+        });
+
+        await player.inventory.setupInventory(user.id);
+
+        // Add the player to the game players object.
+        this.players[socketId] = player;
+
+        // Setup the player initialization package and resolve.
+        let initPackage = gameServer.game.createUpdate(player);
+        return initPackage;
+    }
+
     // Function to remove the player from the game.
     async removePlayer(socketId) {
         delete this.players[socketId];
     }
+
 }
 
 module.exports = Game;

@@ -16,8 +16,9 @@ class MapRender {
     // Function to load the map data (Sounds and tilesets).
     async loadMap(mapData) {
         let $this = this;
-        await this.loadMapSounds(mapData)
-            .then(this.loadMapTileset(mapData));
+        await this.loadMapSounds(mapData.data)
+            .then(this.loadNPCs(mapData))
+            .then(this.loadMapTileset(mapData.data));
     }
 
     // Function to load the map sounds.
@@ -44,6 +45,15 @@ class MapRender {
         }
     }
 
+    // Function to load the npcs upon authentication.
+    async loadNPCs(mapData) {
+        for (let name in mapData.npcs) {
+            let npc = mapData.npcs[name];
+            if (!npc) continue;
+            game.assetLoader.addImage(npc.sprite.name, npc.sprite.location);
+        }
+    }
+
     // Function to load the map tilesets.
     async loadMapTileset(json) {
         this.mapData = json;
@@ -62,6 +72,15 @@ class MapRender {
             this.mapTilesets[tileset.name].onload = function () {
                 $this.loadedTileset();
             }
+        }
+
+        for (let name in json.npcs) {
+            let npc = json.npcs[name];
+            if (game.assetLoader.images[npc.sprite.name]) continue;
+            // We need to add a check to see if the npcs image has already been loaded
+            // If not we can then add that image.
+            game.assetLoader.addImage(npc.sprite.name,
+                npc.sprite.location);
         }
     }
 

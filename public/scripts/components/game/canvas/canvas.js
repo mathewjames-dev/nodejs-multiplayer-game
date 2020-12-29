@@ -15,40 +15,36 @@ class Canvas {
         this.inventoryDrawn = false;
     }
 
-    // Function to draw the player states / sprites.
-    async drawPlayerStates(updatePackage) {
+    async drawStates(updatePackage) {
+        // Duplicate the player canvas.
+        // Draw the players - DONE
+        // Draw npcs - DONE
+        // Write the duplicated canvas to the main canvas. (Should prevent any mis-timings and missing images for 1 second during animation)
+      //  var contextDuplication = playerContext.canvas.cloneNode();
         playerContext.clearRect(0, 0, mapCanvasBelow.width, mapCanvasBelow.height);
 
-        // Loop the players within the update package object that we're passed to then draw the player states
-        for (let id in updatePackage.players) {
-            let player = updatePackage.players[id],
-                playerX = Math.round(player.x / 16),
-                playerY = Math.round(player.y / 16);
+        this.drawNPCStates(updatePackage.player.mapData.npcs);
 
+        this.drawPlayerStates(updatePackage.players); 
+    }
+
+    // Function to draw the player states / sprites.
+    async drawPlayerStates(players) {
+        // Draw the players first and foremost.
+        for (let id in players) {
+            let player = players[id];
+            if (!player) continue;
             this.playerRender.drawSprite(player);
+        }
+    }
 
-            // SOUND RELATED
-            let sound = '';
-            for (let l in player.mapData.layers) {
-                let layer = player.mapData.layers[l];
-                let properties = layer.properties;
-                for (let p in properties) {
-                    let prop = properties[p];
-                    if (prop.name === 'sound' && layer.data[playerY * player.mapData.width + playerX] > 0) {
-                        sound = prop.value;
-                    }
-                }
-            }
-            if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
-                if (game.assetLoader.sounds[sound]) {
-                    game.assetLoader.sounds[sound].play();
-                    game.lastPlayedTileSound = sound;
-                }
-            } else {
-                if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
-                    game.assetLoader.sounds[game.lastPlayedTileSound].pause();
-                }
-            }
+    // Function to draw the npc states / sprites.
+    async drawNPCStates(npcs) {
+        // Loop the players within the update package object that we're passed to then draw the player states
+        for (let name in npcs) {
+            let npc = npcs[name];
+            if (!npc) continue;
+            this.playerRender.drawSprite(npc, true);
         }
     }
 
@@ -75,18 +71,16 @@ class Canvas {
                     "</div> " +
                     "</li>");
             } else {
-                item.item_properties = JSON.parse(item.item_properties);
-
                 // Load the item sound.
-                if (!game.assetLoader.sounds[item.item_name] && item.item_properties.sound) {
-                    game.assetLoader.addSound(item.item_name, item.item_properties.sound);
+                if (!game.assetLoader.sounds[item.name] && item.properties.sound) {
+                    game.assetLoader.addSound(item.name, item.properties.sound);
                     await game.assetLoader.loadSounds();
                 }
 
                 // Implement the item
                 inventoryList.append("<li>" +
-                    "<div data-id='" + item.item_id + "' data-name='" + item.item_name + "' class= 'item'> " +
-                    "<img src='" + item.item_image + "'/>" +
+                    "<div data-id='" + item.id + "' data-name='" + item.name + "' class= 'item'> " +
+                    "<img src='" + item.image + "'/>" +
                     "</div> " +
                     "</li>");
             }

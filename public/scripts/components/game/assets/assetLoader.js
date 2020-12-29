@@ -38,11 +38,12 @@ class AssetLoader {
 
     async loadImages() {
         for (var image in this.images) {
-            if (!this.images[image]) continue;
-            if (this.images[image].status == 'loaded') continue;
+            let src = this.images[image];
+
+            if (!src) continue;
+            if (src.status == 'loaded' || src.status == 'loading') continue;
 
             let $this = this;
-            let src = this.images[image];
 
             this.images[image] = new Image();
             this.images[image].status = 'loading';

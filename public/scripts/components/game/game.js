@@ -5,7 +5,8 @@
  *
  ***/
 const GameSockets = require('./sockets/gameSockets');
-const AssetLoader = require("./assets/assetLoader");
+const AssetManager = require("./classes/assetManager");
+const SoundManager = require("./classes/soundManager");
 const Canvas = require("./canvas/canvas");
 const Input = require("./input/input");
 
@@ -15,16 +16,16 @@ class Game {
         this.gameSockets = new GameSockets;
 
         // Will be utilized for all asset loading.
-        this.assetLoader = new AssetLoader;
+        this.assetLoader = new AssetManager;
+
+        // Will be utilized for all sound functionality.
+        this.soundManager = new SoundManager;
 
         // Will be utilized to house the game canvas and respective functions.
         this.canvas = new Canvas;
 
         // Will be utilized for all input functionality.
         this.input = new Input;
-
-        // Sound Related Values ( Eventually include a sound manager? )
-        this.lastPlayedTileSound = 0;
 
         this.loaded = 0;
     }

@@ -4,7 +4,7 @@
  * This will be utilized to house the assets for the game.
  *
  ***/
-class AssetLoader {
+class AssetManager {
     constructor() {
         this.assetsLoaded = 0;
 
@@ -87,4 +87,4 @@ class AssetLoader {
     }  
 }
 
-module.exports = AssetLoader;
+module.exports = AssetManager;

@@ -31,39 +31,8 @@ class GameSockets {
                         }
                     })
 
-                    // Then do sound related stuff.
-                    .then(() => {
-                        for (let id in updatePackage.players) {
-                            let player = updatePackage.players[id],
-                                playerX = Math.round(player.x / 16),
-                                playerY = Math.round(player.y / 16);
-
-                            // SOUND RELATED
-                            let sound = '';
-                           /* for (let l in player.mapData.data.layers) {
-                                let layer = player.mapData.data.layers[l];
-                                let properties = layer.properties;
-                                console.log(properties);
-                                for (let p in properties) {
-                                    let prop = properties[p];
-                                    if (prop.name === 'sound' && layer.data[playerY * player.mapData.width + playerX] > 0) {
-                                        sound = prop.value;
-                                    }
-                                }
-                            }
-
-                            if (player.movement.up || player.movement.down || player.movement.right || player.movement.left) {
-                                if (game.assetLoader.sounds[sound]) {
-                                    game.assetLoader.sounds[sound].play();
-                                    game.lastPlayedTileSound = sound;
-                                }
-                            } else {
-                                if (game.assetLoader.sounds[game.lastPlayedTileSound]) {
-                                    game.assetLoader.sounds[game.lastPlayedTileSound].pause();
-                                }
-                            }*/
-                        }
-                    });
+                    // Then we can do all the sound updating.
+                    .then(game.soundManager.updateSounds(updatePackage))
             }
         });
     }

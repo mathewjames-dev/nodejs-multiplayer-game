@@ -51,7 +51,7 @@ class Collision {
     checkNonCollidableMapObjects(newX, newY) {
         if (this.globalNonCollidableObjects.length === 0) {
             // Non collidable objects haven't been pushed for this map.
-            let layer = this.globalMapData.layers.find(function (property, index) {
+            let layer = this.globalMapData.data.layers.find(function (property, index) {
                 if (property.type === 'objectgroup') return true;
             });
 

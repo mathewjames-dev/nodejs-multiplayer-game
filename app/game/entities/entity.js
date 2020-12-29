@@ -43,7 +43,13 @@ class Entity extends Collision {
 
     // Function to update the entity.
     update() {
-        this.sprite.currentFrameCount++;
+        // Update the entity position.
+        this.updatePosition();
+
+        // Update the entity animation.
+        this.sprite.animation.updateEntityAnimation(this);
+
+       /* this.sprite.currentFrameCount++;
         if (this.sprite.currentFrameCount < this.movementSpeed * 15) return;
         this.sprite.currentFrameCount = 0;
 
@@ -71,46 +77,7 @@ class Entity extends Collision {
             }
 
             npc.sprite.animation.durationCount++;
-        }
-    }
-
-    // Function to update the entity sprite animation.
-    updateEntityAnimation(simpleAnimation = false) {
-        if (simpleAnimation) {
-            this.sprite.animation.currentFrame =
-                ++this.sprite.animation.currentFrame % this.sprite.animation.totalFrames;
-            this.sprite.animation.srcX = this.sprite.animation.currentFrame * this.sprite.spriteWidth;
-            if (this.sprite.animation.currentFrame === this.sprite.animation.totalFrames) this.sprite.animation.play = false;
-        } else {
-            // We need to update the current frame.
-            if (!this.movement.left && !this.movement.right
-                && !this.movement.up && !this.movement.down) {
-                this.sprite.animation.currentFrame = 0;
-            } else {
-                this.sprite.animation.currentFrame =
-                    ++this.sprite.animation.currentFrame % this.sprite.animation.totalFrames;
-            }
-            this.sprite.animation.srcX = this.sprite.animation.currentFrame * this.sprite.spriteWidth;
-
-
-            // Calculate the new X co ordinate for the sprite sheet.
-            if (this.movement.up) {
-                this.sprite.animation.srcY = this.sprite.upRow * this.sprite.spriteHeight;
-            }
-
-            if (this.movement.down) {
-                this.sprite.animation.srcY = this.sprite.downRow * this.sprite.spriteHeight;
-            }
-
-            // Calculate the new Y co ordinate for the sprite sheet.
-            if (this.movement.left) {
-                this.sprite.animation.srcY = this.sprite.leftRow * this.sprite.spriteHeight;
-            }
-
-            if (this.movement.right) {
-                this.sprite.animation.srcY = this.sprite.rightRow * this.sprite.spriteHeight;
-            }
-        }
+        }*/
     }
 
     // Function to get update for the entity.
@@ -124,18 +91,23 @@ class Entity extends Collision {
         };
     }
 
-    updatePosition(data) {
-        if (data.left) {
+    // Function to update the movement object.
+    updateMovement(data) {
+        this.movement = data;
+    }
+
+    updatePosition() {
+        if (this.movement.left) {
             var entityX = this.x - this.movementSpeed;
-        } else if (data.right) {
+        } else if (this.movement.right) {
             var entityX = this.x + this.movementSpeed;
         } else {
             var entityX = this.x
         }
 
-        if (data.up) {
+        if (this.movement.up) {
             var entityY = this.y - this.movementSpeed;
-        } else if (data.down) {
+        } else if (this.movement.down) {
             var entityY = this.y + this.movementSpeed;
         } else {
             var entityY = this.y;

@@ -123,7 +123,6 @@ class Game {
 
         // Get the users sprite from the database.
         let spriteRecord = await SpriteModel.findOne({ "id": user.spriteId }).exec();
-        let userSprite = new SpriteManager(spriteRecord);
 
         // Then finally we will setup and add the player.
         let player = new Player({
@@ -134,7 +133,7 @@ class Game {
             maxHealth: user.maxHealth,
             x: user.x,
             y: user.y,
-            sprite: userSprite,
+            sprite: new SpriteManager(spriteRecord),
             globalMapData: map
         });
 

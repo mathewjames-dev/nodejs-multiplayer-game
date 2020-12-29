@@ -43,7 +43,7 @@ class SocketServer {
              */
             socket.on('playerMovement', (data) => {
                 let player = gameServer.game.players[socketId];
-                if (player) player.movePlayer(data)
+                if (player) player.updateMovement(data)
             });
 
             socket.on('inventoryItemUsed', async (data) => {

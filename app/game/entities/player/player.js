@@ -35,11 +35,6 @@ class Player extends Entity {
         };
     }
 
-    movePlayer(data) {
-        this.movement = data;
-        this.updatePosition(data);
-    }
-
     async updatePlayerState() {
         let playerDatabase = new PlayerDatabase;
         playerDatabase.updatePlayerState(this);

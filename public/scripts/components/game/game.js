@@ -37,7 +37,7 @@ class Game {
         await this.loadPlayerSprites(initPackage.players);
 
         // Load the map and add the map sounds.
-        await this.canvas.mapRender.loadMap(initPackage.player.globalMapData);
+        await this.canvas.mapRender.loadMap(initPackage.player.mapData);
 
         // Draw the player inventory.
         await this.canvas.drawPlayerInventory(initPackage.player.inventory);
@@ -58,6 +58,8 @@ class Game {
             this.assetLoader.addImage(players[player].sprite.name,
                 players[player].sprite.location);
         }
+
+        await this.assetLoader.loadAssets();
     }
 
     // Function to start the game loop on the client side.

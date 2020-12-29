@@ -5,7 +5,7 @@
  ***/
 // Import the components required.
 const Entity = require('../entity');
-const PlayerDatabase = require('../../../database/player/player');
+const PlayerQueries = require('../../../database/playerQueries');
 const Inventory = require('./inventory');
 
 class Player extends Entity {
@@ -14,8 +14,7 @@ class Player extends Entity {
         this.username = param.username;
         this.health = param.health;
         this.maxHealth = param.maxHealth;
-
-        this.inventory = new Inventory(this);
+        this.inventory = new Inventory();
     }
 
     // Function to update the player.
@@ -29,6 +28,7 @@ class Player extends Entity {
     getUpdate() {
         return {
             ...(super.getUpdate()),
+            health: this.health,
             inventory: this.inventory,
             sprite: this.sprite,
             //hp: this.hp,

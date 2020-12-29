@@ -4,7 +4,7 @@
  *
  ***/
 
-const AuthDatabase = require("../database/authDatabase");
+const AuthQueries = require("../database/authQueries");
 
 class AuthenticationRouting {
     constructor(app) {
@@ -18,32 +18,35 @@ class AuthenticationRouting {
 
     authRegister() {
         this.app.post('/auth/register', async (req, res) => {
-            let authDatabase = new AuthDatabase;
+            let authQueries = new AuthQueries;
 
             // Check if a user already exists with that username.
-            authDatabase.retrieveUser(req.body.username, async (user) => {
-                // If user exists return 400 error.
-                if (user.length > 0) {
-                    res.status(400).send("User already exists!");
-                } else {
-                    // If a user doesn't exist we create one and return a success.
-                    await authDatabase.createUser(req.body, async (user) => {
-                        // If a user has been created return success.
-                        if (user.length > 0) {
-                            res.status(200).send("User successfully created!");
-                        }
-                    });
-                }
-            });
+            authQueries.retrieveUser(req.body.username)
+                .then((user) => {
+                    // If user exists return 400 error.
+                    if (user) {
+                        res.status(400).send("User already exists!");
+                    } else {
+                        // If a user doesn't exist we create one and return a success.
+                        authQueries.createUser(req.body, (user) => {
+                            // If a user has been created return success.
+                            if (user > 0) {
+                                res.status(200).send("User successfully created!");
+                            } else {
+                                res.status(400).send("Something went wrong here..");
+                            }
+                        });
+                    }
+                });
         });
     }
 
     authLogin() {
         this.app.post('/auth/login', (req, res) => {
-            let authDatabase = new AuthDatabase();
+            let authQueries = new AuthQueries;
 
             // Check if the username and password match a user account.
-            authDatabase.authenticateUser(req.body, (user) => {
+            authQueries.authenticateUser(req.body, (user) => {
                 if (user) {
                     gameServer.game.addPlayer(req.body.socket, user)
                         .then((initPackage) => {
@@ -52,7 +55,7 @@ class AuthenticationRouting {
                                 initPackage: initPackage,
                             }));
                         }).catch(function (err) {
-                            console.log(err);
+                            console.log("ERROR:" + err);
                         });
                 } else {
                     res.status(400).send("User credentials incorrect!");

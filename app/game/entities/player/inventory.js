@@ -4,7 +4,9 @@
  * This will be utilized to house the player inventory functions.
  *
  ***/
-const PlayerDatabase = require("../../../database/player/player");
+const InventoryModel = require("../../../database/models/inventory");
+const InventoryItemModel = require("../../../database/models/inventoryItem");
+const ItemModel = require("../../../database/models/item");
 
 class Inventory {
     constructor() {
@@ -14,37 +16,34 @@ class Inventory {
         this.redraw = 0;
     }
 
-    setupInventory(playerUsername) {
-        return new Promise(async (resolve, reject) => {
-            let inventoryObj = this;
-            let playerDatabase = new PlayerDatabase;
-            await playerDatabase.getPlayerInventory(playerUsername, async function (inventoryRecord) {
-                if (inventoryRecord) {
-                    inventoryObj.maxSlots = inventoryRecord[0].max_size;
+    async setupInventory(dbId) {
+        try {
+            let playerInventory = await InventoryModel.findOne({ "userId": dbId }).exec();
+            if (playerInventory) {
+                this.maxSlots = playerInventory.maxSize;
 
-                    await playerDatabase.getPlayerInventoryItems(inventoryRecord[0].id, async function (inventoryItems) {
-                        if (inventoryItems) {
-                            for (let i = 0; i < inventoryItems.length; i++) {
-                                let item = inventoryItems[i];
-                                if (!item) continue;
+                let playerInventoryItems = await InventoryItemModel.find({
+                    "inventoryId": playerInventory._id
+                });
 
-                                inventoryObj.items.push({
-                                    item_id: item.id,
-                                    item_name: item.name,
-                                    item_image: item.image,
-                                    item_properties: item.properties
-                                });
-                            }
+                if (playerInventoryItems) {
+                    for (let i = 0; i < playerInventoryItems.length; i++) {
+                        let itemRecord = playerInventoryItems[i];
+                        let item = await ItemModel.findById(itemRecord.itemId).exec();
+                        if (!item) continue;
 
-                            resolve(inventoryObj);
-                        }
-                    });
-                } else {
-                    resolve(false);
+                        this.items.push({
+                            id: item._id,
+                            name: item.name,
+                            image: item.image,
+                            properties: item.properties
+                        });
+                    }
                 }
-
-            });
-        });
+            }
+        } catch{
+            throw Error;
+        }        
     }
 
     removeItemFromInventory(player, itemId) {

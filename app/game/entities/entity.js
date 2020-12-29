@@ -12,19 +12,7 @@ class Entity extends Collision {
 
         this.x = 320;
         this.y = 320;
-        this.movementSpeed = 1;
-
-        this.sprite = {
-            name: '',
-            location: '',
-            rows: null,
-            cols: null,
-            leftRow: null,
-            upRow: null,
-            rightRow: null,
-            downRow: null,
-            totalFrames: null,
-        };
+        this.movementSpeed = 0.6;
 
         this.movement = {
             up: false,
@@ -46,6 +34,8 @@ class Entity extends Collision {
                 this.name = param.name;
             if (param.id)
                 this.id = param.id;
+            if (param.dbId)
+                this.dbId = param.dbId;
             if (param.sprite)
                 this.sprite = param.sprite;
         }
@@ -53,38 +43,73 @@ class Entity extends Collision {
 
     // Function to update the entity.
     update() {
+        this.sprite.currentFrameCount++;
+        if (this.sprite.currentFrameCount < this.movementSpeed * 15) return;
+        this.sprite.currentFrameCount = 0;
+
+        // Update the entity animation.
         this.updateEntityAnimation();
+
+        // Update the NPCs animation.
+        for (let index in this.globalMapData.npcs) {
+            let npc = this.globalMapData.npcs[index];
+            if (!npc) return;
+
+            let durationFrames = (1000 / 60) * npc.sprite.animation.duration;
+            let playFrameEvery = durationFrames / npc.sprite.animation.totalFrames;
+            if (!npc.sprite.animation.play && npc.sprite.animation.currentFrame === 0) {
+                    npc.sprite.animation.durationCount = 0;
+                    npc.sprite.animation.play = true;
+            } else if (Math.floor(npc.sprite.animation.durationCount % playFrameEvery) === 0) {
+                npc.sprite.animation.play = true;
+            } else {
+                npc.sprite.animation.play = false;
+            }
+
+            if (npc.sprite.animation.play) {
+                npc.updateEntityAnimation(true);
+            }
+
+            npc.sprite.animation.durationCount++;
+        }
     }
 
     // Function to update the entity sprite animation.
-    updateEntityAnimation() {
-        // We need to update the current frame.
-        if (!this.movement.left && !this.movement.right
-            && !this.movement.up && !this.movement.down) {
-            this.sprite.animation.currentFrame = 0;
-        } else {
+    updateEntityAnimation(simpleAnimation = false) {
+        if (simpleAnimation) {
             this.sprite.animation.currentFrame =
                 ++this.sprite.animation.currentFrame % this.sprite.animation.totalFrames;
-        }
-        this.sprite.animation.srcX = this.sprite.animation.currentFrame * this.sprite.spriteWidth;
+            this.sprite.animation.srcX = this.sprite.animation.currentFrame * this.sprite.spriteWidth;
+            if (this.sprite.animation.currentFrame === this.sprite.animation.totalFrames) this.sprite.animation.play = false;
+        } else {
+            // We need to update the current frame.
+            if (!this.movement.left && !this.movement.right
+                && !this.movement.up && !this.movement.down) {
+                this.sprite.animation.currentFrame = 0;
+            } else {
+                this.sprite.animation.currentFrame =
+                    ++this.sprite.animation.currentFrame % this.sprite.animation.totalFrames;
+            }
+            this.sprite.animation.srcX = this.sprite.animation.currentFrame * this.sprite.spriteWidth;
 
 
-        // Calculate the new X co ordinate for the sprite sheet.
-        if (this.movement.up) {
-            this.sprite.animation.srcY = this.sprite.upRow * this.sprite.spriteHeight;
-        }
+            // Calculate the new X co ordinate for the sprite sheet.
+            if (this.movement.up) {
+                this.sprite.animation.srcY = this.sprite.upRow * this.sprite.spriteHeight;
+            }
 
-        if (this.movement.down) {
-            this.sprite.animation.srcY = this.sprite.downRow * this.sprite.spriteHeight;
-        }
+            if (this.movement.down) {
+                this.sprite.animation.srcY = this.sprite.downRow * this.sprite.spriteHeight;
+            }
 
-        // Calculate the new Y co ordinate for the sprite sheet.
-        if (this.movement.left) {
-            this.sprite.animation.srcY = this.sprite.leftRow * this.sprite.spriteHeight;
-        }
+            // Calculate the new Y co ordinate for the sprite sheet.
+            if (this.movement.left) {
+                this.sprite.animation.srcY = this.sprite.leftRow * this.sprite.spriteHeight;
+            }
 
-        if (this.movement.right) {
-            this.sprite.animation.srcY = this.sprite.rightRow * this.sprite.spriteHeight;
+            if (this.movement.right) {
+                this.sprite.animation.srcY = this.sprite.rightRow * this.sprite.spriteHeight;
+            }
         }
     }
 

@@ -3,6 +3,8 @@
  * Main Game / App File.
  *  
  ***/
+// Setup config file.
+require('dotenv').config();
 
 // Including express and body parser.
 const express = require('express');

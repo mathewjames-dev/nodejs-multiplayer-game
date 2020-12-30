@@ -31,7 +31,6 @@ class Player extends Entity {
             health: this.health,
             inventory: this.inventory,
             sprite: this.sprite,
-            //hp: this.hp,
         };
     }
 

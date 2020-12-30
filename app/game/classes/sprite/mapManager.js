@@ -4,9 +4,9 @@
  *
  ***/
 const fs = require('fs');
-const Entity = require('../../entities/entity');
 const SpriteModel = require('../../../database/models/sprite');
 const SpriteManager = require('./spriteManager');
+const NPC = require('../../entities/npc');
 
 class MapManager {
     constructor(mapName, mapLocation) {
@@ -55,13 +55,13 @@ class MapManager {
                 if (this.npcs[entity.name]) continue;
 
                 let spriteRecord = await SpriteModel.findOne({ "name": entity.name }).exec();
-                let entitySprite = new SpriteManager(spriteRecord);
+                let npcSprite = new SpriteManager(spriteRecord);
 
-                let npc = new Entity({
+                let npc = new NPC({
                     name: entity.name,
                     x: entity.x,
                     y: entity.y,
-                    sprite: entitySprite,
+                    sprite: npcSprite,
                 });
 
                 this.npcs[entity.name] = npc;

@@ -20,7 +20,7 @@ class AuthQueries extends Database {
             const user = UserModel.findOne({ 'username': username }).exec();
             return user;
         } catch (err) {
-            throw Error;
+            console.error(err);
         }
     }
 
@@ -52,18 +52,22 @@ class AuthQueries extends Database {
     }
 
     async authenticateUser(data, callback) {
-        let user = await this.retrieveUser(data.username);
-
-        if (user) {
-            bcrypt.compare(data.password, user.password, (error, response) => {
-                if (response) {
-                    callback(user);
-                } else {
-                    throw Error;
-                }
-            });
-        } else {
-            throw Error;
+        try {
+            let user = await this.retrieveUser(data.username);
+            if (user) {
+                bcrypt.compare(data.password, user.password, (error, response) => {
+                    if (response) {
+                        callback(user);
+                    } else {
+                        callback(false);
+                    }
+                });
+            } else {
+                console.error('Unable to retrieve user for that username from the database.');
+                throw new Error;
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 }

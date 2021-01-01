@@ -1,20 +1,20 @@
 /***
  *
- * Back-end Map Component File
+ * Back-end      Component File
  *
  ***/
 const fs = require('fs');
 const SpriteModel = require('../../../database/models/sprite');
 const SpriteManager = require('./spriteManager');
 const NPC = require('../../entities/npc');
+const NPCModel = require('../../../database/models/npc');
 
 class MapManager {
-    constructor(mapName, mapLocation) {
-        this.name = mapName;
-        this.location = mapLocation;
-
+    constructor(map) {
+        this.id = map.id
+        this.name = map.name;
+        this.location = map.location;
         this.data = this.getMapData();
-
         this.npcs = {};
     }
 
@@ -24,21 +24,8 @@ class MapManager {
 
     async getNPCs() {
         try {
-            var npcs;
-
-            this.data.layers.filter((property, index) => {
-                if (property.name === 'Spawn Points') {
-                    let npcObjects = property.objects.filter((layer, i) => {
-                        if (layer.type === 'npc') return true;
-                    });
-
-                    if (npcObjects) {
-                        npcs = npcObjects;
-                    }
-                }
-            });
-
-            return npcs;
+            const mapNpcs = await NPCModel.find({ 'mapId': this.id }).exec();
+            return mapNpcs;
         } catch{
             return false;
         }
@@ -54,14 +41,15 @@ class MapManager {
                 if (!entity) continue;
                 if (this.npcs[entity.name]) continue;
 
-                let spriteRecord = await SpriteModel.findOne({ "name": entity.name }).exec();
-                let npcSprite = new SpriteManager(spriteRecord);
+                const npcSprite = new SpriteManager(await SpriteModel.findOne({ "id": entity.spriteId }).exec());
 
                 let npc = new NPC({
                     name: entity.name,
                     x: entity.x,
                     y: entity.y,
                     sprite: npcSprite,
+                    health: entity.health,
+                    maxHealth: entity.maxHealth
                 });
 
                 this.npcs[entity.name] = npc;

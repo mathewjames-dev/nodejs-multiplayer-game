@@ -27,9 +27,8 @@ class Game {
             await MapModel.find((err, maps) => {
                 for (let m = 0; m < maps.length; m++) {
                     let map = maps[m];
-
                     // Setup the map for first time storing.
-                    let mapManager = new MapManager(map.name, map.location);
+                    let mapManager = new MapManager(map);
 
                     // Load up the map NPCs.
                     mapManager.getNPCs()

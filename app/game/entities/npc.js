@@ -9,6 +9,8 @@ const Entity = require("./entity");
 class NPC extends Entity {
     constructor(param) {
         super(param);
+        this.health = param.health;
+        this.maxHealth = param.maxHealth;
     }
 
     // Function to update the player.

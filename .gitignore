@@ -1,1 +1,7 @@
 node_modules/
+package-lock.json
+.idea/workspace.xml
+.vs/slnx.sqlite
+.vs/tasks.vs.json
+.vs/VSWorkspaceState.json
+.vs/Node Game Project/v16/.suo
